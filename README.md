@@ -2,6 +2,14 @@
 
 The Layotto Node.js SDK to build your application.
 
+[![NPM version](https://img.shields.io/npm/v/layotto.svg?style=flat-square)](https://npmjs.org/package/layotto)
+[![NPM quality](https://npm.packagequality.com/shield/layotto.svg?style=flat-square)](https://packagequality.com/#?package=layotto)
+[![NPM download](https://img.shields.io/npm/dm/layotto.svg?style=flat-square)](https://npmjs.org/package/layotto)
+
+[![Node.js CI](https://github.com/layotto/js-sdk/actions/workflows/nodejs.yml/badge.svg)](https://github.com/layotto/js-sdk/actions/workflows/nodejs.yml)
+[![Test coverage](https://img.shields.io/codecov/c/github/layotto/js-sdk.svg?style=flat-square)](https://codecov.io/gh/layotto/js-sdk)
+[![Known Vulnerabilities](https://snyk.io/test/npm/layotto/badge.svg?style=flat-square)](https://snyk.io/test/npm/layotto)
+
 ## Usage
 
 ### State
