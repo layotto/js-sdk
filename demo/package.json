@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "koa": "^2.13.4",
-    "layotto": "^0.0.1"
+    "layotto": "*"
   }
 }
