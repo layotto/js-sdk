@@ -7,10 +7,12 @@
     "test:all": "npm run test:cjs && npm run test:esm && npm run test:ts",
     "test:cjs": "node ./state.js",
     "test:esm": "node ./state.mjs",
+    "test:lock": "node ./examples-lock/lock.js",
     "test:ts": "ts-node ./state.ts && ts-node ./configuration/subscribe.ts"
   },
   "dependencies": {
     "koa": "^2.13.4",
-    "layotto": "*"
+    "layotto": "*",
+    "node": "^18.4.0"
   }
 }

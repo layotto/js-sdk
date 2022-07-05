@@ -11,23 +11,31 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
-import { debuglog } from 'util';
-import { PubSubCallback } from '../types/PubSub';
-import GRPCServerImpl from './GRPCServerImpl';
+const { strict: assert } = require('assert');
+const { Client } = require('layotto');
 
-const debug = debuglog('layotto:server:pubsub');
+const client = new Client();
+assert(client);
 
-export default class PubSub {
-  readonly server: GRPCServerImpl;
-
-  constructor(server: GRPCServerImpl) {
-    this.server = server;
-  }
-  
-  async subscribe(pubsubName: string, topic: string, cb: PubSubCallback): Promise<void> {
-    debug('Registering onTopicEvent Handler: PubSub = %s, Topic = %s', pubsubName, topic);
-    this.server.registerPubSubSubscriptionHandler(pubsubName, topic, cb);
-  }
+async function main() {
+  const storeName = 'lock_demo';
+  const resourceId = "lock-demo";
+  const lockOwner = "demo";
+  const expire = 3000;
+  const lockResult = await client.lock.tryLock({
+    storeName,
+    resourceId,
+    lockOwner,
+    expire
+  });
+  console.log(lockResult)
+  const unLockResult = await client.lock.unLock({
+    storeName,
+    resourceId,
+    lockOwner
+  })
+  console.log(unLockResult)
 }
+
+main();

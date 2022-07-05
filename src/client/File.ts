@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { debuglog } from 'node:util';
+import { debuglog } from 'util';
 import { Transform, Readable } from 'stream';
 import { pipeline as pipelinePromise } from 'stream/promises';
 import { 
