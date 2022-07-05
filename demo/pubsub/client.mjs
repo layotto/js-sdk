@@ -5,7 +5,7 @@ const client = new Client();
 assert(client);
 
 async function main() {
-  const pubsubName = 'redis';
+  const pubsubName = 'pub_subs_demo';
   const topic = 'topic1';
   const value = `bar, from js-sdk, ${Date()}`;
 

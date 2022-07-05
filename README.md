@@ -83,7 +83,7 @@ git clone https://github.com/mosn/layotto.git
 cd layotto/cmd/layotto
 go build
 
-./layotto start -c ../../configs/config_integration_redis_etcd.json
+./layotto start -c ../../configs/config_redis.json
 ```
 
 ### step 2: Run the tests

@@ -5,7 +5,7 @@ const client = new Client();
 assert(client);
 
 async function main() {
-  const storeName = 'redis';
+  const storeName = 'state_demo';
   const key = 'foo-js-sdk';
   const value = `bar, from js-sdk, ${Date()}`;
 
