@@ -13,7 +13,7 @@
  * limitations under the License.
  *
  */
-import { debuglog } from 'util';
+import { debuglog } from 'node:util';
 import { PubSubCallback } from '../types/PubSub';
 import GRPCServerImpl from './GRPCServerImpl';
 

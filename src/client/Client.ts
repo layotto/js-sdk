@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { debuglog } from 'util';
+import { debuglog } from 'node:util';
 import { ChannelCredentials } from '@grpc/grpc-js';
 import { RuntimeClient } from '../../proto/runtime_grpc_pb';
 import State from './State';

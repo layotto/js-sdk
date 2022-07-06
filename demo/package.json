@@ -4,7 +4,7 @@
   "description": "Layotto Node.js SDK Demo",
   "private": true,
   "scripts": {
-    "test:all": "npm run test:cjs && npm run test:esm && npm run test:ts",
+    "test:all": "npm run test:lock && npm run test:cjs && npm run test:esm && npm run test:ts",
     "test:cjs": "node ./state.js",
     "test:esm": "node ./state.mjs",
     "test:lock": "node ./examples-lock/lock.js",
@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "koa": "^2.13.4",
-    "layotto": "*",
-    "node": "^18.4.0"
+    "layotto": "*"
   }
 }

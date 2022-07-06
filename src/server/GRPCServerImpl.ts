@@ -13,7 +13,7 @@
  * limitations under the License.
  *
  */
-import { debuglog } from 'util';
+import { debuglog } from 'node:util';
 import * as grpc from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { IAppCallbackServer } from '../../proto/appcallback_grpc_pb';
