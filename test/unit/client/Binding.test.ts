@@ -28,7 +28,7 @@ describe('client/Binding.test.ts', () => {
       data: '😄ok，你好',
       metadata: { token: '123' },
     });
-    assert.match(Buffer.from(res.data).toString(), /{"name":"layotto",/)
+    assert.match(Buffer.from(res.data).toString(), /mosn\.io\/layotto/)
     assert.equal(res.metadata.statusCode, '200');
   });
 });
