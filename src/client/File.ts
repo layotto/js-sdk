@@ -15,13 +15,13 @@
 import { debuglog } from 'node:util';
 import { Transform, Readable } from 'stream';
 import { pipeline as pipelinePromise } from 'stream/promises';
-import { 
+import {
   GetFileRequest as GetFileRequestPB,
   GetFileResponse as GetFileResponsePB,
   PutFileRequest as PutFileRequestPB,
   ListFileRequest as ListFileRequestPB,
   DelFileRequest as DelFileRequestPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { GetFileRequest, ListFileResponse, PutFileRequest } from '../types/File';
 
@@ -94,7 +94,7 @@ export default class File extends API {
         if (err) return reject(err);
         debug('listFile: %j, res: %j', request, res);
         resolve({
-          names: res.getFileNameList(),
+          names: res.getFilesList().map(t => t.getFileName()),
         });
       });
     });

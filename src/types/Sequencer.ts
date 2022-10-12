@@ -14,7 +14,7 @@
  */
 import {
   SequencerOptions as SequencerOptionsPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { KV, RequestWithMeta } from './common';
 
 export type SequencerOptions = {

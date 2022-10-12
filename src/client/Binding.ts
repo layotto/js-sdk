@@ -12,10 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { 
+import {
   InvokeBindingRequest as InvokeBindingRequestPB,
   InvokeBindingResponse as InvokeBindingResponsePB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import {
   InvokeBindingRequest,
@@ -31,11 +31,11 @@ export default class Binding extends API {
     if (typeof request.data === 'string') {
       req.setData(Buffer.from(request.data, 'utf8'));
     } else {
-      req.setData(request.data);
+      req.setData(request.data as Uint8Array);
     }
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
-    
-    return new Promise((resolve, reject) => {
+
+    return new Promise<InvokeBindingResponse>((resolve, reject) => {
       this.runtime.invokeBinding(req, this.createMetadata(request), (err, res: InvokeBindingResponsePB) => {
         if (err) return reject(err);
         resolve({

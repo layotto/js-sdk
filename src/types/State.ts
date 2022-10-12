@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 import { Except, SetOptional } from 'type-fest';
-import { 
+import {
   StateOptions as StateOptionsPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { KV, RequestWithMeta } from './common';
 
 export type StateConcurrency = StateOptionsPB.StateConcurrency;

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { HTTPExtension } from '../../proto/runtime_pb';
+import { HTTPExtension } from '../../proto/runtime/v1/runtime_pb';
 import { RequestWithMeta } from './common';
 
 export type InvokeServiceRequest = RequestWithMeta<{
