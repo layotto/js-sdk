@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16]
+        node-version: [16, 18]
         os: [ubuntu-latest]
 
     steps:
@@ -65,7 +65,9 @@ jobs:
       #   ./layotto start -c ./config.json &
       run: |
         cd layotto/cmd/layotto
-        go run . start -c ../../../demo/config.json &
+        go build
+        ./layotto start -c ../../../demo/config.json &
+        sleep 5
 
     - name: Install Dependencies
       run: npm i
