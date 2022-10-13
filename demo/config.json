@@ -34,16 +34,16 @@
                             "redisHost": "localhost:6379",
                             "redisPassword": ""
                           }
-                        },
-                        "redis": {
-                          "type": "redis",
-                          "metadata": {
-                            "redisHost": "localhost:6379",
-                            "redisPassword": ""
-                          }
                         }
                       },
                       "config_store": {
+                        "config_demo": {
+                          "type": "etcd",
+                          "address": [
+                            "127.0.0.1:2379"
+                          ],
+                          "timeout": "10"
+                        }
                       },
                       "sequencer": {
                         "sequencer_demo": {

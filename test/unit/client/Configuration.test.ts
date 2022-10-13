@@ -17,7 +17,7 @@ import { Client, utils } from '../../../src';
 
 describe('client/Configuration.test.ts', () => {
   let client: Client;
-  const storeName = 'etcd';
+  const storeName = 'config_demo';
   const appId = 'js-sdk-unittest';
   const key1 = `hello1-${Date.now()}`;
   const key2 = `hello2-${Date.now()}`;
