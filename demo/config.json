@@ -47,14 +47,14 @@
                         "config_demo": {
                           "type": "etcd",
                           "address": [
-                            "etcd:2380"
+                            "127.0.0.1:2380"
                           ],
                           "timeout": "10"
                         },
                         "etcd": {
                           "type": "etcd",
                           "address": [
-                            "etcd:2380"
+                            "127.0.0.1:2380"
                           ],
                           "timeout": "10"
                         }
@@ -63,14 +63,14 @@
                         "sequencer_demo": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "127.0.0.1:6380",
                             "redisPassword": ""
                           }
                         },
                         "etcd": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "127.0.0.1:6380",
                             "redisPassword": ""
                           }
                         }
