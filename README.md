@@ -10,6 +10,15 @@ The Layotto Node.js SDK to build your application.
 [![Test coverage](https://img.shields.io/codecov/c/github/layotto/js-sdk.svg?style=flat-square)](https://codecov.io/gh/layotto/js-sdk)
 [![Known Vulnerabilities](https://snyk.io/test/npm/layotto/badge.svg?style=flat-square)](https://snyk.io/test/npm/layotto)
 
+## Clone
+```shell
+git clone --recurse-submodules git@github.com:layotto/js-sdk.git
+```
+
+If forgot to add `--recurse-submodules`, you can run `git submodule update --init --recursive` to clone the submodules.
+
+More git submodule commands, please refer to [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+
 ## Usage
 
 ### State
@@ -48,7 +57,6 @@ Should install [grpc-tools](https://github.com/grpc/grpc-node) first.
 MacOS M1 follow [this issue](https://github.com/grpc/grpc-node/issues/1405).
 
 ```bash
-npm install grpc-tools
 npm run build:grpc
 ```
 

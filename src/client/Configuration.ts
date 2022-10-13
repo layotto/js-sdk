@@ -21,7 +21,7 @@ import {
   DeleteConfigurationRequest as DeleteConfigurationRequestPB,
   SubscribeConfigurationRequest as SubscribeConfigurationRequestPB,
   SubscribeConfigurationResponse as SubscribeConfigurationResponsePB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import {
   GetConfigurationRequest,
@@ -48,7 +48,7 @@ export default class Configuration extends API {
     }
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<GetConfigurationItem[]>((resolve, reject) => {
       this.runtime.getConfiguration(req, this.createMetadata(request), (err, res: GetConfigurationResponsePB) => {
         if (err) return reject(err);
         resolve(res.getItemsList().map(item => this.createGetConfigurationItem(item)));

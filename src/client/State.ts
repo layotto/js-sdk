@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { 
+import {
   SaveStateRequest as SaveStateRequestPB,
   StateItem as StateItemPB,
   Etag as EtagPB,
@@ -24,7 +24,7 @@ import {
   DeleteBulkStateRequest as DeleteBulkStateRequestPB,
   ExecuteStateTransactionRequest as ExecuteStateTransactionRequestPB,
   TransactionalStateOperation as TransactionalStateOperationPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import {
   DeleteBulkStateRequest,
@@ -96,16 +96,15 @@ export default class State extends API {
         const states: ResponseStateItem[] = [];
         const itemsList = res.getItemsList();
         for (const item of itemsList) {
-          // pb.message.array[0] is key, pb.message.array[1] is value
-          if (isEmptyPBMessage(item, 1)) {
-            continue;
+          const value = item.getData_asU8();
+          if (value && value.length > 0) {
+            states.push({
+              key: item.getKey(),
+              value: item.getData_asU8(),
+              etag: item.getEtag(),
+              metadata: convertMapToKVString(item.getMetadataMap()),
+            });
           }
-          states.push({
-            key: item.getKey(),
-            value: item.getData_asU8(),
-            etag: item.getEtag(),
-            metadata: convertMapToKVString(item.getMetadataMap()),
-          });
         }
         resolve(states);
       });
@@ -120,6 +119,10 @@ export default class State extends API {
     if (request.etag) {
       const etagInstance = new EtagPB();
       etagInstance.setValue(request.etag);
+      req.setEtag(etagInstance);
+    } else {
+      const etagInstance = new EtagPB();
+      etagInstance.setValue('0');
       req.setEtag(etagInstance);
     }
     if (request.options) {
@@ -189,6 +192,10 @@ export default class State extends API {
     if (item.etag !== undefined) {
       const etag = new EtagPB();
       etag.setValue(item.etag);
+      stateItem.setEtag(etag);
+    } else {
+      const etag = new EtagPB();
+      etag.setValue('0');
       stateItem.setEtag(etag);
     }
     if (item.options !== undefined) {

@@ -12,10 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { 
+import {
   SayHelloRequest as SayHelloRequestPB,
   SayHelloResponse as SayHelloResponsePB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { SayHelloRequest } from '../types/Hello';
 
@@ -25,7 +25,7 @@ export default class Hello extends API {
     if (!request) request = {};
     req.setServiceName(request.serviceName ?? 'helloworld');
     if (request.name) req.setName(request.name);
-    
+
     return new Promise((resolve, reject) => {
       this.runtime.sayHello(req, this.createMetadata(request as SayHelloRequest), (err, res: SayHelloResponsePB) => {
         if (err) return reject(err);

@@ -18,7 +18,7 @@ import {
   CommonInvokeRequest as CommonInvokeRequestPB,
   HTTPExtension,
   InvokeResponse as InvokeResponsePB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { InvokeServiceRequest, InvokeResponse } from '../types/Invoker';
 
@@ -44,8 +44,6 @@ export default class Invoker extends API {
       message.setData(dataSerialized);
     }
 
-    console.log(message);
-
     const req = new InvokeServiceRequestPB();
     req.setId(request.id);
     req.setMessage(message);
@@ -60,7 +58,7 @@ export default class Invoker extends API {
           if (rawData) {
             content = JSON.parse(Buffer.from(rawData.getValue_asU8()).toString());
           } else {
-            content = {}; 
+            content = {};
           }
         } else if (contentType === 'text/plain') {
           if (rawData) {

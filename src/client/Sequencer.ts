@@ -16,7 +16,7 @@ import {
   GetNextIdRequest as GetNextIdRequestPB,
   GetNextIdResponse as GetNextIdResponsePB,
   SequencerOptions as SequencerOptionsPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { GetNextIdRequest } from '../types/Sequencer';
 

@@ -18,7 +18,7 @@ import {
   TryLockResponse as TryLockResponsePB,
   UnlockRequest as UnlockRequestPB,
   UnlockResponse as UnlockResponsePB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { TryLockRequest, UnlockRequest } from '../types/Lock';
 
