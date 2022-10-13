@@ -79,6 +79,12 @@ docker pull quay.io/coreos/etcd
 docker run -itd -p 2379:2379 --name etcd quay.io/coreos/etcd /usr/local/bin/etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379
 ```
 
+- Start a echoserver for testing the rpc api
+
+```bash
+node demo/rpc/http/server.js
+```
+
 If you want to know more about this, check https://mosn.io/layotto/#/zh/start/rpc/helloworld
 
 - Start Layotto, see [How to run layotto](https://mosn.io/layotto/#/zh/start/state/start?id=%e7%ac%ac%e4%ba%8c%e6%ad%a5%ef%bc%9a%e8%bf%90%e8%a1%8clayotto)

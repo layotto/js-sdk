@@ -29,7 +29,7 @@ describe('client/Binding.test.ts', () => {
       metadata: { token: '123' },
     });
     // console.log(Buffer.from(res.data).toString());
-    assert.match(Buffer.from(res.data).toString(), /mosn\.io\/layotto/)
+    assert.equal(Buffer.from(res.data).toString(), 'Hello Koa')
     assert.equal(res.metadata.statusCode, '200');
   });
 });

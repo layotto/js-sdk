@@ -40,7 +40,7 @@
                         "config_demo": {
                           "type": "etcd",
                           "address": [
-                            "0.0.0.0:2379"
+                            "127.0.0.1:2379"
                           ],
                           "timeout": "10"
                         }
@@ -74,7 +74,7 @@
                         "http": {
                           "type": "http",
                           "metadata": {
-                            "url": "https://mosn.io/layotto"
+                            "url": "http://127.0.0.1:8889"
                           }
                         }
                       },

@@ -22,3 +22,4 @@ app.use(ctx => {
 });
 
 app.listen(8889);
+console.log('Started at http://127.0.0.1:8889');
