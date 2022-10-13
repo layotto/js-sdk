@@ -52,10 +52,11 @@ jobs:
 
     - name: Bootstrap layotto
       run: |
+        cd demo
         wget https://github.com/mosn/layotto/releases/download/v0.4.0/layotto.linux_amd64.zip
         unzip layotto.linux_amd64.zip
         chmod +x layotto
-        ./layotto start -c ./configs/config_redis.json &
+        ./layotto start -c ./config_redis.json &
 
     - name: Install Dependencies
       run: npm i
