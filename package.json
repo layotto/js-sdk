@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "contributor": "git-contributor",
-    "ci": "npm run lint && npm run build && npm run test:unit && npm run test:demo",
+    "ci": "npm run lint && npm run build && npm run test:unit",
     "test": "jest --runInBand --detectOpenHandles",
     "test:unit": "NODE_ENV=test npm run test 'test/unit/.*\\.test\\.ts'",
     "test:demo": "cd demo && npm run test:all",
