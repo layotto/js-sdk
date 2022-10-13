@@ -62,7 +62,7 @@ jobs:
         wget -q https://github.com/mosn/layotto/releases/download/v0.4.0/layotto.linux_amd64.zip
         unzip layotto.linux_amd64.zip
         chmod +x layotto
-        ./layotto start -c ./config.json &
+        ./layotto start -c ./config_with_config_store.json &
 
     - name: Install Dependencies
       run: npm i
