@@ -29,13 +29,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       etcd:
-        image: quay.io/coreos/etcd:v3.5.5
+        image: bitnami/etcd
+        env:
+          ALLOW_NONE_AUTHENTICATION: yes
         ports:
-          - 2379:2379
-        options: >-
-          /usr/local/bin/etcd
-          -advertise-client-urls http://0.0.0.0:2379
-          -listen-client-urls http://0.0.0.0:2379
+          - 2380:2379
 
     strategy:
       fail-fast: false
@@ -57,7 +55,7 @@ jobs:
         wget https://github.com/mosn/layotto/releases/download/v0.4.0/layotto.linux_amd64.zip
         unzip layotto.linux_amd64.zip
         chmod +x layotto
-        ./layotto start -c ./configs/config_redis.json
+        ./layotto start -c ./configs/config_redis.json &
 
     - name: Install Dependencies
       run: npm i
