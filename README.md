@@ -65,18 +65,10 @@ npm run build:grpc
 
 ### step 1. Set up the environment
 
-- Running redis under Docker
+- Running redis and etcd under Docker
 
 ```bash
-docker pull redis:latest
-docker run -itd --name redis-test -p 6380:6379 redis
-```
-
-- Running etcd under Docker
-
-```bash
-docker pull quay.io/coreos/etcd
-docker run -itd -p 2379:2379 --name etcd quay.io/coreos/etcd /usr/local/bin/etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379
+docker-compose up -d
 ```
 
 - Start a echoserver for testing the rpc api
