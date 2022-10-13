@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Koa = require('koa');
-const app = new Koa();
+const http = require('http');
 
-// response
-app.use(ctx => {
-  console.log('%s %s, headers: %j', ctx.method, ctx.url, ctx.headers);
-  ctx.body = 'Hello Koa';
+const hostname = '127.0.0.1';
+const port = 8889;
+
+const server = http.createServer((req, res) => {
+  console.log('%s %s, headers: %j', req.method, req.url, req.headers);
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
 });
 
-app.listen(8889);
-console.log('Started at http://127.0.0.1:8889');
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
