@@ -40,7 +40,7 @@
                         "config_demo": {
                           "type": "etcd",
                           "address": [
-                            "localhost:2379"
+                            "0.0.0.0:2379"
                           ],
                           "timeout": "10"
                         }
