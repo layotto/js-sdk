@@ -57,12 +57,15 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Bootstrap layotto
+      # run: |
+      #   cd demo
+      #   wget -q https://github.com/mosn/layotto/releases/download/v0.4.0/layotto.linux_amd64.zip
+      #   unzip layotto.linux_amd64.zip
+      #   chmod +x layotto
+      #   ./layotto start -c ./config.json &
       run: |
-        cd demo
-        wget -q https://github.com/mosn/layotto/releases/download/v0.4.0/layotto.linux_amd64.zip
-        unzip layotto.linux_amd64.zip
-        chmod +x layotto
-        ./layotto start -c ./config.json &
+        cd layotto/cmd/layotto
+        go run . start -c ../../../demo/config.json &
 
     - name: Install Dependencies
       run: npm i
