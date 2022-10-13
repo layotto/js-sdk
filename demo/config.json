@@ -31,14 +31,14 @@
                         "state_demo": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         },
                         "redis": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         }
@@ -49,14 +49,14 @@
                         "sequencer_demo": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         },
                         "etcd": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         }
@@ -65,14 +65,14 @@
                         "lock_demo": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         },
                         "redis": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         }
@@ -89,14 +89,14 @@
                         "pub_subs_demo": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         },
                         "redis": {
                           "type": "redis",
                           "metadata": {
-                            "redisHost": "redis:6380",
+                            "redisHost": "redis:6379",
                             "redisPassword": ""
                           }
                         }
