@@ -11,7 +11,8 @@ The Layotto Node.js SDK to build your application.
 [![Known Vulnerabilities](https://snyk.io/test/npm/layotto/badge.svg?style=flat-square)](https://snyk.io/test/npm/layotto)
 
 ## Clone
-```shell
+
+```bash
 git clone --recurse-submodules git@github.com:layotto/js-sdk.git
 ```
 
@@ -61,6 +62,7 @@ npm run build:grpc
 ```
 
 ### Run Tests
+
 ### step 1. Set up the environment
 
 - Running redis under Docker
@@ -78,23 +80,24 @@ docker run -itd -p 2379:2379 --name etcd quay.io/coreos/etcd /usr/local/bin/etcd
 ```
 
 - Start a echoserver for testing the rpc api
-```shell
-go run demo/rpc/http/echoserver/echoserver.go
+
+```bash
+node demo/rpc/http/server.js
 ```
 
-If you want to know more about this,check https://mosn.io/layotto/#/zh/start/rpc/helloworld
+If you want to know more about this, check https://mosn.io/layotto/#/zh/start/rpc/helloworld
 
 - Start Layotto, see [How to run layotto](https://mosn.io/layotto/#/zh/start/state/start?id=%e7%ac%ac%e4%ba%8c%e6%ad%a5%ef%bc%9a%e8%bf%90%e8%a1%8clayotto)
 
 ```bash
-git clone https://github.com/mosn/layotto.git
 cd layotto/cmd/layotto
 go build
 
-./layotto start -c ../../configs/config_redis.json
+./layotto start -c ../../../demo/config.json
 ```
 
 ### step 2: Run the tests
+
 - Then, run the test script by npm
 
 ```bash

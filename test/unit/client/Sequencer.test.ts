@@ -17,7 +17,7 @@ import { Client, RumtimeTypes } from '../../../src';
 
 describe('client/Sequencer.test.ts', () => {
   let client: Client;
-  const storeName = 'etcd';
+  const storeName = 'sequencer_demo';
 
   beforeAll(() => {
     client = new Client();

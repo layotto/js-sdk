@@ -18,7 +18,7 @@ import { StateOperation, StateOperationType } from '../../../src/types/State';
 
 describe('client/State.test.ts', () => {
   let client: Client;
-  const storeName = 'redis';
+  const storeName = 'state_demo';
 
   beforeAll(async () => {
     client = new Client();
