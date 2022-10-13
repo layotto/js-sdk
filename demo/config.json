@@ -52,13 +52,6 @@
                             "redisHost": "localhost:6379",
                             "redisPassword": ""
                           }
-                        },
-                        "etcd": {
-                          "type": "redis",
-                          "metadata": {
-                            "redisHost": "localhost:6379",
-                            "redisPassword": ""
-                          }
                         }
                       },
                       "lock": {

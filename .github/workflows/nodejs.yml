@@ -28,12 +28,15 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      # https://github.com/mosn/layotto/blob/main/docker/layotto-etcd/docker-compose.yml
       etcd:
         image: bitnami/etcd
         env:
           ALLOW_NONE_AUTHENTICATION: yes
+          ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
         ports:
           - 2379:2379
+          - 2380:2380
 
     strategy:
       fail-fast: false
