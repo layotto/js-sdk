@@ -72,7 +72,7 @@ export default class Configuration extends API {
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
     return new Promise((resolve, reject) => {
-      this.runtime.saveConfiguration(req, this.createMetadata(request), (err) => {
+      this.runtime.saveConfiguration(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });
@@ -90,7 +90,7 @@ export default class Configuration extends API {
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
     return new Promise((resolve, reject) => {
-      this.runtime.deleteConfiguration(req, this.createMetadata(request), (err) => {
+      this.runtime.deleteConfiguration(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });
@@ -117,7 +117,7 @@ export default class Configuration extends API {
       const items: GetConfigurationItem[] = res.getItemsList().map(item => this.createGetConfigurationItem(item));
       request.onData(items);
     });
-    call.on('error', (err) => {
+    call.on('error', err => {
       debug('error emit, isCloseOrEnd: %s, %s', isCloseOrEnd, err);
       lastError = err;
     });

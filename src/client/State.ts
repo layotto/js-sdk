@@ -44,7 +44,7 @@ export default class State extends API {
   async save(request: SaveStateRequest): Promise<void> {
     let states = request.states;
     if (!Array.isArray(states)) {
-      states = [states];
+      states = [ states ];
     }
     const stateList = this.createStateItemPBList(states);
     const req = new SaveStateRequestPB();
@@ -52,7 +52,7 @@ export default class State extends API {
     req.setStatesList(stateList);
 
     return new Promise((resolve, reject) => {
-      this.runtime.saveState(req, this.createMetadata(request), (err) => {
+      this.runtime.saveState(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });
@@ -134,7 +134,7 @@ export default class State extends API {
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
     return new Promise((resolve, reject) => {
-      this.runtime.deleteState(req, this.createMetadata(request), (err) => {
+      this.runtime.deleteState(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });
@@ -149,7 +149,7 @@ export default class State extends API {
     req.setStatesList(stateList);
 
     return new Promise((resolve, reject) => {
-      this.runtime.deleteBulkState(req, this.createMetadata(request), (err) => {
+      this.runtime.deleteBulkState(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });
