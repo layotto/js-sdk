@@ -1,0 +1,31 @@
+version: '3.6'
+services:
+  redis:
+    image: redis:6-alpine
+    # command: redis-server --appendonly yes --requirepass layotto-js-sdk
+    restart: always
+    volumes:
+      - layotto-js-sdk-redis:/data
+    ports:
+      - 6379:6379
+    networks:
+      - layotto-js-sdk
+
+  etcd:
+    image: quay.io/coreos/etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+    ports:
+      - 2379:2379
+      - 2380:2380
+    networks:
+      - layotto-js-sdk
+
+volumes:
+  layotto-js-sdk-redis:
+
+networks:
+  layotto-js-sdk:
+    driver: bridge
