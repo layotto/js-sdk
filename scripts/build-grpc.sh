@@ -20,11 +20,12 @@ ARCH=$(uname -m)
 PATH_ROOT=$(pwd)
 PATH_PROTO_ROOT="${PATH_ROOT}/layotto/spec/proto"
 PATH_PROTO_OUTPUT="${PATH_ROOT}/proto"
+PATH_PROTO_OUTPUT_RUNTIME_V1="${PATH_PROTO_OUTPUT}/runtime/v1"
 
 PROTO_FILES=(
-"runtime/v1/lifecycle.proto"
-"runtime/v1/runtime.proto"
-"runtime/v1/appcallback.proto"
+  "runtime/v1/lifecycle.proto"
+  "runtime/v1/runtime.proto"
+  "runtime/v1/appcallback.proto"
 )
 
 generateGrpc() {
@@ -48,6 +49,7 @@ generateGrpc() {
         --ts_out="grpc_js:$PATH_PROTO_OUTPUT" \
         --grpc_out="grpc_js:$PATH_PROTO_OUTPUT" \
         "$PATH_PROTO/$PATH_FILE"
+    cp "$PATH_PROTO/$PATH_FILE" "${PATH_PROTO_OUTPUT_RUNTIME_V1}/"
 }
 
 echo ""
@@ -59,9 +61,12 @@ echo ""
 echo "Compiling gRPC files"
 
 for proto_file in ${PROTO_FILES[@]}; do
-  echo "generate ${proto_file}"
+  echo "$ generateGrpc $PATH_PROTO_ROOT ${proto_file}"
   generateGrpc $PATH_PROTO_ROOT "${proto_file}"
 done
+
+echo "Gen commonjs package.json to ${PATH_PROTO_OUTPUT_RUNTIME_V1}/package.json"
+echo "{ \"type\": \"commonjs\" }" > "${PATH_PROTO_OUTPUT_RUNTIME_V1}/package.json"
 
 echo ""
 echo "DONE"

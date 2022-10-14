@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { describe, beforeAll, it } from 'vitest';
 import { strict as assert } from 'assert';
 import { Client } from '../../../src';
 import { StateOperation, StateOperationType } from '../../../src/types/State';
