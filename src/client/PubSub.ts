@@ -30,7 +30,7 @@ export default class PubSub extends API {
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
     return new Promise((resolve, reject) => {
-      this.runtime.publishEvent(req, this.createMetadata(request), (err) => {
+      this.runtime.publishEvent(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });

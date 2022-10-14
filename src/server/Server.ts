@@ -46,7 +46,7 @@ export default class Server {
 
   async close(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this._server.tryShutdown((err) => {
+      this._server.tryShutdown(err => {
         if (err) return reject(err);
         debug('Closed Server');
         resolve();
@@ -63,6 +63,6 @@ export default class Server {
         debug('Listening on 127.0.0.1:%s', port);
         resolve();
       });
-    })
+    });
   }
 }

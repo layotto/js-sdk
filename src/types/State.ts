@@ -31,7 +31,7 @@ export type StateItem = {
   value: Uint8Array | string;
   etag: string;
   options: StateOptions;
-}
+};
 
 // etag and options is optional on Save State Request
 export type SaveStateItem = SetOptional<StateItem, 'etag' | 'options'>;
@@ -42,7 +42,7 @@ export type ResponseStateItem = {
   value: Uint8Array;
   etag: string;
   metadata: KV<string>;
-}
+};
 
 export enum StateOperationType {
   Upsert = 'upsert',
