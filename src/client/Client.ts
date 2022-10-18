@@ -24,6 +24,8 @@ import Configuration from './Configuration';
 import PubSub from './PubSub';
 import File from './File';
 import Binding from './Binding';
+import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
+import Oss from './Oss';
 
 const debug = debuglog('layotto:client:main');
 
@@ -31,6 +33,7 @@ export default class Client {
   readonly host: string;
   readonly port: string;
   private _runtime: RuntimeClient;
+  private _ossClient: ObjectStorageServiceClient;
   private _hello: Hello;
   private _state: State;
   private _invoker: Invoker;
@@ -40,6 +43,7 @@ export default class Client {
   private _pubsub: PubSub;
   private _file: File;
   private _binding: Binding;
+  private _oss: Oss;
 
   constructor(port: string = process.env.runtime_GRPC_PORT ?? '34904',
               host: string = process.env.runtime_GRPC_HOST ?? '127.0.0.1') {
@@ -48,6 +52,7 @@ export default class Client {
     const clientCredentials = ChannelCredentials.createInsecure();
     this._runtime = new RuntimeClient(`${this.host}:${this.port}`, clientCredentials);
     debug('Start connection to %s:%s', this.host, this.port);
+    this._ossClient = new ObjectStorageServiceClient(`${this.host}:${this.port}`, clientCredentials);
   }
 
   get hello() {
@@ -93,5 +98,10 @@ export default class Client {
   get binding() {
     if (!this._binding) this._binding = new Binding(this._runtime);
     return this._binding;
+  }
+
+  get oss() {
+    if (!this._oss) this._oss = new Oss(this._ossClient);
+    return this._oss;
   }
 }
