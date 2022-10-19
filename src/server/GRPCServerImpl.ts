@@ -16,13 +16,13 @@
 import { debuglog } from 'node:util';
 import * as grpc from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { IAppCallbackServer } from '../../proto/appcallback_grpc_pb';
+import { IAppCallbackServer } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import {
   ListTopicSubscriptionsResponse,
   TopicSubscription,
   TopicEventRequest,
   TopicEventResponse,
-} from '../../proto/appcallback_pb';
+} from '../../proto/runtime/v1/appcallback_pb';
 import { PubSubCallback } from '../types/PubSub';
 
 const debug = debuglog('layotto:server:grpc');
@@ -48,17 +48,17 @@ export default class GRPCServerImpl implements IAppCallbackServer {
   }
 
   async onTopicEvent(call: grpc.ServerUnaryCall<TopicEventRequest, TopicEventResponse>,
-      callback: grpc.sendUnaryData<TopicEventResponse>): Promise<void> {
+    callback: grpc.sendUnaryData<TopicEventResponse>): Promise<void> {
     const req = call.request;
     const res = new TopicEventResponse();
     const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), req.getTopic());
-    
+
     const handler = this._handlersTopics[handlerKey];
     if (!handler) {
-        debug('PubSub Event from topic: "%s" was not handled, drop now', handlerKey);
-        // FIXME: should retry?
-        res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
-        return callback(null, res);
+      debug('PubSub Event from topic: "%s" was not handled, drop now', handlerKey);
+      // FIXME: should retry?
+      res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
+      return callback(null, res);
     }
 
     // https://mosn.io/layotto/#/zh/design/pubsub/pubsub-api-and-compability-with-dapr-component
@@ -71,7 +71,7 @@ export default class GRPCServerImpl implements IAppCallbackServer {
     } catch {
       data = rawData;
     }
-    
+
     try {
       await handler(data);
       res.setStatus(TopicEventResponse.TopicEventResponseStatus.SUCCESS);
@@ -85,7 +85,7 @@ export default class GRPCServerImpl implements IAppCallbackServer {
   }
 
   async listTopicSubscriptions(_call: grpc.ServerUnaryCall<Empty, ListTopicSubscriptionsResponse>,
-      callback: grpc.sendUnaryData<ListTopicSubscriptionsResponse>): Promise<void> {
+    callback: grpc.sendUnaryData<ListTopicSubscriptionsResponse>): Promise<void> {
     const res = new ListTopicSubscriptionsResponse();
     const subscriptionsList = Object.keys(this._handlersTopics).map(key => {
       const splits = key.split('|');

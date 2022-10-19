@@ -33,4 +33,4 @@ export function convertArrayToKVString(items: [string, string][]) {
     kv[item[0]] = item[1];
   }
   return kv;
-};
+}

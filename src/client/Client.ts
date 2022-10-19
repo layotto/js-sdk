@@ -14,7 +14,7 @@
  */
 import { debuglog } from 'node:util';
 import { ChannelCredentials } from '@grpc/grpc-js';
-import { RuntimeClient } from '../../proto/runtime_grpc_pb';
+import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
 import State from './State';
 import Hello from './Hello';
 import Invoker from './Invoker';
@@ -47,7 +47,7 @@ export default class Client {
     this.port = port;
     const clientCredentials = ChannelCredentials.createInsecure();
     this._runtime = new RuntimeClient(`${this.host}:${this.port}`, clientCredentials);
-    debug('Start connection to %s:%s', this.host, this.port);    
+    debug('Start connection to %s:%s', this.host, this.port);
   }
 
   get hello() {

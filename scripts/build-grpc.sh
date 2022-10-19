@@ -18,21 +18,15 @@ ARCH=$(uname -m)
 # Proto buf generation
 # https://medium.com/blokur/how-to-implement-a-grpc-client-and-server-in-typescript-fa3ac807855e
 PATH_ROOT=$(pwd)
-PATH_PROTO_ROOT="${PATH_ROOT}/../../spec/proto/runtime/v1"
+PATH_PROTO_ROOT="${PATH_ROOT}/layotto/spec/proto"
 PATH_PROTO_OUTPUT="${PATH_ROOT}/proto"
+PATH_PROTO_OUTPUT_RUNTIME_V1="${PATH_ROOT}/proto/runtime/v1"
 
-prerequisiteCheckProtobuf() {
-    if ! type "protoc" > /dev/null; then
-        echo "protoc is not installed, trying to install"
-        sudo apt update
-        sudo apt install -y protobuf-compiler
-        protoc --version
-
-        prerequisiteCheckProtobuf
-    else
-        echo "protoc ($(protoc --version)) installed"
-    fi
-}
+PROTO_FILES=(
+  "runtime/v1/lifecycle.proto"
+  "runtime/v1/runtime.proto"
+  "runtime/v1/appcallback.proto"
+)
 
 generateGrpc() {
     PATH_PROTO=$1
@@ -47,7 +41,7 @@ generateGrpc() {
     PROTOC_GEN_GRPC_PATH="${PATH_ROOT}/node_modules/.bin/grpc_tools_node_protoc_plugin"
 
     # commonjs
-    protoc \
+    grpc_tools_node_protoc \
         --proto_path="${PATH_PROTO}" \
         --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
         --plugin=protoc-gen-grpc=${PROTOC_GEN_GRPC_PATH} \
@@ -55,10 +49,8 @@ generateGrpc() {
         --ts_out="grpc_js:$PATH_PROTO_OUTPUT" \
         --grpc_out="grpc_js:$PATH_PROTO_OUTPUT" \
         "$PATH_PROTO/$PATH_FILE"
+    cp "$PATH_PROTO/$PATH_FILE" "${PATH_PROTO_OUTPUT_RUNTIME_V1}/"
 }
-
-echo "Checking Dependencies"
-prerequisiteCheckProtobuf
 
 echo ""
 echo "Removing old Proto Files: ${PATH_PROTO_OUTPUT}"
@@ -67,8 +59,11 @@ mkdir -p $PATH_PROTO_OUTPUT
 
 echo ""
 echo "Compiling gRPC files"
-generateGrpc $PATH_PROTO_ROOT "runtime.proto"
-generateGrpc $PATH_PROTO_ROOT "appcallback.proto"
+
+for proto_file in ${PROTO_FILES[@]}; do
+  echo "generate ${proto_file}"
+  generateGrpc $PATH_PROTO_ROOT "${proto_file}"
+done
 
 echo ""
 echo "DONE"

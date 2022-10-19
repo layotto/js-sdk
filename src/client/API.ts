@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { Metadata } from '@grpc/grpc-js';
-import { RuntimeClient } from '../../proto/runtime_grpc_pb';
+import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
 import { KV, RequestWithMeta, Map } from '../types/common';
 
 export class API {

@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 import { Except, SetOptional } from 'type-fest';
-import { 
+import {
   StateOptions as StateOptionsPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { KV, RequestWithMeta } from './common';
 
 export type StateConcurrency = StateOptionsPB.StateConcurrency;
@@ -31,7 +31,7 @@ export type StateItem = {
   value: Uint8Array | string;
   etag: string;
   options: StateOptions;
-}
+};
 
 // etag and options is optional on Save State Request
 export type SaveStateItem = SetOptional<StateItem, 'etag' | 'options'>;
@@ -42,7 +42,7 @@ export type ResponseStateItem = {
   value: Uint8Array;
   etag: string;
   metadata: KV<string>;
-}
+};
 
 export enum StateOperationType {
   Upsert = 'upsert',

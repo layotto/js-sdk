@@ -18,24 +18,60 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      # https://github.com/mosn/layotto/blob/main/docker/layotto-etcd/docker-compose.yml
+      etcd:
+        image: bitnami/etcd
+        env:
+          ALLOW_NONE_AUTHENTICATION: yes
+          ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
+          ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+        ports:
+          - 2379:2379
+          - 2380:2380
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16]
-        os: [ubuntu-latest, macos-latest]
+        node-version: [16, 18]
+        os: [ubuntu-latest]
 
     steps:
     - name: Checkout Git Source
       uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Bootstrap layotto
+      # run: |
+      #   cd demo
+      #   wget -q https://github.com/mosn/layotto/releases/download/v0.4.0/layotto.linux_amd64.zip
+      #   unzip layotto.linux_amd64.zip
+      #   chmod +x layotto
+      #   ./layotto start -c ./config.json &
+      run: |
+        node demo/rpc/http/server.js &
+        cd layotto/cmd/layotto
+        time go build
+        ./layotto start -c ../../../demo/config.json &
+        sleep 5
+
     - name: Install Dependencies
-      run: npm i -g npminstall && npminstall
+      run: npm i
 
     - name: Continuous Integration
       run: npm run ci

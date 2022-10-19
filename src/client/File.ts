@@ -15,13 +15,13 @@
 import { debuglog } from 'node:util';
 import { Transform, Readable } from 'stream';
 import { pipeline as pipelinePromise } from 'stream/promises';
-import { 
+import {
   GetFileRequest as GetFileRequestPB,
   GetFileResponse as GetFileResponsePB,
   PutFileRequest as PutFileRequestPB,
   ListFileRequest as ListFileRequestPB,
   DelFileRequest as DelFileRequestPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { GetFileRequest, ListFileResponse, PutFileRequest } from '../types/File';
 
@@ -41,11 +41,11 @@ export default class File extends API {
       transform(res: GetFileResponsePB, _, done) {
         const data = res.getData_asU8();
         done(null, data);
-      }
+      },
     });
     const callStream = this.runtime.getFile(req, this.createMetadata(request));
     // Make sure callStream error handle by converter
-    callStream.on('error', (err) => converter.emit('error', err));
+    callStream.on('error', err => converter.emit('error', err));
     return callStream.pipe(converter);
   }
 
@@ -54,7 +54,7 @@ export default class File extends API {
 
     const ac = new AbortController();
     const signal = ac.signal;
-    const writeStream = this.runtime.putFile(this.createMetadata(request), (err) => {
+    const writeStream: any = this.runtime.putFile(this.createMetadata(request), err => {
       if (err) {
         debug('putFile %j got server error: %s', request, err);
         // abort request and throw error
@@ -73,9 +73,8 @@ export default class File extends API {
           req.setData(chunk);
           this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
           done(null, req);
-        }
+        },
       }),
-      // @ts-ignore
       writeStream,
       { signal },
     );
@@ -94,7 +93,7 @@ export default class File extends API {
         if (err) return reject(err);
         debug('listFile: %j, res: %j', request, res);
         resolve({
-          names: res.getFileNameList(),
+          names: res.getFilesList().map(t => t.getFileName()),
         });
       });
     });
@@ -108,7 +107,7 @@ export default class File extends API {
     delReq.setRequest(req);
 
     return new Promise((resolve, reject) => {
-      this.runtime.delFile(delReq, this.createMetadata(request), (err) => {
+      this.runtime.delFile(delReq, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });

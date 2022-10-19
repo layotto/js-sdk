@@ -14,7 +14,7 @@
  */
 import { debuglog } from 'node:util';
 import { ServerCredentials, Server as GRPCServer } from '@grpc/grpc-js';
-import { AppCallbackService } from '../../proto/appcallback_grpc_pb';
+import { AppCallbackService } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import GRPCServerImpl from './GRPCServerImpl';
 import PubSub from './PubSub';
 import { sleep } from '../utils';
@@ -46,7 +46,7 @@ export default class Server {
 
   async close(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this._server.tryShutdown((err) => {
+      this._server.tryShutdown(err => {
         if (err) return reject(err);
         debug('Closed Server');
         resolve();
@@ -63,6 +63,6 @@ export default class Server {
         debug('Listening on 127.0.0.1:%s', port);
         resolve();
       });
-    })
+    });
   }
 }

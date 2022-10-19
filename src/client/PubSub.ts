@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { 
+import {
   PublishEventRequest as PublishEventRequestPB,
-} from '../../proto/runtime_pb';
+} from '../../proto/runtime/v1/runtime_pb';
 import { API } from './API';
 import { PublishEventRequest } from '../types/PubSub';
 
@@ -30,7 +30,7 @@ export default class PubSub extends API {
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
     return new Promise((resolve, reject) => {
-      this.runtime.publishEvent(req, this.createMetadata(request), (err) => {
+      this.runtime.publishEvent(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });

@@ -1,17 +1,17 @@
 {
   "name": "layotto",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Layotto Node.js SDK",
   "main": "dist/index.js",
   "files": [
+    "src",
     "dist",
-    "proto",
-    "package.json",
-    "README.md"
+    "proto"
   ],
   "scripts": {
-    "ci": "npm run lint && npm run build && npm run test:unit && npm run test:demo",
-    "test": "jest --runInBand --detectOpenHandles",
+    "contributor": "git-contributor",
+    "ci": "npm run lint && npm run build && npm run test:unit",
+    "test": "jest --detectOpenHandles",
     "test:unit": "NODE_ENV=test npm run test 'test/unit/.*\\.test\\.ts'",
     "test:demo": "cd demo && npm run test:all",
     "test:lock": "cd demo && npm run test:lock",
@@ -19,9 +19,11 @@
     "build:grpc": "scripts/build-grpc.sh",
     "tsc:clean": "rm -rf dist",
     "tsc:cjs": "tsc -p tsconfig.json",
-    "build": "npm run tsc:clean && npm run tsc:cjs",
+    "tsc:check": "tsc -p tsconfig.json --noEmit",
+    "build": "npm run tsc:clean && npm run build:grpc && npm run tsc:cjs",
     "rename:cjs": "for f in cjs/*.js; do mv -- \"$f\" \"${f/.js/.cjs}\"; done",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "npm run build:grpc"
   },
   "repository": {
     "type": "git",
@@ -41,7 +43,8 @@
     "@eggjs/tsconfig": "^1.0.0",
     "@types/google-protobuf": "^3.15.5",
     "@types/jest": "^27.0.2",
-    "egg-ci": "^1.19.0",
+    "git-contributor": "^1.1.0",
+    "grpc-tools": "^1.11.3",
     "grpc_tools_node_protoc_ts": "^5.3.2",
     "jest": "^27.2.5",
     "ts-jest": "^27.0.7",
@@ -57,12 +60,5 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  },
-  "ci": {
-    "version": "16",
-    "type": "github",
-    "os": {
-      "github": "linux, macos"
-    }
   }
 }

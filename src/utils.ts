@@ -44,14 +44,14 @@ export async function sleep(ms: number) {
 //   convertedPrimitiveFields_: {}
 // }
 export function isEmptyPBMessage(item, emptyLength = 0) {
-  if (item.array.length === emptyLength) return true;
+  if (!item.array || item.array.length === emptyLength) return true;
   return false;
 }
 
 export function convertMapToKVString(map: MapPB<string, string>) {
   const kv: KV<string> = {};
-  for (const [k, v] of map.entries()) {
+  for (const [ k, v ] of map.entries()) {
     kv[k] = v;
   }
   return kv;
-};
+}

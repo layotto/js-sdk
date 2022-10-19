@@ -18,7 +18,7 @@ import { StateOperation, StateOperationType } from '../../../src/types/State';
 
 describe('client/State.test.ts', () => {
   let client: Client;
-  const storeName = 'redis';
+  const storeName = 'state_demo';
 
   beforeAll(async () => {
     client = new Client();
@@ -48,7 +48,7 @@ describe('client/State.test.ts', () => {
     it('should get empty value', async () => {
       const key = 'js-sdk-unit-empty-' + Date.now();
       await client.state.save({
-        storeName, 
+        storeName,
         states: {
           key,
           value: '',
@@ -65,23 +65,23 @@ describe('client/State.test.ts', () => {
       const key = 'js-sdk-unit-' + Date.now();
       const value = `hello js-sdk, with 中文, 😄, at ${Date()}`;
       await client.state.save({
-        storeName, 
+        storeName,
         states: { key, value },
         requestMeta: { traceid: `mock-traceid-unittest-${Date.now()}` },
       });
       const state = await client.state.get({ storeName, key });
       assert(state);
       assert.equal(Buffer.from(state.value).toString(), value);
-  
+
       await client.state.save({
-        storeName, 
+        storeName,
         states: { key, value },
       });
       const state2 = await client.state.get({ storeName, key });
       assert(state2);
       assert.equal(Buffer.from(state2.value).toString(), value);
     });
-  
+
     it('should save bulk items and get them success', async () => {
       const items: { key: string, value: string }[] = [];
       for (let i = 0; i < 20; i++) {
@@ -90,16 +90,16 @@ describe('client/State.test.ts', () => {
         items.push({ key, value });
       }
       await client.state.save({
-        storeName, 
+        storeName,
         states: items,
       });
-  
+
       for (const { key, value } of items) {
         const state = await client.state.get({ storeName, key });
         assert(state);
         assert.equal(Buffer.from(state.value).toString(), value);
       }
-  
+
       const keys = items.map(i => i.key);
       const states = await client.state.getBulk({ storeName, keys });
       assert.equal(states.length, items.length);
@@ -146,14 +146,14 @@ describe('client/State.test.ts', () => {
       // delete not exists
       await client.state.deleteBulk({ storeName, states: keys });
       let states = await client.state.getBulk({
-        storeName, 
+        storeName,
         keys: keys.map(i => i.key),
       });
       assert.equal(states.length, 0);
 
       await client.state.save({ storeName, states: items });
       states = await client.state.getBulk({
-        storeName, 
+        storeName,
         keys: keys.map(i => i.key),
       });
       assert.equal(states.length, 20);
@@ -162,7 +162,7 @@ describe('client/State.test.ts', () => {
       await client.state.deleteBulk({ storeName, states: keys.slice(0, 5) });
 
       states = await client.state.getBulk({
-        storeName, 
+        storeName,
         keys: keys.map(i => i.key),
       });
       assert.equal(states.length, 15);
@@ -171,7 +171,7 @@ describe('client/State.test.ts', () => {
       await client.state.deleteBulk({ storeName, states: keys });
 
       states = await client.state.getBulk({
-        storeName, 
+        storeName,
         keys: keys.map(i => i.key),
       });
       assert.equal(states.length, 0);

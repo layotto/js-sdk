@@ -17,7 +17,7 @@ import { Client, RumtimeTypes } from '../../../src';
 
 describe('client/Sequencer.test.ts', () => {
   let client: Client;
-  const storeName = 'etcd';
+  const storeName = 'sequencer_demo';
 
   beforeAll(() => {
     client = new Client();
@@ -30,7 +30,7 @@ describe('client/Sequencer.test.ts', () => {
     for (let i = 0; i < 20; i++) {
       lastId = currentId;
       currentId = await client.sequencer.getNextId({
-        storeName, 
+        storeName,
         key: 'user_info',
       });
       assert(BigInt(currentId) > BigInt(lastId));
@@ -47,7 +47,7 @@ describe('client/Sequencer.test.ts', () => {
     for (let i = 0; i < 20; i++) {
       lastId = currentId;
       currentId = await client.sequencer.getNextId({
-        storeName, 
+        storeName,
         key: 'user_info',
         options: {
           increment: RumtimeTypes.SequencerOptions.AutoIncrement.WEAK,
