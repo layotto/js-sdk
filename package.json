@@ -14,6 +14,7 @@
     "test": "jest --runInBand --detectOpenHandles",
     "test:unit": "NODE_ENV=test npm run test 'test/unit/.*\\.test\\.ts'",
     "test:demo": "cd demo && npm run test:all",
+    "test:lock": "cd demo && npm run test:lock",
     "lint": "tslint -p tsconfig.json",
     "build:grpc": "scripts/build-grpc.sh",
     "tsc:clean": "rm -rf dist",
