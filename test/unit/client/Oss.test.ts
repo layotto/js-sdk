@@ -4,9 +4,8 @@ import { Readable } from 'stream';
 import crypto from 'crypto';
 
 describe.skip('client/Oss.test.ts', () => {
-  let client: Client;
+  const client = new Client('34901', '127.0.0.1', { ossEnable: true });
   it('test put object', async () => {
-    client = new Client();
     const hello = await client.oss.put({
       storeName: 'oss_demo',
       bucket: 'antsys-tnpmbuild',
@@ -28,7 +27,6 @@ describe.skip('client/Oss.test.ts', () => {
   });
 
   it('test put large object', async () => {
-    client = new Client();
     const buf = new Array(1024);
     buf.fill(Buffer.alloc(1024).fill('a'))
     const hash = crypto.createHash('md5');
@@ -59,7 +57,6 @@ describe.skip('client/Oss.test.ts', () => {
   });
 
   it('test copy object', async () => {
-    client = new Client();
     await client.oss.put({
       storeName: 'oss_demo',
       bucket: 'antsys-tnpmbuild',
@@ -92,7 +89,6 @@ describe.skip('client/Oss.test.ts', () => {
   });
 
   it('test delete object', async () => {
-    client = new Client();
     await client.oss.put({
       storeName: 'oss_demo',
       bucket: 'antsys-tnpmbuild',
@@ -115,7 +111,6 @@ describe.skip('client/Oss.test.ts', () => {
   });
 
   it('test list object', async () => {
-    client = new Client();
     const res = await client.oss.list({
       storeName: 'oss_demo',
       bucket: 'antsys-tnpmbuild',
