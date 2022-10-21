@@ -1,4 +1,17 @@
 
+1.1.0 / 2022-10-21
+==================
+
+**features**
+  * [[`910e976`](http://github.com/layotto/js-sdk/commit/910e976f78c8176d1b9b0a22fff82dfa1aac5bcd)] - feat: impl oss (#11) (killa <<killa123@126.com>>)
+  * [[`6b7cdb5`](http://github.com/layotto/js-sdk/commit/6b7cdb557152d287900d9804d68ec742f124e181)] - 👌 IMPROVE: Keep raw proto file on build (#10) (fengmk2 <<fengmk2@gmail.com>>)
+
+**others**
+  * [[`464667e`](http://github.com/layotto/js-sdk/commit/464667e48f661f62cfa40693bd746fe3201c1e8a)] - 🤖 TEST: Use docker-compose (#8) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`07c9b26`](http://github.com/layotto/js-sdk/commit/07c9b26e0abf7adc0243124084d3b8669990d377)] - 🤖 TEST: Allow run unittest on local (#7) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`787405b`](http://github.com/layotto/js-sdk/commit/787405b5fc0f496530d6b1a8686028eb7c6745e6)] - Create codeql.yml (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`659503c`](http://github.com/layotto/js-sdk/commit/659503c76a060523e1e82c34a106814990c90897)] - 🤖 TEST: Remove egg-ci (fengmk2 <<fengmk2@gmail.com>>)
+
 1.0.0 / 2022-10-13
 ==================
 
