@@ -23,9 +23,14 @@ PATH_PROTO_OUTPUT="${PATH_ROOT}/proto"
 PATH_PROTO_OUTPUT_RUNTIME_V1="${PATH_ROOT}/proto/runtime/v1"
 
 PROTO_FILES=(
-  "runtime/v1/lifecycle.proto"
-  "runtime/v1/runtime.proto"
-  "runtime/v1/appcallback.proto"
+"runtime/v1/lifecycle.proto"
+"runtime/v1/runtime.proto"
+"runtime/v1/appcallback.proto"
+"extension/v1/cryption/cryption.proto"
+"extension/v1/s3/oss.proto"
+"extension/v1/delay_queue/delay_queue.proto"
+"extension/v1/phone/phone.proto"
+"extension/v1/email/email.proto"
 )
 
 generateGrpc() {
