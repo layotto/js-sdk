@@ -22,7 +22,7 @@
     "build": "npm run tsc:clean && npm run build:grpc && npm run tsc:cjs",
     "rename:cjs": "for f in cjs/*.js; do mv -- \"$f\" \"${f/.js/.cjs}\"; done",
     "prepublishOnly": "npm run build",
-    "postinstall": "npm run build:grpc"
+    "init": "npm run build:grpc"
   },
   "repository": {
     "type": "git",
