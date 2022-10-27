@@ -1,4 +1,10 @@
 
+1.1.1 / 2022-10-27
+==================
+
+**fixes**
+  * [[`089b6b3`](http://github.com/layotto/js-sdk/commit/089b6b3f35893ac3a9151d81619f3c35620159ae)] - fix: add contentLength for PutObjectRequest(#14) (killa <<killa123@126.com>>)
+
 1.1.0 / 2022-10-21
 ==================
 
