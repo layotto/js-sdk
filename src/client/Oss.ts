@@ -40,6 +40,7 @@ export default class Oss {
       req.setStoreName(request.storeName);
       req.setBucket(request.bucket);
       req.setKey(request.key);
+      req.setContentLength(request.contentLength);
       if (request.acl) {
         req.setAcl(request.acl);
       }

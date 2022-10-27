@@ -6,6 +6,7 @@ export type PutObjectRequest = RequestWithMeta<{
   storeName: string;
   bucket: string;
   body: Readable;
+  contentLength: number;
   key: string;
   acl?: string;
   bucketKeyEnabled?: boolean;
