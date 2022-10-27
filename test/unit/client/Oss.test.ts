@@ -11,6 +11,7 @@ describe.skip('client/Oss.test.ts', () => {
       bucket: 'antsys-tnpmbuild',
       key: 'test.txt',
       body: Readable.from(Buffer.from('hello world')),
+      contentLength: 11,
     });
     assert(hello);
     const res = await client.oss.get({
@@ -41,6 +42,7 @@ describe.skip('client/Oss.test.ts', () => {
       bucket: 'antsys-tnpmbuild',
       key: 'test_large_object.txt',
       body: Readable.from(buf),
+      contentLength: buf.length,
     });
 
     const res = await client.oss.get({
@@ -62,6 +64,7 @@ describe.skip('client/Oss.test.ts', () => {
       bucket: 'antsys-tnpmbuild',
       key: 'test_copy.txt',
       body: Readable.from(Buffer.from('hello world')),
+      contentLength: 11,
     });
     const copyRes = await client.oss.copy({
       storeName: 'oss_demo',
@@ -94,6 +97,7 @@ describe.skip('client/Oss.test.ts', () => {
       bucket: 'antsys-tnpmbuild',
       key: 'test_delete.txt',
       body: Readable.from(Buffer.from('hello world')),
+      contentLength: 11,
     });
     const deleteRes = await client.oss.delete({
       storeName: 'oss_demo',
