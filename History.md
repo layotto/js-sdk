@@ -1,4 +1,10 @@
 
+1.1.2 / 2022-10-28
+==================
+
+**fixes**
+  * [[`7bd7fab`](http://github.com/layotto/js-sdk/commit/7bd7fabef4c92d70d798e51f3372b51a235e121b)] - fix: should set request meta first (#15) (killa <<killa123@126.com>>)
+
 1.1.1 / 2022-10-27
 ==================
 
