@@ -200,7 +200,7 @@ export default class Oss {
       req.setMetadataDirective(request.metadataDirective);
     }
     return new Promise((resolve, reject) => {
-      this.ossClient.copyObject(req, (err, response) => {
+      this.ossClient.copyObject(req, this.createMetadata(request), (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -254,7 +254,7 @@ export default class Oss {
       req.setWithDetails(request.withDetails);
     }
     return new Promise((resolve, reject) => {
-      this.ossClient.headObject(req, (err, response) => {
+      this.ossClient.headObject(req, this.createMetadata(request), (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -276,7 +276,7 @@ export default class Oss {
     }
 
     return new Promise((resolve, reject) => {
-      this.ossClient.deleteObject(req, (err, response) => {
+      this.ossClient.deleteObject(req, this.createMetadata(request), (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -311,7 +311,7 @@ export default class Oss {
       req.setRequestPayer(request.requestPayer);
     }
     return new Promise((resolve, reject) => {
-      this.ossClient.listObjects(req, (err, response) => {
+      this.ossClient.listObjects(req, this.createMetadata(request), (err, response) => {
         if (err) {
           return reject(err);
         }
