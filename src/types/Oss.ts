@@ -110,3 +110,12 @@ export type HeadObjectRequest = RequestWithMeta<{
   versionId?: string;
   withDetails?: boolean;
 }>;
+
+
+export type SignUrlRequest = RequestWithMeta<{
+  storeName: string;
+  bucket: string;
+  key: string;
+  method: string;
+  expiredInSec: number;
+}>;

@@ -1,16 +1,30 @@
 import {
-  CopyObjectRequest, DeleteObjectRequest,
+  CopyObjectRequest,
+  DeleteObjectRequest,
   GetObjectRequest,
-  GetObjectResponse, HeadObjectRequest, ListObjectsRequest,
+  GetObjectResponse,
+  HeadObjectRequest,
+  ListObjectsRequest,
   PutObjectRequest,
-  PutObjectResponse
+  PutObjectResponse,
+  SignUrlRequest,
 } from '../types/Oss';
 import {
-  CopyObjectInput, CopyObjectOutput,
-  CopySource, DeleteObjectInput, DeleteObjectOutput,
+  CopyObjectInput,
+  CopyObjectOutput,
+  CopySource,
+  DeleteObjectInput,
+  DeleteObjectOutput,
   GetObjectInput,
-  GetObjectOutput, HeadObjectInput, HeadObjectOutput, ListObjectsInput, ListObjectsOutput,
-  PutObjectInput, PutObjectOutput
+  GetObjectOutput,
+  HeadObjectInput,
+  HeadObjectOutput,
+  ListObjectsInput,
+  ListObjectsOutput,
+  PutObjectInput,
+  PutObjectOutput,
+  SignURLInput,
+  SignURLOutput,
 } from '../../proto/extension/v1/s3/oss_pb';
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
 import { RequestWithMeta } from '../types/common';
@@ -312,6 +326,23 @@ export default class Oss {
     }
     return new Promise((resolve, reject) => {
       this.ossClient.listObjects(req, this.createMetadata(request), (err, response) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(response!.toObject());
+      });
+    })
+  }
+
+  async signUrl(request: SignUrlRequest): Promise<SignURLOutput.AsObject> {
+    const req = new SignURLInput();
+    req.setStoreName(request.storeName);
+    req.setBucket(request.bucket);
+    req.setKey(request.key);
+    req.setMethod(request.method);
+    req.setExpiredInSec(request.expiredInSec);
+    return new Promise((resolve, reject) => {
+      this.ossClient.signURL(req, this.createMetadata(request), (err, response) => {
         if (err) {
           return reject(err);
         }
