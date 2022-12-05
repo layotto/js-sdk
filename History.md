@@ -1,4 +1,10 @@
 
+1.2.0 / 2022-12-05
+==================
+
+**features**
+  * [[`664222f`](http://github.com/layotto/js-sdk/commit/664222fe4c5f5affd8c6186f8fdc918770d4c38a)] - feat: impl sign url (#16) (killa <<killa123@126.com>>)
+
 1.1.2 / 2022-10-28
 ==================
 
