@@ -33,18 +33,18 @@ describe.skip('server/PubSub.test.ts', () => {
 
   it('should subscribe a topic work', async () => {
     let lastData;
-    server.pubsub.subscribe('redis', topic1, async (data) => {
+    server.pubsub.subscribe('redis', topic1, async data => {
       console.log('topic event data: %j', data);
       lastData = data;
     });
-    
+
     const cmd = `ts-node ${process.cwd()}/test/unit/server/publishClient.ts`;
     const buf = execSync(cmd);
     console.log(cmd, buf.toString());
-    
+
     for (let i = 0; i < 20; i++) {
       await utils.sleep(1000);
-      if (lastData) break; 
+      if (lastData) break;
     }
     assert(lastData);
   }, 20000);

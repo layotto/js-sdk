@@ -29,7 +29,7 @@ describe('client/Binding.test.ts', () => {
       metadata: { token: '123' },
     });
     // console.log(Buffer.from(res.data).toString());
-    assert.equal(Buffer.from(res.data).toString(), 'Hello World')
+    assert.equal(Buffer.from(res.data).toString(), 'Hello World');
     assert.equal(res.metadata.statusCode, '200');
   });
 });

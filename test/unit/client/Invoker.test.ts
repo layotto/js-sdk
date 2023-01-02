@@ -26,7 +26,7 @@ describe.skip('client/Invoker.test.ts', () => {
   describe('invoke()', () => {
     it('should invoke HelloService:1.0 with text success', async () => {
       const state = await client.invoker.invoke({
-        id: 'HelloService:1.0', 
+        id: 'HelloService:1.0',
         method: '/hello',
         data: 'hello runtime with js-sdk',
       });
@@ -35,9 +35,9 @@ describe.skip('client/Invoker.test.ts', () => {
 
     it('should invoke HelloService:1.0 with json success', async () => {
       const state = await client.invoker.invoke({
-        id: 'HelloService:1.0', 
-        method: '/hello', 
-        httpVerb: RumtimeTypes.HTTPExtension.Verb.POST, 
+        id: 'HelloService:1.0',
+        method: '/hello',
+        httpVerb: RumtimeTypes.HTTPExtension.Verb.POST,
         data: {
           'hello runtime': 'I am js-sdk client',
         },
@@ -47,12 +47,12 @@ describe.skip('client/Invoker.test.ts', () => {
 
     it.skip('should invoke rpc success', async () => {
       const res = await client.invoker.invoke({
-        id: 'com.alipay.rpc.common.service.facade.SampleService:1.0', 
+        id: 'com.alipay.rpc.common.service.facade.SampleService:1.0',
         method: 'echoStr',
         // contentType: 'json',
         data: {
-          signatures: ['java.lang.String'],
-          arguments: ['abc'],
+          signatures: [ 'java.lang.String' ],
+          arguments: [ 'abc' ],
         },
         requestMeta: {
           content_type: 'json',

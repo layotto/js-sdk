@@ -122,67 +122,67 @@ export default class Oss {
     req.setBucket(request.bucket);
     req.setKey(request.key);
     if (request.expectedBucketOwner) {
-      req.setExpectedBucketOwner(request.expectedBucketOwner)
+      req.setExpectedBucketOwner(request.expectedBucketOwner);
     }
     if (request.ifMatch) {
-      req.setIfMatch(request.ifMatch)
+      req.setIfMatch(request.ifMatch);
     }
     if (request.ifModifiedSince) {
-      req.setIfModifiedSince(request.ifModifiedSince)
+      req.setIfModifiedSince(request.ifModifiedSince);
     }
     if (request.ifNoneMatch) {
-      req.setIfNoneMatch(request.ifNoneMatch)
+      req.setIfNoneMatch(request.ifNoneMatch);
     }
     if (request.ifUnmodifiedSince) {
-      req.setIfUnmodifiedSince(request.ifUnmodifiedSince)
+      req.setIfUnmodifiedSince(request.ifUnmodifiedSince);
     }
     if (request.partNumber) {
-      req.setPartNumber(request.partNumber)
+      req.setPartNumber(request.partNumber);
     }
     if (request.start) {
-      req.setStart(request.start)
+      req.setStart(request.start);
     }
     if (request.end) {
-      req.setEnd(request.end)
+      req.setEnd(request.end);
     }
     if (request.requestPayer) {
-      req.setRequestPayer(request.requestPayer)
+      req.setRequestPayer(request.requestPayer);
     }
     if (request.responseCacheControl) {
-      req.setResponseCacheControl(request.responseCacheControl)
+      req.setResponseCacheControl(request.responseCacheControl);
     }
     if (request.responseContentDisposition) {
-      req.setResponseContentDisposition(request.responseContentDisposition)
+      req.setResponseContentDisposition(request.responseContentDisposition);
     }
     if (request.responseContentEncoding) {
-      req.setResponseContentEncoding(request.responseContentEncoding)
+      req.setResponseContentEncoding(request.responseContentEncoding);
     }
     if (request.responseContentLanguage) {
-      req.setResponseContentLanguage(request.responseContentLanguage)
+      req.setResponseContentLanguage(request.responseContentLanguage);
     }
     if (request.responseContentType) {
-      req.setResponseContentType(request.responseContentType)
+      req.setResponseContentType(request.responseContentType);
     }
     if (request.responseExpires) {
-      req.setResponseExpires(request.responseExpires)
+      req.setResponseExpires(request.responseExpires);
     }
     if (request.sseCustomerAlgorithm) {
-      req.setSseCustomerAlgorithm(request.sseCustomerAlgorithm)
+      req.setSseCustomerAlgorithm(request.sseCustomerAlgorithm);
     }
     if (request.sseCustomerKey) {
-      req.setSseCustomerKey(request.sseCustomerKey)
+      req.setSseCustomerKey(request.sseCustomerKey);
     }
     if (request.sseCustomerKeyMd5) {
-      req.setSseCustomerKeyMd5(request.sseCustomerKeyMd5)
+      req.setSseCustomerKeyMd5(request.sseCustomerKeyMd5);
     }
     if (request.versionId) {
-      req.setVersionId(request.versionId)
+      req.setVersionId(request.versionId);
     }
     if (request.acceptEncoding) {
-      req.setAcceptEncoding(request.acceptEncoding)
+      req.setAcceptEncoding(request.acceptEncoding);
     }
     if (request.signedUrl) {
-      req.setSignedUrl(request.signedUrl)
+      req.setSignedUrl(request.signedUrl);
     }
     const callStream = this.ossClient.getObject(req, this.createMetadata(request));
     const getObjectIterator = this.getObjectIterator(callStream);
@@ -331,7 +331,7 @@ export default class Oss {
         }
         return resolve(response!.toObject());
       });
-    })
+    });
   }
 
   async signUrl(request: SignUrlRequest): Promise<SignURLOutput.AsObject> {
@@ -348,6 +348,6 @@ export default class Oss {
         }
         return resolve(response!.toObject());
       });
-    })
+    });
   }
 }

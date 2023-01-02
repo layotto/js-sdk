@@ -27,6 +27,7 @@ import { PubSubCallback } from '../types/PubSub';
 
 const debug = debuglog('layotto:server:grpc');
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export default class GRPCServerImpl implements IAppCallbackServer {
   private readonly _handlersTopics: { [key: string]: PubSubCallback };

@@ -172,7 +172,7 @@ export default class State extends API {
     this.mergeMetadataToMap(req.getMetadataMap(), request.metadata);
 
     return new Promise((resolve, reject) => {
-      this.runtime.executeStateTransaction(req, this.createMetadata(request), (err, _res) => {
+      this.runtime.executeStateTransaction(req, this.createMetadata(request), err => {
         if (err) return reject(err);
         resolve();
       });
