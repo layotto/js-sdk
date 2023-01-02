@@ -35,7 +35,7 @@ describe('client/State.test.ts', () => {
           assert.equal(err.code, 3);
           assert.equal(err.details, 'state store notexists-store is not found');
           return true;
-        }
+        },
       );
     });
 

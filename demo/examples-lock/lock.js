@@ -20,22 +20,22 @@ assert(client);
 
 async function main() {
   const storeName = 'lock_demo';
-  const resourceId = "lock-demo";
-  const lockOwner = "demo";
+  const resourceId = 'lock-demo';
+  const lockOwner = 'demo';
   const expire = 3000;
   const lockResult = await client.lock.tryLock({
     storeName,
     resourceId,
     lockOwner,
-    expire
+    expire,
   });
-  console.log(lockResult)
+  console.log(lockResult);
   const unLockResult = await client.lock.unLock({
     storeName,
     resourceId,
-    lockOwner
-  })
-  console.log(unLockResult)
+    lockOwner,
+  });
+  console.log(unLockResult);
 }
 
 main();

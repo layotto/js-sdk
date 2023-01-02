@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert'
+import { strict as assert } from 'assert';
 import { Client } from 'layotto';
 
 const client = new Client();
@@ -24,10 +24,10 @@ async function main() {
   const value = `bar, from js-sdk, ${Date()}`;
 
   await client.state.save({
-    storeName, 
+    storeName,
     states: [
       { key, value },
-    ], 
+    ],
     requestMeta: { traceid: 'mock-tracerid-123123' },
   });
   console.log('saveState success, key: %j, value: %j', key, value);

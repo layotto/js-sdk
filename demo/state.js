@@ -10,7 +10,7 @@ async function main() {
   const value = `bar, from js-sdk, ${Date()}`;
 
   await client.state.save({
-    storeName, 
+    storeName,
     states: [
       { key, value },
     ],

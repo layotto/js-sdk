@@ -29,7 +29,7 @@ describe.skip('client/Oss.test.ts', () => {
 
   it('test put large object', async () => {
     const buf = new Array(1024);
-    buf.fill(Buffer.alloc(1024).fill('a'))
+    buf.fill(Buffer.alloc(1024).fill('a'));
     const hash = crypto.createHash('md5');
     for (const chunk of buf) {
       hash.update(chunk);

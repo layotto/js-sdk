@@ -30,7 +30,7 @@ describe('client/Configuration.test.ts', () => {
     let configs = await client.configuration.get({
       storeName,
       appId,
-      keys: [key1, key2],
+      keys: [ key1, key2 ],
     });
     assert.equal(configs.length, 0);
     // save success
@@ -53,7 +53,7 @@ describe('client/Configuration.test.ts', () => {
     configs = await client.configuration.get({
       storeName,
       appId,
-      keys: [key1, key2],
+      keys: [ key1, key2 ],
     });
     assert.equal(configs.length, 2);
     assert.equal(configs[0].key, key1);
@@ -65,12 +65,12 @@ describe('client/Configuration.test.ts', () => {
     await client.configuration.delete({
       storeName,
       appId,
-      keys: [key1, key2],
+      keys: [ key1, key2 ],
     });
     configs = await client.configuration.get({
       storeName,
       appId,
-      keys: [key1, key2],
+      keys: [ key1, key2 ],
     });
     assert.equal(configs.length, 0);
   });
@@ -93,15 +93,15 @@ describe('client/Configuration.test.ts', () => {
     const configs = await client.configuration.get({
       storeName,
       appId,
-      keys: [key1, key2],
+      keys: [ key1, key2 ],
     });
     assert.equal(configs.length, 2);
 
-    let lastConfig = {};
+    const lastConfig = {};
     const call = client.configuration.subscribe({
       storeName,
       appId,
-      keys: [key1, key2],
+      keys: [ key1, key2 ],
       onData(items) {
         // console.log('get items', items);
         for (const item of items) {

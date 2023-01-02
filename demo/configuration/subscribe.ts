@@ -38,13 +38,13 @@ async function main() {
   const call = client.configuration.subscribe({
     storeName: 'etcd',
     appId: 'js-sdk-demo',
-    keys: ['hello'],
+    keys: [ 'hello' ],
     onData(items) {
       console.log('get items: %j', items);
     },
     onClose(err) {
       console.error('close with error: %s', err);
-    }
+    },
   });
   await utils.sleep(100);
 

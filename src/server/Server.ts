@@ -33,6 +33,7 @@ export default class Server {
     this.pubsub = new PubSub(this._serverImpl);
 
     this._server = new GRPCServer();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this._server.addService(AppCallbackService, this._serverImpl);
     debug('AppCallbackService start and listen on port:%s', this.port);

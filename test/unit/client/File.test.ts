@@ -92,8 +92,8 @@ describe.skip('client/File.test.ts', () => {
           assert.equal(err.code, 3);
           assert.equal(err.details, 'not supported store type: notexists');
           return true;
-        }
-      )
+        },
+      );
     });
   });
 
@@ -192,7 +192,7 @@ describe.skip('client/File.test.ts', () => {
           assert.equal(err.code, 13);
           assert.match(err.message, /StatusCode=404, ErrorCode=NoSuchKey/);
           return true;
-        }
+        },
       );
     }, 10000);
   });
