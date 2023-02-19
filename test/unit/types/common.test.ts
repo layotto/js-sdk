@@ -13,24 +13,16 @@
  * limitations under the License.
  */
 
-import { Simplify } from 'type-fest';
+//import layotto package
+const layotto = require('../../../src/types/common');
+const assert = require('assert');
 
-export type KV<Type> = {
-  [key: string]: Type;
-};
-
-export type RequestWithMeta<T> = Simplify<T & {
-  requestMeta?: KV<string>;
-}>;
-
-export type Map<Type> = {
-  set(k: Type, v: Type): unknown;
-};
-
-export function convertArrayToKVString(items: [string, string][]) {
-  const kv: KV<string> = {};
-  for (const [key, value] of items) {
-    kv[key] = value;
-  }
-  return kv;
-}
+describe('test layotto', function() {
+  it('test layotto.convertArrayToKVString', function(done) {
+      const items = [["1", "a"], ["2", "b"]];
+      const kv = layotto.convertArrayToKVString(items);
+      assert.equal(kv["1"], "a");
+      assert.equal(kv["2"], "b");
+      done();
+  })
+});

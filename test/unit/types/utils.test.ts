@@ -13,24 +13,18 @@
  * limitations under the License.
  */
 
-import { Simplify } from 'type-fest';
+// import convertMapToKVString for test
+const layotto = require('../../../src/utils');
+const assert = require('assert');
 
-export type KV<Type> = {
-  [key: string]: Type;
-};
-
-export type RequestWithMeta<T> = Simplify<T & {
-  requestMeta?: KV<string>;
-}>;
-
-export type Map<Type> = {
-  set(k: Type, v: Type): unknown;
-};
-
-export function convertArrayToKVString(items: [string, string][]) {
-  const kv: KV<string> = {};
-  for (const [key, value] of items) {
-    kv[key] = value;
-  }
-  return kv;
-}
+describe('test convertMapToKVString', function () {
+  it('test layotto.convertMapToKVString', function (done) {
+    let map = new Map();
+    map.set("key1", "value1");
+    map.set("key2", "value2");
+    let kv = layotto.convertMapToKVString(map);
+    assert.equal(kv["key1"], "value1");
+    assert.equal(kv["key2"], "value2");
+    done();
+  });
+});
