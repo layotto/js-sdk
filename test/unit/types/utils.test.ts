@@ -18,6 +18,7 @@ const { convertMapToKVString } = require('../../../src/utils');
 const assert = require('assert');
 
 describe('test convertMapToKVString', function () {
+  // using copilot lab
   it('test utils.convertMapToKVString', function (done) {
     let map = new Map();
     map.set("key1", "value1");
@@ -27,6 +28,7 @@ describe('test convertMapToKVString', function () {
     assert.equal(kv["key2"], "value2");
     done();
   });
+  // using copilot. I write the prompt
   it('when invoke convertMapToKVString with null,then the function should throw error', function (done) {
     let map = null;
     assert.throws(() => {
@@ -35,6 +37,7 @@ describe('test convertMapToKVString', function () {
     done();
 
   });
+  // using chatgpt
   it('should return an empty object for an empty map', () => {
     const map = new Map<string, string>();
     const kv = convertMapToKVString(map);
