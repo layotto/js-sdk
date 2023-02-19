@@ -14,15 +14,15 @@
  */
 
 // import convertMapToKVString for test
-const layotto = require('../../../src/utils');
+const utils = require('../../../src/utils');
 const assert = require('assert');
 
 describe('test convertMapToKVString', function () {
-  it('test layotto.convertMapToKVString', function (done) {
+  it('test utils.convertMapToKVString', function (done) {
     let map = new Map();
     map.set("key1", "value1");
     map.set("key2", "value2");
-    let kv = layotto.convertMapToKVString(map);
+    let kv = utils.convertMapToKVString(map);
     assert.equal(kv["key1"], "value1");
     assert.equal(kv["key2"], "value2");
     done();

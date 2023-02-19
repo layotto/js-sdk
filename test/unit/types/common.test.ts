@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-//import layotto package
-const layotto = require('../../../src/types/common');
+const common = require('../../../src/types/common');
 const assert = require('assert');
 
-describe('test layotto', function() {
-  it('test layotto.convertArrayToKVString', function(done) {
+describe('test convertArrayToKVString', function() {
+  it('test common.convertArrayToKVString', function(done) {
       const items = [["1", "a"], ["2", "b"]];
-      const kv = layotto.convertArrayToKVString(items);
+      const kv = common.convertArrayToKVString(items);
       assert.equal(kv["1"], "a");
       assert.equal(kv["2"], "b");
       done();
