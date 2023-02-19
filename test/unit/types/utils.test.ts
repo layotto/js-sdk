@@ -14,7 +14,7 @@
  */
 
 // import convertMapToKVString for test
-const utils = require('../../../src/utils');
+const { convertMapToKVString } = require('../../../src/utils');
 const assert = require('assert');
 
 describe('test convertMapToKVString', function () {
@@ -22,7 +22,7 @@ describe('test convertMapToKVString', function () {
     let map = new Map();
     map.set("key1", "value1");
     map.set("key2", "value2");
-    let kv = utils.convertMapToKVString(map);
+    let kv = convertMapToKVString(map);
     assert.equal(kv["key1"], "value1");
     assert.equal(kv["key2"], "value2");
     done();
@@ -30,9 +30,32 @@ describe('test convertMapToKVString', function () {
   it('when invoke convertMapToKVString with null,then the function should throw error', function (done) {
     let map = null;
     assert.throws(() => {
-      utils.convertMapToKVString(map);
+      convertMapToKVString(map);
     }, Error);
     done();
 
+  });
+  it('should return an empty object for an empty map', () => {
+    const map = new Map<string, string>();
+    const kv = convertMapToKVString(map);
+    expect(kv).toEqual({});
+  });
+
+  it('should convert a single key-value pair correctly', () => {
+    const map = new Map<string, string>([['key1', 'value1']]);
+    const kv = convertMapToKVString(map);
+    expect(kv).toEqual({ 'key1': 'value1' });
+  });
+
+  it('should convert multiple key-value pairs correctly', () => {
+    const map = new Map<string, string>([['key1', 'value1'], ['key2', 'value2']]);
+    const kv = convertMapToKVString(map);
+    expect(kv).toEqual({ 'key1': 'value1', 'key2': 'value2' });
+  });
+
+  it('should overwrite duplicate keys with the last value', () => {
+    const map = new Map<string, string>([['key1', 'value1'], ['key1', 'value2']]);
+    const kv = convertMapToKVString(map);
+    expect(kv).toEqual({ 'key1': 'value2' });
   });
 });
