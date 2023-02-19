@@ -27,4 +27,12 @@ describe('test convertMapToKVString', function () {
     assert.equal(kv["key2"], "value2");
     done();
   });
+  it('when invoke convertMapToKVString with null,then the function should throw error', function (done) {
+    let map = null;
+    assert.throws(() => {
+      utils.convertMapToKVString(map);
+    }, Error);
+    done();
+
+  });
 });
