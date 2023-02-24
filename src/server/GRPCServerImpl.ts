@@ -34,12 +34,12 @@ export default class GRPCServerImpl implements IAppCallbackServer {
   constructor() {
     this._handlersTopics = {};
   }
-
-  private createPubSubHandlerKey(pubsubName: string, topic: string): string {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private createPubSubHandlerKey(pubsubName: string, topic: string, _eventCode?: string): string {
     return `${pubsubName}|${topic}`.toLowerCase();
   }
-
-  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, _metadata: Record<string, string> = {}, callback: PubSubCallback): void {
     const handlerKey = this.createPubSubHandlerKey(pubsubName, topic);
     if (this._handlersTopics[handlerKey]) {
       throw new Error(`Topic: "${handlerKey}" handler was exists`);
