@@ -33,7 +33,7 @@ describe.skip('server/PubSub.test.ts', () => {
 
   it('should subscribe a topic work', async () => {
     let lastData;
-    server.pubsub.subscribe('redis', topic1, {}, async data => {
+    server.pubsub.subscribe('redis', topic1, async data => {
       console.log('topic event data: %j', data);
       lastData = data;
     });
