@@ -19,7 +19,7 @@ const client = new Client();
 assert(client);
 
 async function main() {
-  const pubsubName = 'sofamq';
+  const pubsubName = 'redis';
   const topic = 'TP_GO_DEMO';
   const value = `bar, from js-sdk, ${Date()}`;
   await client.pubsub.publish({

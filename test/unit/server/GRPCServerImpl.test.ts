@@ -18,7 +18,7 @@ import { Server, Client, utils } from '../../../src';
 import GRPCServerImpl from './GRPCServerImpl';
 
 const pubsubConfig = {
-  sofamq: {
+  redis: {
     subs: [
       {
         // topic 必填字段
