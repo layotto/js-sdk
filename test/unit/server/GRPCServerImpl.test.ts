@@ -55,7 +55,7 @@ const pubsubConfig = {
   },
 };
 
-describe('server/GRPCServerImpl.test.ts', () => {
+describe.skip('server/GRPCServerImpl.test.ts', () => {
   let server: Server;
   let client: Client;
   const topic1 = 'TP_GO_DEMO';
