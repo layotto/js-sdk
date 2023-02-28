@@ -55,10 +55,10 @@ const pubsubConfig = {
   },
 };
 
-describe.skip('server/GRPCServerImpl.test.ts', () => {
+describe('server/GRPCServerImpl.test.ts', () => {
   let server: Server;
   let client: Client;
-  const topic1 = 'topic1';
+  const topic1 = 'TP_GO_DEMO';
   beforeAll(async () => {
     client = new Client();
     await client.hello.sayHello();
@@ -73,12 +73,16 @@ describe.skip('server/GRPCServerImpl.test.ts', () => {
 
   it('should subscribe a topic work', async () => {
     let lastData;
+    const metadata = {
+      GROUP_ID: 'GID_GO_DEMO',
+      EVENTCODE: 'EC_GNU_TEST',
+    };
     server.pubsub.subscribe('redis', topic1, async data => {
       console.log('topic event data: %j', data);
       lastData = data;
-    });
+    }, metadata);
 
-    const cmd = `ts-node ${process.cwd()}/test/unit/server/publishClient.ts`;
+    const cmd = `ts-node ${process.cwd()}/test/unit/server/publishSofamqClient.ts`;
     const buf = execSync(cmd);
     console.log(cmd, buf.toString());
 
