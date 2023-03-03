@@ -35,12 +35,15 @@ export default class GRPCServerImpl implements IAppCallbackServer {
     this._handlersTopics = {};
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private createPubSubHandlerKey(pubsubName: string, topic: string, _eventCode?: string): string {
+  private createPubSubHandlerKey(pubsubName: string, topic: string, eventCode?: string): string {
+    if (eventCode) {
+      return `${pubsubName}|${topic}|${eventCode}`.toLowerCase();
+    }
     return `${pubsubName}|${topic}`.toLowerCase();
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, _metadata?: Record<string, string>): void {
-    const handlerKey = this.createPubSubHandlerKey(pubsubName, topic);
+  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, metadata?: Record<string, string>): void {
+    const handlerKey = this.createPubSubHandlerKey(pubsubName, topic, metadata?.EVENTCODE);
     if (this._handlersTopics[handlerKey]) {
       throw new Error(`Topic: "${handlerKey}" handler was exists`);
     }
@@ -52,7 +55,8 @@ export default class GRPCServerImpl implements IAppCallbackServer {
     callback: grpc.sendUnaryData<TopicEventResponse>): Promise<void> {
     const req = call.request;
     const res = new TopicEventResponse();
-    const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), req.getTopic());
+    const eventCode = req.getMetadataMap().get('EVENTCODE');
+    const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), req.getTopic(), eventCode);
 
     const handler = this._handlersTopics[handlerKey];
     if (!handler) {
