@@ -27,9 +27,10 @@ export default class Server {
   private readonly _serverImpl: GRPCServerImpl;
   private readonly _server: GRPCServer;
 
-  constructor(port: string = process.env.appcallback_GRPC_PORT ?? '9999') {
+  constructor(port: string = process.env.appcallback_GRPC_PORT ?? '9999', GRPCServerInstance?: any) {
     this.port = port;
-    this._serverImpl = new GRPCServerImpl();
+    // 支持自定义实现 GRPCServerImpl
+    this._serverImpl = GRPCServerInstance || new GRPCServerImpl();
     this.pubsub = new PubSub(this._serverImpl);
 
     this._server = new GRPCServer();
