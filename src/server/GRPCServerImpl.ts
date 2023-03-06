@@ -31,29 +31,18 @@ const debug = debuglog('layotto:server:grpc');
 // @ts-ignore
 export default class GRPCServerImpl implements IAppCallbackServer {
   private readonly _handlersTopics: { [key: string]: PubSubCallback };
-  private readonly _handlersMetadata: { [key: string]: Record<string, string> };
   constructor() {
     this._handlersTopics = {};
-    this._handlersMetadata = {};
   }
-  private createPubSubHandlerKey(pubsubName: string, topic: string, eventCode?: string): string {
-    if (eventCode) {
-      return `${pubsubName}|${topic}|${eventCode}`.toLowerCase();
-    }
+  private createPubSubHandlerKey(pubsubName: string, topic: string, _eventCode?: string): string {
     return `${pubsubName}|${topic}`.toLowerCase();
   }
-  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, metadata?: Record<string, string>): void {
-    const handlerKey = this.createPubSubHandlerKey(pubsubName, topic, metadata?.EVENTCODE);
+  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, _metadata?: Record<string, string>): void {
+    const handlerKey = this.createPubSubHandlerKey(pubsubName, topic);
     if (this._handlersTopics[handlerKey]) {
       throw new Error(`Topic: "${handlerKey}" handler was exists`);
     }
     this._handlersTopics[handlerKey] = callback;
-    if (metadata) {
-      if (this._handlersMetadata[handlerKey]) {
-        throw new Error(`Topic: "${handlerKey}" metadata was exists`);
-      }
-      this._handlersMetadata[handlerKey] = metadata;
-    }
     debug('PubSub Event from topic: "%s" is registered', handlerKey);
   }
 
@@ -61,8 +50,7 @@ export default class GRPCServerImpl implements IAppCallbackServer {
     callback: grpc.sendUnaryData<TopicEventResponse>): Promise<void> {
     const req = call.request;
     const res = new TopicEventResponse();
-    const eventCode = req.getMetadataMap().get('EVENTCODE');
-    const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), req.getTopic(), eventCode);
+    const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), req.getTopic());
 
     const handler = this._handlersTopics[handlerKey];
     if (!handler) {
@@ -103,12 +91,6 @@ export default class GRPCServerImpl implements IAppCallbackServer {
       const sub = new TopicSubscription();
       sub.setPubsubName(splits[0]);
       sub.setTopic(splits[1]);
-      if (this._handlersMetadata[key]) {
-        const metadata = this._handlersMetadata[key];
-        Object.keys(metadata).forEach(k => {
-          sub.getMetadataMap().set(k, metadata[k]);
-        });
-      }
       return sub;
     });
     debug('listTopicSubscriptions call: %j', subscriptionsList);
