@@ -31,8 +31,10 @@ const debug = debuglog('layotto:server:grpc');
 // @ts-ignore
 export default class GRPCServerImpl implements IAppCallbackServer {
   private readonly _handlersTopics: { [key: string]: PubSubCallback };
+  private readonly _handlersMetadata: { [key: string]: Record<string, string> };
   constructor() {
     this._handlersTopics = {};
+    this._handlersMetadata = {};
   }
   private createPubSubHandlerKey(pubsubName: string, topic: string, eventCode?: string): string {
     if (eventCode) {
@@ -46,6 +48,12 @@ export default class GRPCServerImpl implements IAppCallbackServer {
       throw new Error(`Topic: "${handlerKey}" handler was exists`);
     }
     this._handlersTopics[handlerKey] = callback;
+    if (metadata) {
+      if (this._handlersMetadata[handlerKey]) {
+        throw new Error(`Topic: "${handlerKey}" metadata was exists`);
+      }
+      this._handlersMetadata[handlerKey] = metadata;
+    }
     debug('PubSub Event from topic: "%s" is registered', handlerKey);
   }
 
@@ -95,8 +103,11 @@ export default class GRPCServerImpl implements IAppCallbackServer {
       const sub = new TopicSubscription();
       sub.setPubsubName(splits[0]);
       sub.setTopic(splits[1]);
-      if (splits[2]) {
-        sub.getMetadataMap().set('EVENTCODE', splits[2]);
+      if (this._handlersMetadata[key]) {
+        const metadata = this._handlersMetadata[key];
+        Object.keys(metadata).forEach(k => {
+          sub.getMetadataMap().set(k, metadata[k]);
+        });
       }
       return sub;
     });
