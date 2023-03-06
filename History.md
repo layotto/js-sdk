@@ -1,4 +1,14 @@
 
+1.3.0 / 2023-03-06
+==================
+
+**features**
+  * [[`ae1e1f2`](http://github.com/layotto/js-sdk/commit/ae1e1f2b477f7fc5a6880ab141d3a9e3f52ca1af)] - feat: pubsub subscribe support metadata (#19) (羊鹿 <<general_up@163.com>>)
+
+**others**
+  * [[`f6f5b40`](http://github.com/layotto/js-sdk/commit/f6f5b409ce4208eefe2782ce4d22aa5e684f0187)] - test: use eslint (#17) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`a8fac9b`](http://github.com/layotto/js-sdk/commit/a8fac9b4496d056681cd47979b4011185d0d0a23)] - chore: update layotto (fengmk2 <<fengmk2@gmail.com>>)
+
 1.2.0 / 2022-12-05
 ==================
 
