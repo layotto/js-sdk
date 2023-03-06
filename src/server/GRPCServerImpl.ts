@@ -34,14 +34,12 @@ export default class GRPCServerImpl implements IAppCallbackServer {
   constructor() {
     this._handlersTopics = {};
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private createPubSubHandlerKey(pubsubName: string, topic: string, eventCode?: string): string {
     if (eventCode) {
       return `${pubsubName}|${topic}|${eventCode}`.toLowerCase();
     }
     return `${pubsubName}|${topic}`.toLowerCase();
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, metadata?: Record<string, string>): void {
     const handlerKey = this.createPubSubHandlerKey(pubsubName, topic, metadata?.EVENTCODE);
     if (this._handlersTopics[handlerKey]) {
@@ -97,6 +95,9 @@ export default class GRPCServerImpl implements IAppCallbackServer {
       const sub = new TopicSubscription();
       sub.setPubsubName(splits[0]);
       sub.setTopic(splits[1]);
+      if (splits[2]) {
+        sub.getMetadataMap().set('EVENTCODE', splits[2]);
+      }
       return sub;
     });
     debug('listTopicSubscriptions call: %j', subscriptionsList);
