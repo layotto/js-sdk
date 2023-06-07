@@ -3,6 +3,7 @@
   "version": "1.3.0",
   "description": "Layotto Node.js SDK",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "src",
     "dist",
