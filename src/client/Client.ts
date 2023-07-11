@@ -27,13 +27,13 @@ import PubSub from './PubSub';
 import File from './File';
 import Binding from './Binding';
 import Oss from './Oss';
-import Cryption from './Cryption';
+import Cryption, { CryptionOptions } from './Cryption';
 
 const debug = debuglog('layotto:client:main');
 
 export interface ClientOptions {
   ossEnable?: boolean;
-  cryptionEnable?: boolean;
+  cryption?: CryptionOptions;
 }
 
 export default class Client {
@@ -42,6 +42,7 @@ export default class Client {
   private readonly _runtime: RuntimeClient;
   private readonly _ossClient: ObjectStorageServiceClient;
   private readonly _cryptionClient: CryptionServiceClient;
+  private readonly _cryptionOptions: CryptionOptions;
   private _hello: Hello;
   private _state: State;
   private _invoker: Invoker;
@@ -65,7 +66,8 @@ export default class Client {
     if (options?.ossEnable) {
       this._ossClient = new ObjectStorageServiceClient(address, clientCredentials);
     }
-    if (options?.cryptionEnable) {
+    if (options?.cryption?.componentName) {
+      this._cryptionOptions = options.cryption;
       this._cryptionClient = new CryptionServiceClient(address, clientCredentials);
     }
   }
@@ -130,7 +132,7 @@ export default class Client {
       if (!this._cryptionClient) {
         throw new Error('client not enable cryption');
       }
-      this._cryption = new Cryption(this._cryptionClient);
+      this._cryption = new Cryption(this._cryptionClient, this._cryptionOptions);
     }
     return this._cryption;
   }
