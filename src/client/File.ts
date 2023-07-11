@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 import { debuglog } from 'node:util';
-import { Transform, Readable } from 'stream';
-import { pipeline as pipelinePromise } from 'stream/promises';
+import { Transform, Readable } from 'node:stream';
+import { pipeline as pipelinePromise } from 'node:stream/promises';
 import {
   GetFileRequest as GetFileRequestPB,
   GetFileResponse as GetFileResponsePB,
@@ -22,12 +22,12 @@ import {
   ListFileRequest as ListFileRequestPB,
   DelFileRequest as DelFileRequestPB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import { GetFileRequest, ListFileResponse, PutFileRequest } from '../types/File';
 
 const debug = debuglog('layotto:client:file');
 
-export default class File extends API {
+export default class File extends RuntimeAPI {
   // Get a file stream
   async get(request: GetFileRequest): Promise<Readable> {
     const req = new GetFileRequestPB();

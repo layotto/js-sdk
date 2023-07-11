@@ -15,13 +15,13 @@
 import Client from './client/Client';
 import Server from './server/Server';
 import * as utils from './utils';
-import * as RumtimeTypes from '../proto/runtime/v1/runtime_pb';
+import * as RuntimeTypes from '../proto/runtime/v1/runtime_pb';
 import * as Types from './types';
 
 export {
   Client,
   Server,
   utils,
-  RumtimeTypes,
+  RuntimeTypes,
   Types,
 };

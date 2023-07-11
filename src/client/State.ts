@@ -25,7 +25,7 @@ import {
   ExecuteStateTransactionRequest as ExecuteStateTransactionRequestPB,
   TransactionalStateOperation as TransactionalStateOperationPB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import {
   DeleteBulkStateRequest,
   DeleteStateItem,
@@ -39,7 +39,7 @@ import {
 } from '../types/State';
 import { isEmptyPBMessage, convertMapToKVString } from '../utils';
 
-export default class State extends API {
+export default class State extends RuntimeAPI {
   // Saves an array of state objects
   async save(request: SaveStateRequest): Promise<void> {
     let states = request.states;

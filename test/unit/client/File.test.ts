@@ -12,12 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert';
-import { tmpdir } from 'os';
-import { existsSync, createWriteStream, createReadStream } from 'fs';
-import { mkdtemp, rm } from 'fs/promises';
-import { pipeline } from 'stream/promises';
-import { join } from 'path';
+import { strict as assert } from 'node:assert';
+import { tmpdir } from 'node:os';
+import { existsSync, createWriteStream, createReadStream } from 'node:fs';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { pipeline } from 'node:stream/promises';
+import { join } from 'node:path';
 import { Client, utils } from '../../../src';
 
 describe.skip('client/File.test.ts', () => {

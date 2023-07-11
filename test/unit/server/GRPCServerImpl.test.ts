@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert';
-import { execSync } from 'child_process';
+import { strict as assert } from 'node:assert';
+import { execSync } from 'node:child_process';
 import { Server, Client, utils } from '../../../src';
 import GRPCServerImpl from './GRPCServerImpl';
 

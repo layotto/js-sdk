@@ -1,5 +1,5 @@
+import { Readable } from 'node:stream';
 import { RequestWithMeta } from './common';
-import { Readable } from 'stream';
 import { GetObjectOutput } from '../../proto/extension/v1/s3/oss_pb';
 
 export type PutObjectRequest = RequestWithMeta<{
@@ -24,6 +24,7 @@ export interface PutObjectResponse {
   expiration: string;
   requestCharged: string;
   versionId: string;
+  metadataMap: Array<[string, string]>;
 }
 
 export type GetObjectRequest = RequestWithMeta<{

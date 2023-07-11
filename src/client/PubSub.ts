@@ -15,10 +15,10 @@
 import {
   PublishEventRequest as PublishEventRequestPB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import { PublishEventRequest } from '../types/PubSub';
 
-export default class PubSub extends API {
+export default class PubSub extends RuntimeAPI {
   async publish(request: PublishEventRequest): Promise<void> {
     const req = new PublishEventRequestPB();
     req.setPubsubName(request.pubsubName);

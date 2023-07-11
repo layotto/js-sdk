@@ -19,10 +19,10 @@ import {
   HTTPExtension,
   InvokeResponse as InvokeResponsePB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import { InvokeServiceRequest, InvokeResponse } from '../types/Invoker';
 
-export default class Invoker extends API {
+export default class Invoker extends RuntimeAPI {
   async invoke(request: InvokeServiceRequest): Promise<InvokeResponse> {
     const message = new CommonInvokeRequestPB();
     message.setMethod(request.method);

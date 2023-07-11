@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 import { Client } from '../../../src';
-import { RumtimeTypes } from '../../../src';
+import { RuntimeTypes } from '../../../src';
 
 describe.skip('client/Invoker.test.ts', () => {
   let client: Client;
@@ -37,7 +37,7 @@ describe.skip('client/Invoker.test.ts', () => {
       const state = await client.invoker.invoke({
         id: 'HelloService:1.0',
         method: '/hello',
-        httpVerb: RumtimeTypes.HTTPExtension.Verb.POST,
+        httpVerb: RuntimeTypes.HTTPExtension.Verb.POST,
         data: {
           'hello runtime': 'I am js-sdk client',
         },

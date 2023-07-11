@@ -1,3 +1,5 @@
+import { Readable, PassThrough, Writable } from 'node:stream';
+import { pipeline as pipelinePromise } from 'node:stream/promises';
 import {
   CopyObjectRequest,
   DeleteObjectRequest,
@@ -27,25 +29,14 @@ import {
   SignURLOutput,
 } from '../../proto/extension/v1/s3/oss_pb';
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
-import { RequestWithMeta } from '../types/common';
-import { Metadata } from '@grpc/grpc-js';
-import { Readable, PassThrough, Writable } from 'stream';
-import { pipeline as pipelinePromise } from 'stream/promises';
+import { API } from './API';
 
-export default class Oss {
+export default class Oss extends API {
   private readonly ossClient: ObjectStorageServiceClient;
 
   constructor(ossClient: ObjectStorageServiceClient) {
+    super();
     this.ossClient = ossClient;
-  }
-
-  createMetadata(request: RequestWithMeta<{}>): Metadata {
-    const metadata = new Metadata();
-    if (!request.requestMeta) return metadata;
-    for (const key of Object.keys(request.requestMeta)) {
-      metadata.add(key, request.requestMeta[key]);
-    }
-    return metadata;
   }
 
   private async* putObjectIterator(request: PutObjectRequest): AsyncGenerator<PutObjectInput> {

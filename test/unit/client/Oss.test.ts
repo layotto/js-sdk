@@ -1,7 +1,7 @@
-import assert from 'assert';
+import assert from 'node:assert';
+import { Readable } from 'node:stream';
+import crypto from 'node:crypto';
 import { Client } from '../../../src';
-import { Readable } from 'stream';
-import crypto from 'crypto';
 
 describe.skip('client/Oss.test.ts', () => {
   const client = new Client('34901', '127.0.0.1', { ossEnable: true });
