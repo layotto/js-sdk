@@ -37,8 +37,8 @@ export interface ClientOptions {
 }
 
 export default class Client {
-  protected readonly host: string;
-  protected readonly port: string;
+  readonly host: string;
+  readonly port: string;
   private readonly _runtime: RuntimeClient;
   private readonly _ossClient: ObjectStorageServiceClient;
   private readonly _cryptionClient: CryptionServiceClient;
