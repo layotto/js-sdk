@@ -1,4 +1,13 @@
 
+1.4.0 / 2023-07-11
+==================
+
+**features**
+  * [[`bc0d340`](http://github.com/layotto/js-sdk/commit/bc0d3404a4903476d57d149f10069886980559d5)] - feat: support Cryption API (#21) (fengmk2 <<fengmk2@gmail.com>>)
+
+**others**
+  * [[`21d5ec2`](http://github.com/layotto/js-sdk/commit/21d5ec2715a641ffe9b6308694282a8d0f69fae1)] - test: run ci on Node.js 20 (#20) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.3.0 / 2023-03-06
 ==================
 
