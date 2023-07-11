@@ -15,6 +15,8 @@
 import { debuglog } from 'node:util';
 import { ChannelCredentials } from '@grpc/grpc-js';
 import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
+import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
+import { CryptionServiceClient } from '../../proto/extension/v1/cryption/cryption_grpc_pb';
 import State from './State';
 import Hello from './Hello';
 import Invoker from './Invoker';
@@ -24,20 +26,22 @@ import Configuration from './Configuration';
 import PubSub from './PubSub';
 import File from './File';
 import Binding from './Binding';
-import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
 import Oss from './Oss';
+import Cryption from './Cryption';
 
 const debug = debuglog('layotto:client:main');
 
 export interface ClientOptions {
   ossEnable?: boolean;
+  cryptionEnable?: boolean;
 }
 
 export default class Client {
-  readonly host: string;
-  readonly port: string;
-  private _runtime: RuntimeClient;
-  private _ossClient: ObjectStorageServiceClient;
+  protected readonly host: string;
+  protected readonly port: string;
+  private readonly _runtime: RuntimeClient;
+  private readonly _ossClient: ObjectStorageServiceClient;
+  private readonly _cryptionClient: CryptionServiceClient;
   private _hello: Hello;
   private _state: State;
   private _invoker: Invoker;
@@ -48,16 +52,21 @@ export default class Client {
   private _file: File;
   private _binding: Binding;
   private _oss: Oss;
+  private _cryption: Cryption;
 
   constructor(port: string = process.env.runtime_GRPC_PORT ?? '34904',
               host: string = process.env.runtime_GRPC_HOST ?? '127.0.0.1', options?: ClientOptions) {
     this.host = host;
     this.port = port;
     const clientCredentials = ChannelCredentials.createInsecure();
-    this._runtime = new RuntimeClient(`${this.host}:${this.port}`, clientCredentials);
-    debug('Start connection to %s:%s', this.host, this.port);
+    const address = `${this.host}:${this.port}`;
+    this._runtime = new RuntimeClient(address, clientCredentials);
+    debug('Start connection to %o', address);
     if (options?.ossEnable) {
-      this._ossClient = new ObjectStorageServiceClient(`${this.host}:${this.port}`, clientCredentials);
+      this._ossClient = new ObjectStorageServiceClient(address, clientCredentials);
+    }
+    if (options?.cryptionEnable) {
+      this._cryptionClient = new CryptionServiceClient(address, clientCredentials);
     }
   }
 
@@ -114,5 +123,15 @@ export default class Client {
       this._oss = new Oss(this._ossClient);
     }
     return this._oss;
+  }
+
+  get cryption() {
+    if (!this._cryption) {
+      if (!this._cryptionClient) {
+        throw new Error('client not enable cryption');
+      }
+      this._cryption = new Cryption(this._cryptionClient);
+    }
+    return this._cryption;
   }
 }

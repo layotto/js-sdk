@@ -16,10 +16,10 @@ import {
   SayHelloRequest as SayHelloRequestPB,
   SayHelloResponse as SayHelloResponsePB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import { SayHelloRequest } from '../types/Hello';
 
-export default class Hello extends API {
+export default class Hello extends RuntimeAPI {
   async sayHello(request?: SayHelloRequest): Promise<string> {
     const req = new SayHelloRequestPB();
     if (!request) request = {};

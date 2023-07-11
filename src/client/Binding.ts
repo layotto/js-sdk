@@ -16,14 +16,14 @@ import {
   InvokeBindingRequest as InvokeBindingRequestPB,
   InvokeBindingResponse as InvokeBindingResponsePB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import {
   InvokeBindingRequest,
   InvokeBindingResponse,
 } from '../types/Binding';
 import { convertMapToKVString } from '../utils';
 
-export default class Binding extends API {
+export default class Binding extends RuntimeAPI {
   async invoke(request: InvokeBindingRequest): Promise<InvokeBindingResponse> {
     const req = new InvokeBindingRequestPB();
     req.setName(request.name);

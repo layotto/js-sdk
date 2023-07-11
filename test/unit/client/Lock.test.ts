@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert';
-import { Client, RumtimeTypes, utils } from '../../../src';
+import { strict as assert } from 'node:assert';
+import { Client, RuntimeTypes, utils } from '../../../src';
 
 describe('Lock.test.ts', () => {
   let client: Client;
@@ -27,7 +27,7 @@ describe('Lock.test.ts', () => {
     const resourceId = 'js-sdk-lock-not-exists';
     const lockOwner = client.lock.uuid();
     const result = await client.lock.unLock({ storeName, resourceId, lockOwner });
-    assert.equal(result.status, RumtimeTypes.UnlockResponse.Status.LOCK_UNEXIST);
+    assert.equal(result.status, RuntimeTypes.UnlockResponse.Status.LOCK_UNEXIST);
   });
 
   it('should lock 2 seconds work', async () => {
@@ -45,10 +45,10 @@ describe('Lock.test.ts', () => {
     // unlock by other owner will fail
     const lockOwner2 = client.lock.uuid();
     const status1 = await client.lock.unLock({ storeName, resourceId, lockOwner: lockOwner2 });
-    assert.equal(status1.status, RumtimeTypes.UnlockResponse.Status.LOCK_BELONG_TO_OTHERS);
+    assert.equal(status1.status, RuntimeTypes.UnlockResponse.Status.LOCK_BELONG_TO_OTHERS);
 
     // unlock success by owner
     const status2 = await client.lock.unLock({ storeName, resourceId, lockOwner });
-    assert.equal(status2.status, RumtimeTypes.UnlockResponse.Status.SUCCESS);
+    assert.equal(status2.status, RuntimeTypes.UnlockResponse.Status.SUCCESS);
   });
 });

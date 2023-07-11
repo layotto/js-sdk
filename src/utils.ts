@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { setTimeout } from 'timers/promises';
+import { setTimeout } from 'node:timers/promises';
 import { Map as MapPB } from 'google-protobuf';
 import { KV } from './types/common';
 

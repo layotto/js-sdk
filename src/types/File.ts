@@ -1,4 +1,4 @@
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 import { RequireExactlyOne } from 'type-fest';
 import { KV, RequestWithMeta } from './common';
 

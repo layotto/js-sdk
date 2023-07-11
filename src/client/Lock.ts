@@ -12,17 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as crypto from 'crypto';
+import { randomUUID } from 'node:crypto';
 import {
   TryLockRequest as TryLockRequestPB,
   TryLockResponse as TryLockResponsePB,
   UnlockRequest as UnlockRequestPB,
   UnlockResponse as UnlockResponsePB,
 } from '../../proto/runtime/v1/runtime_pb';
-import { API } from './API';
+import { RuntimeAPI } from './RuntimeAPI';
 import { TryLockRequest, UnlockRequest } from '../types/Lock';
 
-export default class Lock extends API {
+export default class Lock extends RuntimeAPI {
   // A non-blocking method trying to get a lock with ttl
   // expire is the time before expire. The time unit is second.
   async tryLock(request: TryLockRequest): Promise<boolean> {
@@ -55,6 +55,6 @@ export default class Lock extends API {
   }
 
   uuid() {
-    return crypto.randomUUID();
+    return randomUUID();
   }
 }

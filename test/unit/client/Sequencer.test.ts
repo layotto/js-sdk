@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert';
-import { Client, RumtimeTypes } from '../../../src';
+import { strict as assert } from 'node:assert';
+import { Client, RuntimeTypes } from '../../../src';
 
 describe('client/Sequencer.test.ts', () => {
   let client: Client;
@@ -50,7 +50,7 @@ describe('client/Sequencer.test.ts', () => {
         storeName,
         key: 'user_info',
         options: {
-          increment: RumtimeTypes.SequencerOptions.AutoIncrement.WEAK,
+          increment: RuntimeTypes.SequencerOptions.AutoIncrement.WEAK,
         },
       });
       assert(BigInt(currentId) > BigInt(lastId));

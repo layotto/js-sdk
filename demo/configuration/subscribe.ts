@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 import { Client, utils } from 'layotto';
 
 const client = new Client();
