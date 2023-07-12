@@ -1,4 +1,10 @@
 
+1.4.1 / 2023-07-12
+==================
+
+**fixes**
+  * [[`e178a88`](http://github.com/layotto/js-sdk/commit/e178a889b61ff3c9c93e5df72aae2622779968c4)] - fix: init Cryption with componentName (#22) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.4.0 / 2023-07-11
 ==================
 
