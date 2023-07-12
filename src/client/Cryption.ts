@@ -9,12 +9,13 @@ import { API } from './API';
 import { RequestWithMeta } from '../types/common';
 
 export type EncryptRequest = RequestWithMeta<{
-  componentName: string;
   plainText: Uint8Array | string;
   keyId?: string;
 }>;
 
-export type DecryptRequest = RequestWithMeta<DecryptRequestPB.AsObject>;
+export type DecryptRequest = RequestWithMeta<{
+  cipherText: Uint8Array | string;
+}>;
 
 export type DecryptResponse = {
   plainText: Uint8Array;
@@ -23,17 +24,23 @@ export type DecryptResponse = {
   requestId: string,
 };
 
+export type CryptionOptions = {
+  componentName: string;
+};
+
 export default class Cryption extends API {
   private readonly cryptionClient: CryptionServiceClient;
+  private readonly options: CryptionOptions;
 
-  constructor(cryptionClient: CryptionServiceClient) {
+  constructor(cryptionClient: CryptionServiceClient, options: CryptionOptions) {
     super();
+    this.options = options;
     this.cryptionClient = cryptionClient;
   }
 
   async encrypt(request: EncryptRequest): Promise<EncryptResponse.AsObject> {
     const req = new EncryptRequestPB();
-    req.setComponentName(request.componentName);
+    req.setComponentName(this.options.componentName);
     let plainText = request.plainText;
     if (typeof plainText === 'string') {
       plainText = Buffer.from(plainText);
@@ -53,7 +60,7 @@ export default class Cryption extends API {
 
   async decrypt(request: DecryptRequest): Promise<DecryptResponse> {
     const req = new DecryptRequestPB();
-    req.setComponentName(request.componentName);
+    req.setComponentName(this.options.componentName);
     req.setCipherText(request.cipherText);
 
     return new Promise((resolve, reject) => {
