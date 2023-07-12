@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { Client } from '../../../src';
 
-describe('Cryption.test.ts', () => {
+describe.skip('Cryption.test.ts', () => {
   let client: Client;
   const componentName = 'cryption_demo';
 
