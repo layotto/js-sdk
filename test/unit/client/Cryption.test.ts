@@ -6,7 +6,7 @@ describe.skip('Cryption.test.ts', () => {
   const componentName = 'cryption_demo';
 
   beforeAll(() => {
-    client = new Client('34904', '127.0.0.1', { cryption: { componentName } });
+    client = new Client('34904', '127.0.0.1', { cryption: { componentName, defaultRequestMeta: {} } });
   });
 
   it('should encrypt and decrypt success', async () => {

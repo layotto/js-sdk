@@ -26,6 +26,8 @@ export type DecryptResponse = {
 
 export type CryptionOptions = {
   componentName: string;
+  // set default metadata on every request
+  defaultRequestMeta?: Record<string, string>;
 };
 
 export default class Cryption extends API {
@@ -50,8 +52,9 @@ export default class Cryption extends API {
       req.setKeyId(request.keyId);
     }
 
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.cryptionClient.encrypt(req, this.createMetadata(request), (err, res: EncryptResponse) => {
+      this.cryptionClient.encrypt(req, metadata, (err, res: EncryptResponse) => {
         if (err) return reject(err);
         resolve(res.toObject());
       });
@@ -63,8 +66,9 @@ export default class Cryption extends API {
     req.setComponentName(this.options.componentName);
     req.setCipherText(request.cipherText);
 
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.cryptionClient.decrypt(req, this.createMetadata(request), (err, res: DecryptResponsePB) => {
+      this.cryptionClient.decrypt(req, metadata, (err, res: DecryptResponsePB) => {
         if (err) return reject(err);
         const plainText = Buffer.from(res.getPlainText_asB64(), 'base64');
         resolve({

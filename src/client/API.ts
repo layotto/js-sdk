@@ -16,11 +16,18 @@ import { Metadata } from '@grpc/grpc-js';
 import { KV, RequestWithMeta, Map } from '../types/common';
 
 export class API {
-  createMetadata(request: RequestWithMeta<{}>): Metadata {
+  createMetadata(request: RequestWithMeta<{}>, defaultRequestMeta?: Record<string, string>): Metadata {
     const metadata = new Metadata();
-    if (!request.requestMeta) return metadata;
-    for (const key of Object.keys(request.requestMeta)) {
-      metadata.add(key, request.requestMeta[key]);
+    if (defaultRequestMeta) {
+      for (const key in defaultRequestMeta) {
+        metadata.add(key, defaultRequestMeta[key]);
+      }
+    }
+
+    if (request.requestMeta) {
+      for (const key of Object.keys(request.requestMeta)) {
+        metadata.add(key, request.requestMeta[key]);
+      }
     }
     return metadata;
   }
