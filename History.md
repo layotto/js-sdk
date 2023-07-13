@@ -1,4 +1,10 @@
 
+1.5.0 / 2023-07-13
+==================
+
+**features**
+  * [[`0cec838`](http://github.com/layotto/js-sdk/commit/0cec83840a490ed098b91de2b5e6b44c9d12324a)] - feat: support defaultRequestMeta on Cryption + OSS client (#23) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.4.1 / 2023-07-12
 ==================
 
