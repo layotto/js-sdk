@@ -26,13 +26,14 @@ import Configuration from './Configuration';
 import PubSub from './PubSub';
 import File from './File';
 import Binding from './Binding';
-import Oss from './Oss';
+import Oss, { OssOptions } from './Oss';
 import Cryption, { CryptionOptions } from './Cryption';
 
 const debug = debuglog('layotto:client:main');
 
 export interface ClientOptions {
   ossEnable?: boolean;
+  oss?: OssOptions;
   cryption?: CryptionOptions;
 }
 
@@ -41,6 +42,7 @@ export default class Client {
   readonly port: string;
   private readonly _runtime: RuntimeClient;
   private readonly _ossClient: ObjectStorageServiceClient;
+  private readonly _ossOptions: OssOptions;
   private readonly _cryptionClient: CryptionServiceClient;
   private readonly _cryptionOptions: CryptionOptions;
   private _hello: Hello;
@@ -63,7 +65,8 @@ export default class Client {
     const address = `${this.host}:${this.port}`;
     this._runtime = new RuntimeClient(address, clientCredentials);
     debug('Start connection to %o', address);
-    if (options?.ossEnable) {
+    if (options?.ossEnable || options?.oss) {
+      this._ossOptions = options?.oss || {};
       this._ossClient = new ObjectStorageServiceClient(address, clientCredentials);
     }
     if (options?.cryption?.componentName) {
@@ -122,7 +125,7 @@ export default class Client {
       if (!this._ossClient) {
         throw new Error('client not enable oss');
       }
-      this._oss = new Oss(this._ossClient);
+      this._oss = new Oss(this._ossClient, this._ossOptions);
     }
     return this._oss;
   }

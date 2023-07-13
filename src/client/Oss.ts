@@ -31,12 +31,19 @@ import {
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
 import { API } from './API';
 
+export type OssOptions = {
+  // set default metadata on every request
+  defaultRequestMeta?: Record<string, string>;
+};
+
 export default class Oss extends API {
   private readonly ossClient: ObjectStorageServiceClient;
+  private readonly options: OssOptions;
 
-  constructor(ossClient: ObjectStorageServiceClient) {
+  constructor(ossClient: ObjectStorageServiceClient, options: OssOptions) {
     super();
     this.ossClient = ossClient;
+    this.options = options;
   }
 
   private async* putObjectIterator(request: PutObjectRequest): AsyncGenerator<PutObjectInput> {
@@ -82,7 +89,8 @@ export default class Oss extends API {
       resolve = res;
       reject = rej;
     });
-    const writeStream = this.ossClient.putObject(this.createMetadata(request), (err, res) => {
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
+    const writeStream = this.ossClient.putObject(metadata, (err, res) => {
       if (err) {
         return reject(err);
       }
@@ -175,7 +183,8 @@ export default class Oss extends API {
     if (request.signedUrl) {
       req.setSignedUrl(request.signedUrl);
     }
-    const callStream = this.ossClient.getObject(req, this.createMetadata(request));
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
+    const callStream = this.ossClient.getObject(req, metadata);
     const getObjectIterator = this.getObjectIterator(callStream);
     const firstChunk = (await getObjectIterator.next()).value;
     const getObjectBufIterator = this.getObjectBufferIterator(firstChunk, getObjectIterator);
@@ -204,8 +213,9 @@ export default class Oss extends API {
     if (request.metadataDirective) {
       req.setMetadataDirective(request.metadataDirective);
     }
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.ossClient.copyObject(req, this.createMetadata(request), (err, response) => {
+      this.ossClient.copyObject(req, metadata, (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -258,8 +268,9 @@ export default class Oss extends API {
     if (request.withDetails) {
       req.setWithDetails(request.withDetails);
     }
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.ossClient.headObject(req, this.createMetadata(request), (err, response) => {
+      this.ossClient.headObject(req, metadata, (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -280,8 +291,9 @@ export default class Oss extends API {
       req.setVersionId(request.versionId);
     }
 
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.ossClient.deleteObject(req, this.createMetadata(request), (err, response) => {
+      this.ossClient.deleteObject(req, metadata, (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -315,8 +327,10 @@ export default class Oss extends API {
     if (request.requestPayer) {
       req.setRequestPayer(request.requestPayer);
     }
+
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.ossClient.listObjects(req, this.createMetadata(request), (err, response) => {
+      this.ossClient.listObjects(req, metadata, (err, response) => {
         if (err) {
           return reject(err);
         }
@@ -332,8 +346,10 @@ export default class Oss extends API {
     req.setKey(request.key);
     req.setMethod(request.method);
     req.setExpiredInSec(request.expiredInSec);
+
+    const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.ossClient.signURL(req, this.createMetadata(request), (err, response) => {
+      this.ossClient.signURL(req, metadata, (err, response) => {
         if (err) {
           return reject(err);
         }
