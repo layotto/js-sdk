@@ -12,12 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { setTimeout } from 'node:timers/promises';
+import stream from 'node:stream';
+import pump from 'pump';
 import { Map as MapPB } from 'google-protobuf';
 import { KV } from './types/common';
 
-export async function sleep(ms: number) {
-  await setTimeout(ms);
+// impl promise pipeline on Node.js 14
+export const pipelinePromise = stream.promises?.pipeline ?? function pipeline(...args: any[]) {
+  return new Promise<void>((resolve, reject) => {
+    pump(...args, (err?: Error) => {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+};
+
+export function sleep(ms: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
 }
 
 // jspb.Message

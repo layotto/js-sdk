@@ -16,9 +16,9 @@ import { strict as assert } from 'node:assert';
 import { tmpdir } from 'node:os';
 import { existsSync, createWriteStream, createReadStream } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
-import { pipeline } from 'node:stream/promises';
 import { join } from 'node:path';
 import { Client, utils } from '../../../src';
+import { pipelinePromise as pipeline } from '../../../src/utils';
 
 describe.skip('client/File.test.ts', () => {
   let client: Client;
