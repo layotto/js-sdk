@@ -1,4 +1,10 @@
 
+1.6.0 / 2023-07-29
+==================
+
+**features**
+  * [[`51ff3d0`](http://github.com/layotto/js-sdk/commit/51ff3d0599a36c799d550af02342ed34a6584906)] - feat: support Node.js >= 14.21.3 (#24) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.5.0 / 2023-07-13
 ==================
 
