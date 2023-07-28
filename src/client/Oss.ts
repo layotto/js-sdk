@@ -1,5 +1,5 @@
 import { Readable, PassThrough, Writable } from 'node:stream';
-import { pipeline as pipelinePromise } from 'node:stream/promises';
+import { pipelinePromise } from '../utils';
 import {
   CopyObjectRequest,
   DeleteObjectRequest,

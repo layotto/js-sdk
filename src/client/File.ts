@@ -14,7 +14,7 @@
  */
 import { debuglog } from 'node:util';
 import { Transform, Readable } from 'node:stream';
-import { pipeline as pipelinePromise } from 'node:stream/promises';
+import { pipelinePromise } from '../utils';
 import {
   GetFileRequest as GetFileRequestPB,
   GetFileResponse as GetFileResponsePB,
