@@ -62,7 +62,11 @@ export default class Client {
     this.host = host;
     this.port = port;
     const clientCredentials = ChannelCredentials.createInsecure();
-    const address = `${this.host}:${this.port}`;
+    let address = `${this.host}:${this.port}`;
+    // Support UDS
+    if (this.host.startsWith('unix://')) {
+      address = this.host;
+    }
     this._runtime = new RuntimeClient(address, clientCredentials);
     debug('Start connection to %o', address);
     if (options?.ossEnable || options?.oss) {
