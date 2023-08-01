@@ -1,4 +1,10 @@
 
+1.7.0 / 2023-08-01
+==================
+
+**features**
+  * [[`e6b612d`](http://github.com/layotto/js-sdk/commit/e6b612de7d963fc8f593566db89df913ee8cc495)] - feat: support uds (#25) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.6.0 / 2023-07-29
 ==================
 
