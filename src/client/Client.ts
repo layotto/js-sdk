@@ -40,6 +40,7 @@ export interface ClientOptions {
 export default class Client {
   readonly host: string;
   readonly port: string;
+  private readonly _address: string;
   private readonly _runtime: RuntimeClient;
   private readonly _ossClient: ObjectStorageServiceClient;
   private readonly _ossOptions: OssOptions;
@@ -61,21 +62,22 @@ export default class Client {
               host: string = process.env.runtime_GRPC_HOST ?? '127.0.0.1', options?: ClientOptions) {
     this.host = host;
     this.port = port;
-    const clientCredentials = ChannelCredentials.createInsecure();
     let address = `${this.host}:${this.port}`;
     // Support UDS
     if (this.host.startsWith('unix://')) {
       address = this.host;
     }
-    this._runtime = new RuntimeClient(address, clientCredentials);
-    debug('Start connection to %o', address);
+    this._address = address;
+    const clientCredentials = ChannelCredentials.createInsecure();
+    this._runtime = new RuntimeClient(this._address, clientCredentials);
+    debug('Start connection to %o', this._address);
     if (options?.ossEnable || options?.oss) {
       this._ossOptions = options?.oss || {};
-      this._ossClient = new ObjectStorageServiceClient(address, clientCredentials);
+      this._ossClient = new ObjectStorageServiceClient(this._address, clientCredentials);
     }
     if (options?.cryption?.componentName) {
       this._cryptionOptions = options.cryption;
-      this._cryptionClient = new CryptionServiceClient(address, clientCredentials);
+      this._cryptionClient = new CryptionServiceClient(this._address, clientCredentials);
     }
   }
 
@@ -132,6 +134,14 @@ export default class Client {
       this._oss = new Oss(this._ossClient, this._ossOptions);
     }
     return this._oss;
+  }
+
+  /**
+   * Create new oss client instance
+   */
+  createOSSClient(options: OssOptions = {}) {
+    const ossClient = new ObjectStorageServiceClient(this._address, ChannelCredentials.createInsecure());
+    return new Oss(ossClient, options);
   }
 
   get cryption() {

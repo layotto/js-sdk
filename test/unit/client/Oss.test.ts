@@ -122,4 +122,14 @@ describe.skip('client/Oss.test.ts', () => {
     });
     assert(res);
   });
+
+  it('test new oss client', async () => {
+    const ossClient = client.createOSSClient();
+    const res = await ossClient.list({
+      storeName: 'oss_demo',
+      bucket: 'antsys-tnpmbuild',
+      prefix: 'test_',
+    });
+    assert(res);
+  });
 });
