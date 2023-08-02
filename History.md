@@ -1,4 +1,10 @@
 
+1.8.0 / 2023-08-02
+==================
+
+**features**
+  * [[`157ecc5`](http://github.com/layotto/js-sdk/commit/157ecc5f4dc23f53bc0e0e10ae480cd777091d48)] - feat: support create multi oss client (#26) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.7.0 / 2023-08-01
 ==================
 
