@@ -12,15 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Client from './client/Client';
-import Server from './server/Server';
+import Client, { ClientOptions } from './client/Client';
+import Server, { ServerOptions } from './server/Server';
 import * as utils from './utils';
 import * as RuntimeTypes from '../proto/runtime/v1/runtime_pb';
 import * as Types from './types';
 
 export {
   Client,
+  ClientOptions,
   Server,
+  ServerOptions,
   utils,
   RuntimeTypes,
   Types,

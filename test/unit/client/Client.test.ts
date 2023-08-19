@@ -34,7 +34,9 @@ describe('client/Client.test.ts', () => {
   describe('custom Client', () => {
     let customClient: CustomClient;
     beforeAll(() => {
-      customClient = new CustomClient();
+      customClient = new CustomClient({
+        logger: console,
+      });
     });
 
     it('should work', async () => {
