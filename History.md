@@ -1,4 +1,10 @@
 
+1.9.0 / 2023-08-19
+==================
+
+**features**
+  * [[`356c8c3`](http://github.com/layotto/js-sdk/commit/356c8c337a60001cbd1ea0814dab77755a959ff7)] - feat: support logger and localStorage (#27) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.8.0 / 2023-08-02
 ==================
 
