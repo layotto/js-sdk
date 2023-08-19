@@ -1,10 +1,11 @@
 import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
-import { API } from './API';
+import { API, APIOptions } from './API';
 
 export class RuntimeAPI extends API {
-  readonly runtime: RuntimeClient;
-  constructor(runtime: RuntimeClient) {
-    super();
+  protected readonly runtime: RuntimeClient;
+
+  constructor(runtime: RuntimeClient, options?: APIOptions) {
+    super(options);
     this.runtime = runtime;
   }
 }

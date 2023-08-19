@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { debuglog } from 'node:util';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { ServerCredentials, Server as GRPCServer } from '@grpc/grpc-js';
 import { AppCallbackService } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import GRPCServerImpl from './GRPCServerImpl';
@@ -21,14 +23,25 @@ import { sleep } from '../utils';
 
 const debug = debuglog('layotto:server:main');
 
+export interface ServerOptions {
+  logger?: Console;
+  localStorage?: AsyncLocalStorage<any>;
+}
+
 export default class Server {
   readonly port: string;
   readonly pubsub: PubSub;
+  protected readonly localStorage?: AsyncLocalStorage<any>;
+  protected readonly logger: Console;
   private readonly _serverImpl: GRPCServerImpl;
   private readonly _server: GRPCServer;
 
-  constructor(port: string = process.env.appcallback_GRPC_PORT ?? '9999', GRPCServerInstance?: any) {
+  constructor(port: string = process.env.appcallback_GRPC_PORT ?? '9999',
+    GRPCServerInstance?: any,
+    options?: ServerOptions) {
     this.port = port;
+    this.logger = options?.logger ?? global.console;
+    this.localStorage = options?.localStorage;
     // 支持自定义实现 GRPCServerImpl
     this._serverImpl = GRPCServerInstance || new GRPCServerImpl();
     this.pubsub = new PubSub(this._serverImpl);

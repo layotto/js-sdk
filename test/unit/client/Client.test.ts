@@ -14,6 +14,7 @@
  */
 import { strict as assert } from 'node:assert';
 import { Client } from '../../../src';
+import { CustomClient } from './fixtures/CustomClient';
 
 describe('client/Client.test.ts', () => {
   let client: Client;
@@ -28,5 +29,21 @@ describe('client/Client.test.ts', () => {
   it('should create a Client with default port', () => {
     assert.equal(client.port, '34904');
     assert(client.state);
+  });
+
+  describe('custom Client', () => {
+    let customClient: CustomClient;
+    beforeAll(() => {
+      customClient = new CustomClient({
+        logger: console,
+      });
+    });
+
+    it('should work', async () => {
+      const hello = await customClient.hello.sayHello();
+      assert.equal(hello, 'greeting');
+      const hello2 = await customClient.hello.sayHello({ name: 'js-sdk' });
+      assert.equal(hello2, 'greeting, js-sdk');
+    });
   });
 });

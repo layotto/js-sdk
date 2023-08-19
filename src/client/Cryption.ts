@@ -5,7 +5,7 @@ import {
   DecryptResponse as DecryptResponsePB,
 } from '../../proto/extension/v1/cryption/cryption_pb';
 import { CryptionServiceClient } from '../../proto/extension/v1/cryption/cryption_grpc_pb';
-import { API } from './API';
+import { API, APIOptions } from './API';
 import { RequestWithMeta } from '../types/common';
 
 export type EncryptRequest = RequestWithMeta<{
@@ -34,8 +34,8 @@ export default class Cryption extends API {
   private readonly cryptionClient: CryptionServiceClient;
   private readonly options: CryptionOptions;
 
-  constructor(cryptionClient: CryptionServiceClient, options: CryptionOptions) {
-    super();
+  constructor(cryptionClient: CryptionServiceClient, options: CryptionOptions, apiOptions?: APIOptions) {
+    super(apiOptions);
     this.options = options;
     this.cryptionClient = cryptionClient;
   }

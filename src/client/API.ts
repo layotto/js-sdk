@@ -12,10 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { Metadata } from '@grpc/grpc-js';
 import { KV, RequestWithMeta, Map } from '../types/common';
 
+export interface APIOptions {
+  logger?: Console;
+  localStorage?: AsyncLocalStorage<any>;
+}
+
 export class API {
+  protected readonly localStorage?: AsyncLocalStorage<any>;
+  protected readonly logger: Console;
+
+  constructor(options?: APIOptions) {
+    this.localStorage = options?.localStorage;
+    this.logger = options?.logger ?? global.console;
+  }
+
   createMetadata(request: RequestWithMeta<{}>, defaultRequestMeta?: Record<string, string>): Metadata {
     const metadata = new Metadata();
     if (defaultRequestMeta) {
