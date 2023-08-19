@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { debuglog } from 'node:util';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { ChannelCredentials } from '@grpc/grpc-js';
 import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
@@ -35,13 +37,17 @@ export interface ClientOptions {
   ossEnable?: boolean;
   oss?: OssOptions;
   cryption?: CryptionOptions;
+  logger?: Console;
+  localStorage?: AsyncLocalStorage<any>;
 }
 
 export default class Client {
   readonly host: string;
   readonly port: string;
+  protected readonly localStorage?: AsyncLocalStorage<any>;
+  protected readonly logger: Console;
+  protected readonly _runtime: RuntimeClient;
   private readonly _address: string;
-  private readonly _runtime: RuntimeClient;
   private readonly _ossClient: ObjectStorageServiceClient;
   private readonly _ossOptions: OssOptions;
   private readonly _cryptionClient: CryptionServiceClient;
@@ -59,7 +65,8 @@ export default class Client {
   private _cryption: Cryption;
 
   constructor(port: string = process.env.runtime_GRPC_PORT ?? '34904',
-              host: string = process.env.runtime_GRPC_HOST ?? '127.0.0.1', options?: ClientOptions) {
+              host: string = process.env.runtime_GRPC_HOST ?? '127.0.0.1',
+              options?: ClientOptions) {
     this.host = host;
     this.port = port;
     let address = `${this.host}:${this.port}`;
@@ -68,6 +75,8 @@ export default class Client {
       address = this.host;
     }
     this._address = address;
+    this.localStorage = options?.localStorage;
+    this.logger = options?.logger ?? global.console;
     const clientCredentials = ChannelCredentials.createInsecure();
     this._runtime = new RuntimeClient(this._address, clientCredentials);
     debug('Start connection to %o', this._address);
@@ -81,48 +90,73 @@ export default class Client {
     }
   }
 
+  protected get initAPIOptions() {
+    return {
+      localStorage: this.localStorage,
+      logger: this.logger,
+    };
+  }
+
   get hello() {
-    if (!this._hello) this._hello = new Hello(this._runtime);
+    if (!this._hello) {
+      this._hello = new Hello(this._runtime, this.initAPIOptions);
+    }
     return this._hello;
   }
 
   get state() {
-    if (!this._state) this._state = new State(this._runtime);
+    if (!this._state) {
+      this._state = new State(this._runtime, this.initAPIOptions);
+    }
     return this._state;
   }
 
   get invoker() {
-    if (!this._invoker) this._invoker = new Invoker(this._runtime);
+    if (!this._invoker) {
+      this._invoker = new Invoker(this._runtime, this.initAPIOptions);
+    }
     return this._invoker;
   }
 
   get lock() {
-    if (!this._lock) this._lock = new Lock(this._runtime);
+    if (!this._lock) {
+      this._lock = new Lock(this._runtime, this.initAPIOptions);
+    }
     return this._lock;
   }
 
   get sequencer() {
-    if (!this._sequencer) this._sequencer = new Sequencer(this._runtime);
+    if (!this._sequencer) {
+      this._sequencer = new Sequencer(this._runtime, this.initAPIOptions);
+    }
     return this._sequencer;
   }
 
   get configuration() {
-    if (!this._configuration) this._configuration = new Configuration(this._runtime);
+    if (!this._configuration) {
+      this._configuration = new Configuration(this._runtime, this.initAPIOptions);
+    }
     return this._configuration;
   }
 
   get pubsub() {
-    if (!this._pubsub) this._pubsub = new PubSub(this._runtime);
+    if (!this._pubsub) {
+      this._pubsub = new PubSub(this._runtime, this.initAPIOptions);
+    }
     return this._pubsub;
   }
 
   get file() {
-    if (!this._file) this._file = new File(this._runtime);
+    if (!this._file) {
+      this._file = new File(this._runtime, this.initAPIOptions);
+    }
     return this._file;
   }
 
   get binding() {
-    if (!this._binding) this._binding = new Binding(this._runtime);
+    if (!this._binding) {
+      this._binding = new Binding(this._runtime, this.initAPIOptions);
+    }
     return this._binding;
   }
 
@@ -131,7 +165,7 @@ export default class Client {
       if (!this._ossClient) {
         throw new Error('client not enable oss');
       }
-      this._oss = new Oss(this._ossClient, this._ossOptions);
+      this._oss = new Oss(this._ossClient, this._ossOptions, this.initAPIOptions);
     }
     return this._oss;
   }
@@ -141,7 +175,7 @@ export default class Client {
    */
   createOSSClient(options: OssOptions = {}) {
     const ossClient = new ObjectStorageServiceClient(this._address, ChannelCredentials.createInsecure());
-    return new Oss(ossClient, options);
+    return new Oss(ossClient, options, this.initAPIOptions);
   }
 
   get cryption() {
@@ -149,7 +183,7 @@ export default class Client {
       if (!this._cryptionClient) {
         throw new Error('client not enable cryption');
       }
-      this._cryption = new Cryption(this._cryptionClient, this._cryptionOptions);
+      this._cryption = new Cryption(this._cryptionClient, this._cryptionOptions, this.initAPIOptions);
     }
     return this._cryption;
   }

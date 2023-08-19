@@ -29,7 +29,7 @@ import {
   SignURLOutput,
 } from '../../proto/extension/v1/s3/oss_pb';
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
-import { API } from './API';
+import { API, APIOptions } from './API';
 
 export type OssOptions = {
   // set default metadata on every request
@@ -40,8 +40,8 @@ export default class Oss extends API {
   private readonly ossClient: ObjectStorageServiceClient;
   private readonly options: OssOptions;
 
-  constructor(ossClient: ObjectStorageServiceClient, options: OssOptions) {
-    super();
+  constructor(ossClient: ObjectStorageServiceClient, options: OssOptions, apiOptions?: APIOptions) {
+    super(apiOptions);
     this.ossClient = ossClient;
     this.options = options;
   }
