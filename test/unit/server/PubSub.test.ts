@@ -16,7 +16,7 @@ import { strict as assert } from 'node:assert';
 import { execSync } from 'node:child_process';
 import { Server, Client, utils } from '../../../src';
 
-describe.skip('server/PubSub.test.ts', () => {
+describe('server/PubSub.test.ts', () => {
   let server: Server;
   let client: Client;
   const topic1 = 'topic1';
