@@ -24,6 +24,7 @@ describe('server/PubSub.test.ts', () => {
     client = new Client();
     await client.hello.sayHello();
     server = new Server();
+    server.pubsub.addPubSubSubscription('redis', topic1);
     await server.start();
   });
 
