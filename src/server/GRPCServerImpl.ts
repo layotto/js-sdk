@@ -96,13 +96,6 @@ export default class GRPCServerImpl implements IAppCallbackServer {
     const pubsubName = req.getPubsubName();
     const topic = req.getTopic();
     const metadata = convertMapToKVString(req.getMetadataMap());
-    const handler = this.findPubSubHandler(pubsubName, topic, metadata);
-    if (!handler) {
-      this.logger.warn('[layotto:server:grpc:onTopicEvent:warn] can\'t find the pubsub(%s) topic(%s) handler, let server retry',
-        pubsubName, topic);
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.RETRY);
-      return callback(null, res);
-    }
     const request: TopicEventRequest = {
       id: req.getId(),
       source: req.getSource(),
@@ -114,12 +107,19 @@ export default class GRPCServerImpl implements IAppCallbackServer {
       pubsubName,
       metadata,
     };
+    const handler = this.findPubSubHandler(pubsubName, topic, metadata);
+    if (!handler) {
+      this.logger.warn('[layotto:server:grpc:onTopicEvent:warn] can\'t find the pubsub(%s) topic(%s) id(%s) handler, let server retry',
+        pubsubName, topic, request.id);
+      res.setStatus(TopicEventResponse.TopicEventResponseStatus.RETRY);
+      return callback(null, res);
+    }
     try {
       await this.invokePubSubHandler(request, handler);
       res.setStatus(TopicEventResponse.TopicEventResponseStatus.SUCCESS);
     } catch (err: any) {
-      this.logger.error('[layotto:server:grpc:onTopicEvent:error] pubsub(%s) topic(%s) handler throw error %s, let server retry',
-        pubsubName, topic, err.message);
+      this.logger.error('[layotto:server:grpc:onTopicEvent:error] pubsub(%s) topic(%s) id(%s) handler throw error %s, let server retry',
+        pubsubName, topic, request.id, err.message);
       this.logger.error(err);
       res.setStatus(TopicEventResponse.TopicEventResponseStatus.RETRY);
     }
