@@ -14,6 +14,7 @@
  */
 import Client, { ClientOptions } from './client/Client';
 import Server, { ServerOptions } from './server/Server';
+import GRPCServerImpl, { GRPCServerOptions } from './server/GRPCServerImpl';
 import * as utils from './utils';
 import * as RuntimeTypes from '../proto/runtime/v1/runtime_pb';
 import * as Types from './types';
@@ -23,6 +24,8 @@ export {
   ClientOptions,
   Server,
   ServerOptions,
+  GRPCServerImpl,
+  GRPCServerOptions,
   utils,
   RuntimeTypes,
   Types,

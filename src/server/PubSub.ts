@@ -26,8 +26,12 @@ export default class PubSub {
     this.server = server;
   }
 
-  async subscribe(pubsubName: string, topic: string, cb: PubSubCallback, metadata?: Record<string, string>): Promise<void> {
+  subscribe(pubsubName: string, topic: string, cb: PubSubCallback, metadata?: Record<string, string>) {
     debug('Registering onTopicEvent Handler: PubSub = %s, Topic = %s', pubsubName, topic);
     this.server.registerPubSubSubscriptionHandler(pubsubName, topic, cb, metadata);
+  }
+
+  addPubSubSubscription(pubsubName: string, topic: string, metadata?: Record<string, string>) {
+    this.server.addPubSubSubscription(pubsubName, topic, metadata);
   }
 }

@@ -15,7 +15,7 @@
 import { strict as assert } from 'node:assert';
 import { execSync } from 'node:child_process';
 import { Server, Client, utils } from '../../../src';
-import GRPCServerImpl from './GRPCServerImpl';
+import { CustomGRPCServerImpl } from './GRPCServerImpl';
 
 const pubsubConfig = {
   redis: {
@@ -62,7 +62,7 @@ describe.skip('server/GRPCServerImpl.test.ts', () => {
   beforeAll(async () => {
     client = new Client();
     await client.hello.sayHello();
-    const serverImpl = new GRPCServerImpl(pubsubConfig);
+    const serverImpl = new CustomGRPCServerImpl(pubsubConfig);
     server = new Server('9999', serverImpl);
     await server.start();
   });
@@ -77,8 +77,8 @@ describe.skip('server/GRPCServerImpl.test.ts', () => {
       GROUP_ID: 'GID_GO_DEMO',
       EVENTCODE: 'EC_GNU_TEST',
     };
-    server.pubsub.subscribe('redis', topic1, async data => {
-      console.log('topic event data: %j', data);
+    server.pubsub.subscribe('redis', topic1, async (data, request) => {
+      console.log('topic event data: %j, request: %o', data, request);
       lastData = data;
     }, metadata);
 
