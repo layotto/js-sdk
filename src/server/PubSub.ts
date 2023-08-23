@@ -30,4 +30,8 @@ export default class PubSub {
     debug('Registering onTopicEvent Handler: PubSub = %s, Topic = %s', pubsubName, topic);
     this.server.registerPubSubSubscriptionHandler(pubsubName, topic, cb, metadata);
   }
+
+  async addPubSubSubscription(pubsubName: string, topic: string, metadata?: Record<string, string>) {
+    this.server.addPubSubSubscription(pubsubName, topic, metadata);
+  }
 }

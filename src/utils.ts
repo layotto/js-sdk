@@ -15,7 +15,7 @@
 import stream from 'node:stream';
 import pump from 'pump';
 import { Map as MapPB } from 'google-protobuf';
-import { KV } from './types/common';
+import { KV, Map } from './types/common';
 
 // impl promise pipeline on Node.js 14
 export const pipelinePromise = stream.promises?.pipeline ?? function pipeline(...args: any[]) {
@@ -56,7 +56,7 @@ export function sleep(ms: number) {
 //   pivot_: 1.7976931348623157e+308,
 //   convertedPrimitiveFields_: {}
 // }
-export function isEmptyPBMessage(item, emptyLength = 0) {
+export function isEmptyPBMessage(item: any, emptyLength = 0) {
   if (!item.array || item.array.length === emptyLength) return true;
   return false;
 }
@@ -67,4 +67,13 @@ export function convertMapToKVString(map: MapPB<string, string>) {
     kv[k] = v;
   }
   return kv;
+}
+
+export function mergeMetadataToMap(map: Map<string>, ...metadatas: (KV<string> | undefined)[]) {
+  for (const metadata of metadatas) {
+    if (!metadata) continue;
+    for (const key of Object.keys(metadata)) {
+      map.set(key, metadata[key]);
+    }
+  }
 }

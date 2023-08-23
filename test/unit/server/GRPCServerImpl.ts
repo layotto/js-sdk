@@ -1,19 +1,4 @@
-import { debuglog } from 'node:util';
-import * as grpc from '@grpc/grpc-js';
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { IAppCallbackServer } from '../../../proto/runtime/v1/appcallback_grpc_pb';
-import {
-  ListTopicSubscriptionsResponse,
-  TopicSubscription,
-  TopicEventRequest,
-  TopicEventResponse,
-} from '../../../proto/runtime/v1/appcallback_pb';
-import { PubSubCallback } from '../../../dist/types/PubSub';
-
-import { convertMapToKVString } from '../../../dist/utils';
-
-const debug = debuglog('layotto:server:grpc');
-
+import { GRPCServerImpl } from '../../../src/index';
 
 export type PubSubConfig = {
   [key: string]: {
@@ -48,140 +33,55 @@ export type PubSubConfig = {
   };
 };
 
-export type CallbackResponseInfo = {
-  id: string,
-  topic: string,
-  pubsubName: string,
-  type: string,
-  specVersion: string,
-  data: string | object,
-  source: string,
-  metadata: Record<string, string>,
-};
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export default class GRPCServerImpl implements IAppCallbackServer {
-  private readonly _handlersTopics: { [key: string]: PubSubCallback };
-  private readonly _pubsubList: TopicSubscription[] = [];
+export class CustomGRPCServerImpl extends GRPCServerImpl {
   constructor(pubsubConfig: PubSubConfig) {
-    this._handlersTopics = {};
-    this._pubsubList = this.pubsubConfigToTopicSubscription(pubsubConfig);
+    super();
+    this.pubsubConfigToTopicSubscription(pubsubConfig);
   }
 
-  private pubsubConfigToTopicSubscription(pubsubConfig: PubSubConfig): TopicSubscription[] {
-    const pubsubList: TopicSubscription[] = [];
+  private pubsubConfigToTopicSubscription(pubsubConfig: PubSubConfig) {
     for (const pubsubName in pubsubConfig) {
       const pubsub = pubsubConfig[pubsubName];
       // 处理发布
       if (pubsub.pubs) {
         for (const pub of pubsub.pubs) {
-          const topicSubscription = new TopicSubscription();
-          topicSubscription.setTopic(pub.topic);
-          topicSubscription.setPubsubName(pubsubName);
-          topicSubscription.getMetadataMap().set('groupId', pub.metadata.GROUP_ID);
-          topicSubscription.getMetadataMap().set('pubOrSub', 'pub');
+          const metadata: Record<string, string> = {
+            groupId: pub.metadata.GROUP_ID,
+            pubOrSub: 'pub',
+          };
           if (pub.metadata.EVENTCODE) {
-            topicSubscription.getMetadataMap().set('eventcode', pub.metadata.EVENTCODE);
+            metadata.eventcode = pub.metadata.EVENTCODE;
           }
-          pubsubList.push(topicSubscription);
+          this.addPubSubSubscription(pubsubName, pub.topic, metadata);
         }
       }
       // 处理订阅
       if (pubsub.subs) {
         for (const sub of pubsub.subs) {
-          const topicSubscription = new TopicSubscription();
-          topicSubscription.setTopic(sub.topic);
-          topicSubscription.setPubsubName(pubsubName);
-          topicSubscription.getMetadataMap().set('groupId', sub.metadata.GROUP_ID);
-          topicSubscription.getMetadataMap().set('pubOrSub', 'sub');
-          topicSubscription.getMetadataMap().set('ldcSubMode', sub.metadata.SUB_LDC_SUBMODE);
+          const metadata: Record<string, string> = {
+            groupId: sub.metadata.GROUP_ID,
+            pubOrSub: 'sub',
+            ldcSubMode: sub.metadata.SUB_LDC_SUBMODE,
+          };
           if (sub.metadata.EVENTCODE) {
-            topicSubscription.getMetadataMap().set('eventcode', sub.metadata.EVENTCODE);
+            metadata.eventcode = sub.metadata.EVENTCODE;
           }
-          // if (sub.metadata.SUBCONVERTMSGBODY) {
-          //   topicSubscription.getMetadataMap().set('convertMsgBody', sub.metadata.SUBCONVERTMSGBODY);
-          // }
-          pubsubList.push(topicSubscription);
+          this.addPubSubSubscription(pubsubName, sub.topic, metadata);
         }
       }
     }
-    return pubsubList;
   }
 
-  private createPubSubHandlerKey(pubsubName: string, topic: string, eventCode?: string): string {
-    // 如果 eventCode 为空，那么取 pubsubName|topic 作为 key ，否则取 pubsubName|topic|eventCode 作为 key
-    if (eventCode) {
-      return `${pubsubName}|${topic}|${eventCode}`.toLowerCase();
-    }
-    return `${pubsubName}|${topic}`.toLowerCase();
-  }
-
-  registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, metadata?: Record<string, string>): void {
-    const handlerKey = this.createPubSubHandlerKey(pubsubName, topic, metadata?.EVENTCODE);
-    if (this._handlersTopics[handlerKey]) {
-      throw new Error(`Topic: "${handlerKey}" handler was exists`);
-    }
-    this._handlersTopics[handlerKey] = callback;
-    debug('PubSub Event from topic: "%s" is registered', handlerKey);
-  }
-
-  async onTopicEvent(call: grpc.ServerUnaryCall<TopicEventRequest, TopicEventResponse>,
-    callback: grpc.sendUnaryData<TopicEventResponse>): Promise<void> {
-    const req = call.request;
-    const res = new TopicEventResponse();
-    let topic = req.getTopic();
+  protected createPubSubHandlerKey(pubsubName: string, topic: string, metadata?: Record<string, string>): string {
     // sofamq 返回的 topic 是 %topic，如 SOFAMQ_DEFAULT_INS|GZ00B%TP_GO_DEMO , 需要去掉前面的 % 才能匹配
     const split = topic.split('%');
     if (split.length > 1) {
       topic = split[1];
     }
-    const eventCode = req.getMetadataMap().get('EVENTCODE');
-    const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), topic, eventCode);
-    const handler = this._handlersTopics[handlerKey];
-    if (!handler) {
-      debug('PubSub Event from topic: "%s" was not handled, drop now', handlerKey);
-      // FIXME: should retry?
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
-      return callback(null, res);
+    // 如果 eventCode 为空，那么取 pubsubName|topic 作为 key ，否则取 pubsubName|topic|eventCode 作为 key
+    if (metadata?.EVENTCODE) {
+      return `${pubsubName}|${topic}|${metadata.eventCode}`.toLowerCase();
     }
-    // https://mosn.io/layotto/#/zh/design/pubsub/pubsub-api-and-compability-with-dapr-component
-    // PublishRequest.Data 和 NewMessage.Data 里面放符合 CloudEvent 1.0 规范的 json 数据（能反序列化放进 map[string]interface{}）
-    const rawData = Buffer.from(req.getData_asU8()).toString();
-    const result: CallbackResponseInfo = {
-      id: req.getId(),
-      topic: req.getTopic(),
-      pubsubName: req.getPubsubName(),
-      type: req.getType(),
-      specVersion: req.getSpecVersion(),
-      source: req.getSource(),
-      data: '',
-      metadata: convertMapToKVString(req.getMetadataMap()),
-    };
-    debug('PubSub Event from topic: "%s" raw data: %j, typeof %s', handlerKey, rawData, typeof rawData);
-    let data: string | object;
-    try {
-      data = JSON.parse(rawData);
-    } catch {
-      data = rawData;
-    }
-    result.data = data;
-    try {
-      await handler(result);
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.SUCCESS);
-    } catch (e) {
-      // FIXME: should retry?
-      debug('PubSub Event from topic: "%s" handler throw error: %s, drop now', handlerKey, e);
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
-    }
-    callback(null, res);
-  }
-
-  async listTopicSubscriptions(_call: grpc.ServerUnaryCall<Empty, ListTopicSubscriptionsResponse>,
-    callback: grpc.sendUnaryData<ListTopicSubscriptionsResponse>): Promise<void> {
-    const res = new ListTopicSubscriptionsResponse();
-    debug('listTopicSubscriptions call: %j', this._pubsubList);
-    res.setSubscriptionsList(this._pubsubList);
-    callback(null, res);
+    return `${pubsubName}|${topic}`.toLowerCase();
   }
 }

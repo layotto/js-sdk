@@ -16,6 +16,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Metadata } from '@grpc/grpc-js';
 import { KV, RequestWithMeta, Map } from '../types/common';
+import { mergeMetadataToMap } from '../utils';
 
 export interface APIOptions {
   logger?: Console;
@@ -48,11 +49,6 @@ export class API {
   }
 
   mergeMetadataToMap(map: Map<string>, ...metadatas: (KV<string> | undefined)[]) {
-    for (const metadata of metadatas) {
-      if (!metadata) continue;
-      for (const key of Object.keys(metadata)) {
-        map.set(key, metadata[key]);
-      }
-    }
+    mergeMetadataToMap(map, ...metadatas);
   }
 }

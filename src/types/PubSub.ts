@@ -15,7 +15,19 @@
  */
 import { RequestWithMeta, KV } from './common';
 
-export type PubSubCallback = (data: any) => Promise<any | void>;
+export interface TopicEventRequest {
+  id: string;
+  source: string;
+  type: string;
+  specVersion: string;
+  dataContentType: string;
+  data: Uint8Array;
+  topic: string;
+  pubsubName: string;
+  metadata: Record<string, string>;
+}
+
+export type PubSubCallback = (data: any, topicEventRequest: TopicEventRequest) => Promise<any | void>;
 
 export type PublishEventRequest = RequestWithMeta<{
   pubsubName: string;

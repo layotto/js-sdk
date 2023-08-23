@@ -43,7 +43,7 @@ export default class Server {
     this.logger = options?.logger ?? global.console;
     this.localStorage = options?.localStorage;
     // 支持自定义实现 GRPCServerImpl
-    this._serverImpl = GRPCServerInstance || new GRPCServerImpl();
+    this._serverImpl = GRPCServerInstance || new GRPCServerImpl(options);
     this.pubsub = new PubSub(this._serverImpl);
 
     this._server = new GRPCServer();
@@ -70,7 +70,7 @@ export default class Server {
   }
 
   private async _bind(): Promise<void> {
-    debug('Starting to listen on 127.0.0.1:%s', this.port);
+    this.logger.info('[layotto:server] Starting to listen on 127.0.0.1:%s', this.port);
     return new Promise((resolve, reject) => {
       const serverCredentials = ServerCredentials.createInsecure();
       this._server.bindAsync(`127.0.0.1:${this.port}`, serverCredentials, (err, port) => {

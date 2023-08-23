@@ -14,88 +14,123 @@
  *
  */
 import { debuglog } from 'node:util';
-import * as grpc from '@grpc/grpc-js';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import grpc from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { IAppCallbackServer } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import {
   ListTopicSubscriptionsResponse,
   TopicSubscription,
-  TopicEventRequest,
+  TopicEventRequest as TopicEventRequestPB,
   TopicEventResponse,
 } from '../../proto/runtime/v1/appcallback_pb';
-import { PubSubCallback } from '../types/PubSub';
+import { PubSubCallback, TopicEventRequest } from '../types/PubSub';
+import { convertMapToKVString, mergeMetadataToMap } from '../utils';
 
 const debug = debuglog('layotto:server:grpc');
+
+export interface GRPCServerOptions {
+  logger?: Console;
+  localStorage?: AsyncLocalStorage<any>;
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export default class GRPCServerImpl implements IAppCallbackServer {
-  private readonly _handlersTopics: { [key: string]: PubSubCallback };
-  constructor() {
-    this._handlersTopics = {};
+  protected readonly handlersTopics: Record<string, PubSubCallback> = {};
+  protected readonly subscriptionsList: TopicSubscription[] = [];
+  protected readonly localStorage?: AsyncLocalStorage<any>;
+  protected readonly logger: Console;
+
+  constructor(options?: GRPCServerOptions) {
+    this.logger = options?.logger ?? global.console;
+    this.localStorage = options?.localStorage;
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private createPubSubHandlerKey(pubsubName: string, topic: string, _metadata?: Record<string, string>): string {
+  protected createPubSubHandlerKey(pubsubName: string, topic: string, _metadata?: Record<string, string>): string {
     return `${pubsubName}|${topic}`.toLowerCase();
   }
+
+  protected findPubSubHandler(pubsubName: string, topic: string,
+    metadata?: Record<string, string>): PubSubCallback | undefined {
+    const handlerKey = this.createPubSubHandlerKey(pubsubName, topic, metadata);
+    return this.handlersTopics[handlerKey];
+  }
+
+  protected formatPubSubHandlerData(request: TopicEventRequest) {
+    // https://mosn.io/layotto/#/zh/design/pubsub/pubsub-api-and-compability-with-dapr-component
+    // PublishRequest.Data 和 NewMessage.Data 里面放符合 CloudEvent 1.0 规范的 json 数据（能反序列化放进 map[string]interface{}）
+    if (request.dataContentType === 'application/json') {
+      return JSON.parse(Buffer.from(request.data).toString());
+    }
+    return request.data;
+  }
+
+  protected async invokePubSubHandler(request: TopicEventRequest, handler: PubSubCallback) {
+    const data = this.formatPubSubHandlerData(request);
+    await handler(data, request);
+  }
+
+  addPubSubSubscription(pubsubName: string, topic: string, metadata?: Record<string, string>) {
+    const sub = new TopicSubscription();
+    sub.setPubsubName(pubsubName);
+    sub.setTopic(topic);
+    mergeMetadataToMap(sub.getMetadataMap(), metadata);
+    this.subscriptionsList.push(sub);
+  }
+
   registerPubSubSubscriptionHandler(pubsubName: string, topic: string, callback: PubSubCallback, metadata?: Record<string, string>): void {
     const handlerKey = this.createPubSubHandlerKey(pubsubName, topic, metadata);
-    if (this._handlersTopics[handlerKey]) {
+    if (this.handlersTopics[handlerKey]) {
       throw new Error(`Topic: "${handlerKey}" handler was exists`);
     }
-    this._handlersTopics[handlerKey] = callback;
+    this.handlersTopics[handlerKey] = callback;
     debug('PubSub Event from topic: "%s" is registered', handlerKey);
   }
 
-  async onTopicEvent(call: grpc.ServerUnaryCall<TopicEventRequest, TopicEventResponse>,
+  async onTopicEvent(call: grpc.ServerUnaryCall<TopicEventRequestPB, TopicEventResponse>,
     callback: grpc.sendUnaryData<TopicEventResponse>): Promise<void> {
     const req = call.request;
     const res = new TopicEventResponse();
-    const handlerKey = this.createPubSubHandlerKey(req.getPubsubName(), req.getTopic());
-
-    const handler = this._handlersTopics[handlerKey];
+    const pubsubName = req.getPubsubName();
+    const topic = req.getTopic();
+    const metadata = convertMapToKVString(req.getMetadataMap());
+    const handler = this.findPubSubHandler(pubsubName, topic, metadata);
     if (!handler) {
-      debug('PubSub Event from topic: "%s" was not handled, drop now', handlerKey);
-      // FIXME: should retry?
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
+      this.logger.warn('[layotto:server:grpc:onTopicEvent:warn] can\'t find the pubsub(%s) topic(%s) handler, let server retry',
+        pubsubName, topic);
+      res.setStatus(TopicEventResponse.TopicEventResponseStatus.RETRY);
       return callback(null, res);
     }
-
-    // https://mosn.io/layotto/#/zh/design/pubsub/pubsub-api-and-compability-with-dapr-component
-    // PublishRequest.Data 和 NewMessage.Data 里面放符合 CloudEvent 1.0 规范的 json 数据（能反序列化放进 map[string]interface{}）
-    const rawData = Buffer.from(req.getData_asU8()).toString();
-    debug('PubSub Event from topic: "%s" raw data: %j, typeof %s', handlerKey, rawData, typeof rawData);
-    let data: string | object;
+    const request: TopicEventRequest = {
+      id: req.getId(),
+      source: req.getSource(),
+      type: req.getType(),
+      specVersion: req.getSpecVersion(),
+      dataContentType: req.getDataContentType(),
+      data: req.getData_asU8(),
+      topic,
+      pubsubName,
+      metadata,
+    };
     try {
-      data = JSON.parse(rawData);
-    } catch {
-      data = rawData;
-    }
-
-    try {
-      await handler(data);
+      await this.invokePubSubHandler(request, handler);
       res.setStatus(TopicEventResponse.TopicEventResponseStatus.SUCCESS);
-    } catch (e) {
-      // FIXME: should retry?
-      debug('PubSub Event from topic: "%s" handler throw error: %s, drop now', handlerKey, e);
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
+    } catch (err: any) {
+      this.logger.error('[layotto:server:grpc:onTopicEvent:error] pubsub(%s) topic(%s) handler throw error %s, let server retry',
+        pubsubName, topic, err.message);
+      this.logger.error(err);
+      res.setStatus(TopicEventResponse.TopicEventResponseStatus.RETRY);
     }
-
     callback(null, res);
   }
 
   async listTopicSubscriptions(_call: grpc.ServerUnaryCall<Empty, ListTopicSubscriptionsResponse>,
     callback: grpc.sendUnaryData<ListTopicSubscriptionsResponse>): Promise<void> {
     const res = new ListTopicSubscriptionsResponse();
-    const subscriptionsList = Object.keys(this._handlersTopics).map(key => {
-      const splits = key.split('|');
-      const sub = new TopicSubscription();
-      sub.setPubsubName(splits[0]);
-      sub.setTopic(splits[1]);
-      return sub;
-    });
-    debug('listTopicSubscriptions call: %j', subscriptionsList);
-    res.setSubscriptionsList(subscriptionsList);
+    debug('listTopicSubscriptions call: %j', this.subscriptionsList);
+    res.setSubscriptionsList(this.subscriptionsList);
     callback(null, res);
   }
 }
