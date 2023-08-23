@@ -1,4 +1,10 @@
 
+1.10.0 / 2023-08-23
+==================
+
+**others**
+  * [[`a7ad9ca`](http://github.com/layotto/js-sdk/commit/a7ad9ca2a83800dddffd45a8c0d05eac408b5286)] - refactor: make GRPCServerImpl easy to override by Sub Impl (#28) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.9.0 / 2023-08-19
 ==================
 
