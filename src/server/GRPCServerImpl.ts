@@ -109,9 +109,9 @@ export default class GRPCServerImpl implements IAppCallbackServer {
     };
     const handler = this.findPubSubHandler(pubsubName, topic, metadata);
     if (!handler) {
-      this.logger.warn('[layotto:server:grpc:onTopicEvent:warn] can\'t find the pubsub(%s) topic(%s) id(%s) handler, let server retry',
+      this.logger.warn('[layotto:server:grpc:onTopicEvent:warn] can\'t find the pubsub(%s) topic(%s) id(%s) handler, drop it',
         pubsubName, topic, request.id);
-      res.setStatus(TopicEventResponse.TopicEventResponseStatus.RETRY);
+      res.setStatus(TopicEventResponse.TopicEventResponseStatus.DROP);
       return callback(null, res);
     }
     try {
