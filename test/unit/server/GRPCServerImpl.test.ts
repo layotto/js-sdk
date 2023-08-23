@@ -77,8 +77,8 @@ describe.skip('server/GRPCServerImpl.test.ts', () => {
       GROUP_ID: 'GID_GO_DEMO',
       EVENTCODE: 'EC_GNU_TEST',
     };
-    server.pubsub.subscribe('redis', topic1, async (data: object, metadata: Record<string, string>) => {
-      console.log('topic event data: %j, metadata: %o', data, metadata);
+    server.pubsub.subscribe('redis', topic1, async (data, request) => {
+      console.log('topic event data: %j, request: %o', data, request);
       lastData = data;
     }, metadata);
 
