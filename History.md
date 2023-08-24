@@ -1,4 +1,10 @@
 
+1.11.0 / 2023-08-24
+==================
+
+**features**
+  * [[`7ca7aa6`](http://github.com/layotto/js-sdk/commit/7ca7aa6e33c33839e8aa99432f91ef6c3eff6bcd)] - feat: add createMetadataHook to set request tracing info (#32) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.10.1 / 2023-08-24
 ==================
 
