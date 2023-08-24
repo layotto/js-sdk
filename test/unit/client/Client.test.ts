@@ -14,6 +14,7 @@
  */
 import { strict as assert } from 'node:assert';
 import { Client } from '../../../src';
+import { CreateMetadataHook } from '../../../src/client/API';
 import { CustomClient } from './fixtures/CustomClient';
 
 describe('client/Client.test.ts', () => {
@@ -34,8 +35,16 @@ describe('client/Client.test.ts', () => {
   describe('custom Client', () => {
     let customClient: CustomClient;
     beforeAll(() => {
+      const createMetadataHook: CreateMetadataHook = localStorage => {
+        return {
+          'x-localStorage': localStorage?.getStore() ?? 'not-exists',
+          'x-foo': 'bar',
+        };
+      };
+
       customClient = new CustomClient({
         logger: console,
+        createMetadataHook,
       });
     });
 

@@ -30,6 +30,7 @@ import File from './File';
 import Binding from './Binding';
 import Oss, { OssOptions } from './Oss';
 import Cryption, { CryptionOptions } from './Cryption';
+import type { CreateMetadataHook } from './API';
 
 const debug = debuglog('layotto:client:main');
 
@@ -39,6 +40,7 @@ export interface ClientOptions {
   cryption?: CryptionOptions;
   logger?: Console;
   localStorage?: AsyncLocalStorage<any>;
+  createMetadataHook?: CreateMetadataHook;
 }
 
 export default class Client {
@@ -46,6 +48,7 @@ export default class Client {
   readonly port: string;
   protected readonly localStorage?: AsyncLocalStorage<any>;
   protected readonly logger: Console;
+  protected readonly createMetadataHook?: CreateMetadataHook;
   protected readonly _runtime: RuntimeClient;
   private readonly _address: string;
   private readonly _ossClient: ObjectStorageServiceClient;
@@ -77,6 +80,7 @@ export default class Client {
     this._address = address;
     this.localStorage = options?.localStorage;
     this.logger = options?.logger ?? global.console;
+    this.createMetadataHook = options?.createMetadataHook;
     const clientCredentials = ChannelCredentials.createInsecure();
     this._runtime = new RuntimeClient(this._address, clientCredentials);
     debug('Start connection to %o', this._address);
@@ -94,6 +98,7 @@ export default class Client {
     return {
       localStorage: this.localStorage,
       logger: this.logger,
+      createMetadataHook: this.createMetadataHook,
     };
   }
 
