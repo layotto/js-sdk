@@ -18,18 +18,26 @@ import { Metadata } from '@grpc/grpc-js';
 import { KV, RequestWithMeta, Map } from '../types/common';
 import { mergeMetadataToMap } from '../utils';
 
+export type CreateMetadataHook = (localStorage?: AsyncLocalStorage<any>) => Record<string, string>;
+
 export interface APIOptions {
   logger?: Console;
   localStorage?: AsyncLocalStorage<any>;
+  /**
+   * Setting more request metadata here, e.g.: tracing headers
+   */
+  createMetadataHook?: CreateMetadataHook;
 }
 
 export class API {
   protected readonly localStorage?: AsyncLocalStorage<any>;
   protected readonly logger: Console;
+  #createMetadataHook?: CreateMetadataHook;
 
   constructor(options?: APIOptions) {
     this.localStorage = options?.localStorage;
     this.logger = options?.logger ?? global.console;
+    this.#createMetadataHook = options?.createMetadataHook;
   }
 
   createMetadata(request: RequestWithMeta<{}>, defaultRequestMeta?: Record<string, string>): Metadata {
@@ -43,6 +51,13 @@ export class API {
     if (request.requestMeta) {
       for (const key of Object.keys(request.requestMeta)) {
         metadata.add(key, request.requestMeta[key]);
+      }
+    }
+
+    if (this.#createMetadataHook) {
+      const moreMetadata = this.#createMetadataHook(this.localStorage);
+      for (const key in moreMetadata) {
+        metadata.add(key, moreMetadata[key]);
       }
     }
     return metadata;
