@@ -65,6 +65,8 @@ describe.skip('server/GRPCServerImpl.test.ts', () => {
     const serverImpl = new CustomGRPCServerImpl(pubsubConfig);
     server = new Server('9999', serverImpl);
     await server.start();
+    // start multi times should work
+    await server.start();
   });
 
   afterAll(async () => {

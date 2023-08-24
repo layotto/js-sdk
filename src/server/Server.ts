@@ -19,7 +19,6 @@ import { ServerCredentials, Server as GRPCServer } from '@grpc/grpc-js';
 import { AppCallbackService } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import GRPCServerImpl from './GRPCServerImpl';
 import PubSub from './PubSub';
-import { sleep } from '../utils';
 
 const debug = debuglog('layotto:server:main');
 
@@ -35,6 +34,7 @@ export default class Server {
   protected readonly logger: Console;
   private readonly _serverImpl: GRPCServerImpl;
   private readonly _server: GRPCServer;
+  #start = false;
 
   constructor(port: string = process.env.appcallback_GRPC_PORT ?? '9999',
     GRPCServerInstance?: any,
@@ -54,9 +54,10 @@ export default class Server {
   }
 
   async start(): Promise<void> {
+    if (this.#start) return;
+    this.#start = true;
     await this._bind();
     this._server.start();
-    await sleep(250);
   }
 
   async close(): Promise<void> {
