@@ -1,4 +1,12 @@
 
+1.10.1 / 2023-08-24
+==================
+
+**fixes**
+  * [[`2d1895a`](http://github.com/layotto/js-sdk/commit/2d1895a9ab8032b6bb3916c5340e15dfdd372db9)] - fix: can start multi times (#31) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`c32523b`](http://github.com/layotto/js-sdk/commit/c32523b97b1e20ea1be0beb62fd587aa61f10de8)] - fix: should drop message when no any handler (#30) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`cfe091b`](http://github.com/layotto/js-sdk/commit/cfe091b6bc289af81081e390af5b46bd5c7f966a)] - fix: print message id when handler not found (#29) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.10.0 / 2023-08-23
 ==================
 
