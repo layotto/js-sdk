@@ -19,7 +19,6 @@ import { ServerCredentials, Server as GRPCServer } from '@grpc/grpc-js';
 import { AppCallbackService } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import GRPCServerImpl from './GRPCServerImpl';
 import PubSub from './PubSub';
-import { sleep } from '../utils';
 
 const debug = debuglog('layotto:server:main');
 
