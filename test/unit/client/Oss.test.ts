@@ -1,5 +1,7 @@
-import assert from 'node:assert';
+import { strict as assert } from 'node:assert';
 import { Readable } from 'node:stream';
+import { createReadStream } from 'node:fs';
+import path from 'node:path';
 import crypto from 'node:crypto';
 import { Client } from '../../../src';
 
@@ -25,6 +27,29 @@ describe.skip('client/Oss.test.ts', () => {
     }
     const data = Buffer.concat(buf).toString();
     assert(data === 'hello world');
+  });
+
+  it('test put empty file', async () => {
+    const fileStream = createReadStream(path.join(__dirname, 'fixtures/empty-file.txt'));
+    const hello = await client.oss.put({
+      storeName: 'oss_demo',
+      bucket: 'antsys-tnpmbuild',
+      key: 'test-empty-file.txt',
+      body: fileStream,
+      contentLength: 0,
+    });
+    assert(hello);
+    const res = await client.oss.get({
+      storeName: 'oss_demo',
+      bucket: 'antsys-tnpmbuild',
+      key: 'test-empty-file.txt',
+    });
+    const buf: Uint8Array[] = [];
+    for await (const chunk of res.object) {
+      buf.push(chunk);
+    }
+    const data = Buffer.concat(buf).toString();
+    assert.equal(data, '');
   });
 
   it('test put large object', async () => {

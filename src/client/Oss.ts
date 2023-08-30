@@ -47,7 +47,9 @@ export default class Oss extends API {
   }
 
   private async* putObjectIterator(request: PutObjectRequest): AsyncGenerator<PutObjectInput> {
+    let hasChunk = false;
     for await (const chunk of request.body) {
+      hasChunk = true;
       const req = new PutObjectInput();
       req.setStoreName(request.storeName);
       req.setBucket(request.bucket);
@@ -78,6 +80,40 @@ export default class Oss extends API {
         req.setSignedUrl(request.signedUrl);
       }
       req.setBody(chunk);
+      yield req;
+    }
+
+    if (!hasChunk) {
+      // put empty file
+      const req = new PutObjectInput();
+      req.setStoreName(request.storeName);
+      req.setBucket(request.bucket);
+      req.setKey(request.key);
+      req.setContentLength(request.contentLength);
+      if (request.acl) {
+        req.setAcl(request.acl);
+      }
+      if (request.bucketKeyEnabled) {
+        req.setBucketKeyEnabled(request.bucketKeyEnabled);
+      }
+      if (request.cacheControl) {
+        req.setCacheControl(request.cacheControl);
+      }
+      if (request.contentDisposition) {
+        req.setContentDisposition(request.contentDisposition);
+      }
+      if (request.contentEncoding) {
+        req.setContentEncoding(request.contentEncoding);
+      }
+      if (request.expires) {
+        req.setExpires(request.expires);
+      }
+      if (request.serverSideEncryption) {
+        req.setServerSideEncryption(request.serverSideEncryption);
+      }
+      if (request.signedUrl) {
+        req.setSignedUrl(request.signedUrl);
+      }
       yield req;
     }
   }
