@@ -1,4 +1,10 @@
 
+1.12.0 / 2023-08-30
+==================
+
+**features**
+  * [[`e32611f`](http://github.com/layotto/js-sdk/commit/e32611ff9bedaca35bc92beed60aea924ff1565c)] - feat: debug request metadata (#33) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.11.0 / 2023-08-24
 ==================
 
