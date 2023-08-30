@@ -13,10 +13,13 @@
  * limitations under the License.
  */
 
+import { debuglog } from 'node:util';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Metadata } from '@grpc/grpc-js';
 import { KV, RequestWithMeta, Map } from '../types/common';
 import { mergeMetadataToMap } from '../utils';
+
+const debug = debuglog('layotto:client:api');
 
 export type CreateMetadataHook = (localStorage?: AsyncLocalStorage<any>) => Record<string, string>;
 
@@ -59,6 +62,9 @@ export class API {
       for (const key in moreMetadata) {
         metadata.add(key, moreMetadata[key]);
       }
+    }
+    if (debug.enabled) {
+      debug('createMetadata %o', metadata.toHttp2Headers());
     }
     return metadata;
   }
