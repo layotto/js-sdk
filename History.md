@@ -1,4 +1,10 @@
 
+1.12.1 / 2023-08-31
+==================
+
+**fixes**
+  * [[`0c09afb`](http://github.com/layotto/js-sdk/commit/0c09afb190416e586adf43bdc0ed3523c304d21a)] - fix: allow oss put empty file (#34) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.12.0 / 2023-08-30
 ==================
 
