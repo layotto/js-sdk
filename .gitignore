@@ -6,3 +6,4 @@ proto
 .fleet
 .DS_Store
 logs/
+package-lock.json
