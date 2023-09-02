@@ -1,36 +1,24 @@
 import {
   EncryptRequest as EncryptRequestPB,
-  EncryptResponse,
+  EncryptResponse as EncryptResponsePB,
   DecryptRequest as DecryptRequestPB,
   DecryptResponse as DecryptResponsePB,
 } from '../../proto/extension/v1/cryption/cryption_pb';
 import { CryptionServiceClient } from '../../proto/extension/v1/cryption/cryption_grpc_pb';
 import { API, APIOptions } from './API';
-import { RequestWithMeta } from '../types/common';
+import {
+  EncryptRequest,
+  DecryptRequest,
+  DecryptResponse,
+} from '../types/Cryption';
 
-export type EncryptRequest = RequestWithMeta<{
-  plainText: Uint8Array | string;
-  keyId?: string;
-}>;
-
-export type DecryptRequest = RequestWithMeta<{
-  cipherText: Uint8Array | string;
-}>;
-
-export type DecryptResponse = {
-  plainText: Uint8Array;
-  keyId: string,
-  keyVersionId: string,
-  requestId: string,
-};
-
-export type CryptionOptions = {
+export interface CryptionOptions {
   componentName: string;
   // set default metadata on every request
   defaultRequestMeta?: Record<string, string>;
-};
+}
 
-export default class Cryption extends API {
+export class Cryption extends API {
   private readonly cryptionClient: CryptionServiceClient;
   private readonly options: CryptionOptions;
 
@@ -40,7 +28,7 @@ export default class Cryption extends API {
     this.cryptionClient = cryptionClient;
   }
 
-  async encrypt(request: EncryptRequest): Promise<EncryptResponse.AsObject> {
+  async encrypt(request: EncryptRequest): Promise<EncryptResponsePB.AsObject> {
     const req = new EncryptRequestPB();
     req.setComponentName(this.options.componentName);
     let plainText = request.plainText;
@@ -54,7 +42,7 @@ export default class Cryption extends API {
 
     const metadata = this.createMetadata(request, this.options.defaultRequestMeta);
     return new Promise((resolve, reject) => {
-      this.cryptionClient.encrypt(req, metadata, (err, res: EncryptResponse) => {
+      this.cryptionClient.encrypt(req, metadata, (err, res: EncryptResponsePB) => {
         if (err) return reject(err);
         resolve(res.toObject());
       });

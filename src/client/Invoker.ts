@@ -22,7 +22,7 @@ import {
 import { RuntimeAPI } from './RuntimeAPI';
 import { InvokeServiceRequest, InvokeResponse } from '../types/Invoker';
 
-export default class Invoker extends RuntimeAPI {
+export class Invoker extends RuntimeAPI {
   async invoke(request: InvokeServiceRequest): Promise<InvokeResponse> {
     const message = new CommonInvokeRequestPB();
     message.setMethod(request.method);

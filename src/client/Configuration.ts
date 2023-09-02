@@ -34,7 +34,7 @@ import { convertArrayToKVString } from '../types/common';
 
 const debug = debuglog('layotto:client:configuration');
 
-export default class Configuration extends RuntimeAPI {
+export class Configuration extends RuntimeAPI {
   // GetConfiguration gets configuration from configuration store.
   async get(request: GetConfigurationRequest): Promise<GetConfigurationItem[]> {
     const req = new GetConfigurationRequestPB();

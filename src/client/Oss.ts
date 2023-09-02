@@ -31,12 +31,12 @@ import {
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
 import { API, APIOptions } from './API';
 
-export type OssOptions = {
+export interface OssOptions {
   // set default metadata on every request
   defaultRequestMeta?: Record<string, string>;
-};
+}
 
-export default class Oss extends API {
+export class Oss extends API {
   private readonly ossClient: ObjectStorageServiceClient;
   private readonly options: OssOptions;
 

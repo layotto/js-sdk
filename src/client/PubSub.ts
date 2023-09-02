@@ -18,7 +18,7 @@ import {
 import { RuntimeAPI } from './RuntimeAPI';
 import { PublishEventRequest } from '../types/PubSub';
 
-export default class PubSub extends RuntimeAPI {
+export class PubSub extends RuntimeAPI {
   async publish(request: PublishEventRequest): Promise<void> {
     const req = new PublishEventRequestPB();
     req.setPubsubName(request.pubsubName);

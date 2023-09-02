@@ -36,7 +36,7 @@ export interface GRPCServerOptions {
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export default class GRPCServerImpl implements IAppCallbackServer {
+export class GRPCServerImpl implements IAppCallbackServer {
   protected readonly handlersTopics: Record<string, PubSubCallback> = {};
   protected readonly subscriptionsList: TopicSubscription[] = [];
   protected readonly localStorage?: AsyncLocalStorage<any>;

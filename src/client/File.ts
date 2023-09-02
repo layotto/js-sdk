@@ -27,7 +27,7 @@ import { GetFileRequest, ListFileResponse, PutFileRequest } from '../types/File'
 
 const debug = debuglog('layotto:client:file');
 
-export default class File extends RuntimeAPI {
+export class File extends RuntimeAPI {
   // Get a file stream
   async get(request: GetFileRequest): Promise<Readable> {
     const req = new GetFileRequestPB();

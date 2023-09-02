@@ -19,17 +19,17 @@ import { ChannelCredentials } from '@grpc/grpc-js';
 import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
 import { CryptionServiceClient } from '../../proto/extension/v1/cryption/cryption_grpc_pb';
-import State from './State';
-import Hello from './Hello';
-import Invoker from './Invoker';
-import Lock from './Lock';
-import Sequencer from './Sequencer';
-import Configuration from './Configuration';
-import PubSub from './PubSub';
-import File from './File';
-import Binding from './Binding';
-import Oss, { OssOptions } from './Oss';
-import Cryption, { CryptionOptions } from './Cryption';
+import { State } from './State';
+import { Hello } from './Hello';
+import { Invoker } from './Invoker';
+import { Lock } from './Lock';
+import { Sequencer } from './Sequencer';
+import { Configuration } from './Configuration';
+import { PubSub } from './PubSub';
+import { File } from './File';
+import { Binding } from './Binding';
+import { Oss, OssOptions } from './Oss';
+import { Cryption, CryptionOptions } from './Cryption';
 import type { CreateMetadataHook } from './API';
 
 const debug = debuglog('layotto:client:main');
@@ -43,7 +43,7 @@ export interface ClientOptions {
   createMetadataHook?: CreateMetadataHook;
 }
 
-export default class Client {
+export class Client {
   readonly host: string;
   readonly port: string;
   protected readonly localStorage?: AsyncLocalStorage<any>;

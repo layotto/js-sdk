@@ -39,7 +39,7 @@ import {
 } from '../types/State';
 import { isEmptyPBMessage, convertMapToKVString } from '../utils';
 
-export default class State extends RuntimeAPI {
+export class State extends RuntimeAPI {
   // Saves an array of state objects
   async save(request: SaveStateRequest): Promise<void> {
     let states = request.states;

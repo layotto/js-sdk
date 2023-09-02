@@ -17,8 +17,8 @@ import { debuglog } from 'node:util';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { ServerCredentials, Server as GRPCServer } from '@grpc/grpc-js';
 import { AppCallbackService } from '../../proto/runtime/v1/appcallback_grpc_pb';
-import GRPCServerImpl from './GRPCServerImpl';
-import PubSub from './PubSub';
+import { GRPCServerImpl } from './GRPCServerImpl';
+import { PubSub } from './PubSub';
 
 const debug = debuglog('layotto:server:main');
 
@@ -27,7 +27,7 @@ export interface ServerOptions {
   localStorage?: AsyncLocalStorage<any>;
 }
 
-export default class Server {
+export class Server {
   readonly port: string;
   readonly pubsub: PubSub;
   protected readonly localStorage?: AsyncLocalStorage<any>;

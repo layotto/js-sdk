@@ -22,7 +22,7 @@ import {
 import { RuntimeAPI } from './RuntimeAPI';
 import { TryLockRequest, UnlockRequest } from '../types/Lock';
 
-export default class Lock extends RuntimeAPI {
+export class Lock extends RuntimeAPI {
   // A non-blocking method trying to get a lock with ttl
   // expire is the time before expire. The time unit is second.
   async tryLock(request: TryLockRequest): Promise<boolean> {
