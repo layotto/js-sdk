@@ -1,4 +1,10 @@
 
+1.13.0 / 2023-09-02
+==================
+
+**features**
+  * [[`ddbc25c`](http://github.com/layotto/js-sdk/commit/ddbc25c4f28bc4823d2afd864f4a3e70d6299268)] - feat: export all types (#36) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.12.1 / 2023-08-31
 ==================
 
