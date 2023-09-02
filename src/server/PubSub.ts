@@ -11,15 +11,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 import { debuglog } from 'node:util';
 import { PubSubCallback } from '../types/PubSub';
-import GRPCServerImpl from './GRPCServerImpl';
+import { GRPCServerImpl } from './GRPCServerImpl';
 
 const debug = debuglog('layotto:server:pubsub');
 
-export default class PubSub {
+export class PubSub {
   readonly server: GRPCServerImpl;
 
   constructor(server: GRPCServerImpl) {

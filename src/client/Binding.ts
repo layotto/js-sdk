@@ -23,7 +23,7 @@ import {
 } from '../types/Binding';
 import { convertMapToKVString } from '../utils';
 
-export default class Binding extends RuntimeAPI {
+export class Binding extends RuntimeAPI {
   async invoke(request: InvokeBindingRequest): Promise<InvokeBindingResponse> {
     const req = new InvokeBindingRequestPB();
     req.setName(request.name);

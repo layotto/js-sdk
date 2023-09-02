@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Client, { ClientOptions } from './client/Client';
-import Server, { ServerOptions } from './server/Server';
-import GRPCServerImpl, { GRPCServerOptions } from './server/GRPCServerImpl';
+import { Client, ClientOptions } from './client/Client';
+import { Server, ServerOptions } from './server/Server';
+import { GRPCServerImpl, GRPCServerOptions } from './server/GRPCServerImpl';
 import * as utils from './utils';
 import * as RuntimeTypes from '../proto/runtime/v1/runtime_pb';
 import * as Types from './types';
+import * as Clients from './client';
+import * as Servers from './server';
 
 export {
   Client,
@@ -29,4 +31,6 @@ export {
   utils,
   RuntimeTypes,
   Types,
+  Clients,
+  Servers,
 };

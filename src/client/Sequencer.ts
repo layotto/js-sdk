@@ -20,7 +20,7 @@ import {
 import { RuntimeAPI } from './RuntimeAPI';
 import { GetNextIdRequest } from '../types/Sequencer';
 
-export default class Sequencer extends RuntimeAPI {
+export class Sequencer extends RuntimeAPI {
   // Get next unique id with some auto-increment guarantee
   async getNextId(request: GetNextIdRequest): Promise<string> {
     const req = new GetNextIdRequestPB();

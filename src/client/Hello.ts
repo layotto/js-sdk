@@ -19,7 +19,7 @@ import {
 import { RuntimeAPI } from './RuntimeAPI';
 import { SayHelloRequest } from '../types/Hello';
 
-export default class Hello extends RuntimeAPI {
+export class Hello extends RuntimeAPI {
   async sayHello(request?: SayHelloRequest): Promise<string> {
     const req = new SayHelloRequestPB();
     if (!request) request = {};

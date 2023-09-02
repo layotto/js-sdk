@@ -9,4 +9,4 @@ export * as PubSub from './PubSub';
 export * as File from './File';
 export * as Binding from './Binding';
 export * as Oss from './Oss';
-
+export * as Cryption from './Cryption';
