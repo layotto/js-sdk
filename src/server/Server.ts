@@ -19,11 +19,12 @@ import { ServerCredentials, Server as GRPCServer } from '@grpc/grpc-js';
 import { AppCallbackService } from '../../proto/runtime/v1/appcallback_grpc_pb';
 import { GRPCServerImpl } from './GRPCServerImpl';
 import { PubSub } from './PubSub';
+import { Logger } from '../types/common';
 
 const debug = debuglog('layotto:server:main');
 
 export interface ServerOptions {
-  logger?: Console;
+  logger?: Logger;
   localStorage?: AsyncLocalStorage<any>;
 }
 
@@ -31,7 +32,7 @@ export class Server {
   readonly port: string;
   readonly pubsub: PubSub;
   protected readonly localStorage?: AsyncLocalStorage<any>;
-  protected readonly logger: Console;
+  protected readonly logger: Logger;
   private readonly _serverImpl: GRPCServerImpl;
   private readonly _server: GRPCServer;
   #start = false;
