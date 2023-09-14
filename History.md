@@ -1,4 +1,10 @@
 
+1.13.1 / 2023-09-14
+==================
+
+**fixes**
+  * [[`fd6ea43`](http://github.com/layotto/js-sdk/commit/fd6ea434c070df1c56b5535d3707da8f83fd4a2c)] - fix: use Logger interface instead of Console (#37) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.13.0 / 2023-09-02
 ==================
 
