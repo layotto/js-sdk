@@ -16,7 +16,7 @@
 import { debuglog } from 'node:util';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Metadata } from '@grpc/grpc-js';
-import { KV, RequestWithMeta, Map } from '../types/common';
+import { KV, RequestWithMeta, Map, Logger } from '../types/common';
 import { mergeMetadataToMap } from '../utils';
 
 const debug = debuglog('layotto:client:api');
@@ -24,7 +24,7 @@ const debug = debuglog('layotto:client:api');
 export type CreateMetadataHook = (localStorage?: AsyncLocalStorage<any>) => Record<string, string>;
 
 export interface APIOptions {
-  logger?: Console;
+  logger?: Logger;
   localStorage?: AsyncLocalStorage<any>;
   /**
    * Setting more request metadata here, e.g.: tracing headers
@@ -34,7 +34,7 @@ export interface APIOptions {
 
 export class API {
   protected readonly localStorage?: AsyncLocalStorage<any>;
-  protected readonly logger: Console;
+  protected readonly logger: Logger;
   #createMetadataHook?: CreateMetadataHook;
 
   constructor(options?: APIOptions) {

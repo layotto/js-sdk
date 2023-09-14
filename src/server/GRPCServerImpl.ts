@@ -26,11 +26,12 @@ import {
 } from '../../proto/runtime/v1/appcallback_pb';
 import { PubSubCallback, TopicEventRequest } from '../types/PubSub';
 import { convertMapToKVString, mergeMetadataToMap } from '../utils';
+import { Logger } from '../types/common';
 
 const debug = debuglog('layotto:server:grpc');
 
 export interface GRPCServerOptions {
-  logger?: Console;
+  logger?: Logger;
   localStorage?: AsyncLocalStorage<any>;
 }
 
@@ -40,7 +41,7 @@ export class GRPCServerImpl implements IAppCallbackServer {
   protected readonly handlersTopics: Record<string, PubSubCallback> = {};
   protected readonly subscriptionsList: TopicSubscription[] = [];
   protected readonly localStorage?: AsyncLocalStorage<any>;
-  protected readonly logger: Console;
+  protected readonly logger: Logger;
 
   constructor(options?: GRPCServerOptions) {
     this.logger = options?.logger ?? global.console;

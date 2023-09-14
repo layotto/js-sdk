@@ -31,6 +31,7 @@ import { Binding } from './Binding';
 import { Oss, OssOptions } from './Oss';
 import { Cryption, CryptionOptions } from './Cryption';
 import type { CreateMetadataHook } from './API';
+import { Logger } from '../types/common';
 
 const debug = debuglog('layotto:client:main');
 
@@ -38,7 +39,7 @@ export interface ClientOptions {
   ossEnable?: boolean;
   oss?: OssOptions;
   cryption?: CryptionOptions;
-  logger?: Console;
+  logger?: Logger;
   localStorage?: AsyncLocalStorage<any>;
   createMetadataHook?: CreateMetadataHook;
 }
@@ -47,7 +48,7 @@ export class Client {
   readonly host: string;
   readonly port: string;
   protected readonly localStorage?: AsyncLocalStorage<any>;
-  protected readonly logger: Console;
+  protected readonly logger: Logger;
   protected readonly createMetadataHook?: CreateMetadataHook;
   protected readonly _runtime: RuntimeClient;
   private readonly _address: string;
