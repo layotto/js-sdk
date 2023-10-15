@@ -198,4 +198,32 @@ describe('client/State.test.ts', () => {
       // assert.equal(states.length, 20);
     });
   });
+
+  describe('createStateClient()', () => {
+    it('should create a new state client success', async () => {
+      const key = 'js-sdk-unit-' + Date.now();
+      const stateClient = client.createStateClient({
+        defaultRequestMeta: {
+          foo: 'bar',
+        },
+      });
+      const value = `hello js-sdk, with 中文, 😄, at ${Date()}`;
+      await stateClient.save({
+        storeName,
+        states: { key, value },
+        requestMeta: { traceid: `mock-traceid-unittest-${Date.now()}` },
+      });
+      const state = await stateClient.get({ storeName, key });
+      assert(state);
+      assert.equal(Buffer.from(state.value).toString(), value);
+
+      await stateClient.save({
+        storeName,
+        states: { key, value },
+      });
+      const state2 = await stateClient.get({ storeName, key });
+      assert(state2);
+      assert.equal(Buffer.from(state2.value).toString(), value);
+    });
+  });
 });

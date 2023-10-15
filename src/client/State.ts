@@ -38,8 +38,27 @@ import {
   StateItem,
 } from '../types/State';
 import { isEmptyPBMessage, convertMapToKVString } from '../utils';
+import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
+import { APIOptions } from './API';
+import { RequestWithMeta } from '../types/common';
+
+export interface StateOptions {
+  // set default metadata on every request
+  defaultRequestMeta?: Record<string, string>;
+}
 
 export class State extends RuntimeAPI {
+  #defaultRequestMeta?: Record<string, string>;
+
+  constructor(runtime: RuntimeClient, options?: StateOptions, apiOptions?: APIOptions) {
+    super(runtime, apiOptions);
+    this.#defaultRequestMeta = options?.defaultRequestMeta;
+  }
+
+  createMetadata(request: RequestWithMeta<{}>) {
+    return super.createMetadata(request, this.#defaultRequestMeta);
+  }
+
   // Saves an array of state objects
   async save(request: SaveStateRequest): Promise<void> {
     let states = request.states;
