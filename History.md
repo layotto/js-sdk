@@ -1,4 +1,10 @@
 
+1.14.0 / 2023-10-15
+==================
+
+**features**
+  * [[`327adec`](http://github.com/layotto/js-sdk/commit/327adece804e3312c36a22d9c1ef074904c6a895)] - feat: support create a new state client (#38) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.13.1 / 2023-09-14
 ==================
 

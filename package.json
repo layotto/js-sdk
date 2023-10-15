@@ -1,6 +1,6 @@
 {
   "name": "layotto",
-  "version": "1.13.1",
+  "version": "1.14.0",
   "description": "Layotto Node.js SDK",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
