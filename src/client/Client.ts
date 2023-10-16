@@ -19,7 +19,7 @@ import { ChannelCredentials } from '@grpc/grpc-js';
 import { RuntimeClient } from '../../proto/runtime/v1/runtime_grpc_pb';
 import { ObjectStorageServiceClient } from '../../proto/extension/v1/s3/oss_grpc_pb';
 import { CryptionServiceClient } from '../../proto/extension/v1/cryption/cryption_grpc_pb';
-import { State, StateOptions } from './State';
+import { State } from './State';
 import { Hello } from './Hello';
 import { Invoker } from './Invoker';
 import { Lock } from './Lock';
@@ -112,7 +112,7 @@ export class Client {
 
   get state() {
     if (!this._state) {
-      this._state = new State(this._runtime, {}, this.initAPIOptions);
+      this._state = new State(this._runtime, this.initAPIOptions);
     }
     return this._state;
   }
@@ -182,13 +182,6 @@ export class Client {
   createOSSClient(options: OssOptions = {}) {
     const ossClient = new ObjectStorageServiceClient(this._address, ChannelCredentials.createInsecure());
     return new Oss(ossClient, options, this.initAPIOptions);
-  }
-
-  /**
-   * Create new state client instance
-   */
-  createStateClient(options?: StateOptions) {
-    return new State(this._runtime, options, this.initAPIOptions);
   }
 
   get cryption() {
