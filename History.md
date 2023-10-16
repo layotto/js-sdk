@@ -1,4 +1,10 @@
 
+1.14.1 / 2023-10-16
+==================
+
+**others**
+  * [[`5d7c23f`](http://github.com/layotto/js-sdk/commit/5d7c23f1cab91139b4ade491fb897d3a37aaac97)] - Revert "feat: support create a new state client (#38)" (#39) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.14.0 / 2023-10-15
 ==================
 
