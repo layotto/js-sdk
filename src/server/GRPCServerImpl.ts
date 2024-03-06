@@ -130,8 +130,8 @@ export class GRPCServerImpl implements IAppCallbackServer {
   async listTopicSubscriptions(_call: grpc.ServerUnaryCall<Empty, ListTopicSubscriptionsResponse>,
     callback: grpc.sendUnaryData<ListTopicSubscriptionsResponse>): Promise<void> {
     const res = new ListTopicSubscriptionsResponse();
-    debug('listTopicSubscriptions call: %j', this.subscriptionsList);
     res.setSubscriptionsList(this.subscriptionsList);
+    this.logger.info('[layotto:server:listTopicSubscriptions] return response %j', res.toObject());
     callback(null, res);
   }
 }
