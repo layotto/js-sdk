@@ -1,4 +1,10 @@
 
+1.15.0 / 2024-03-06
+==================
+
+**features**
+  * [[`efeaf68`](http://github.com/layotto/js-sdk/commit/efeaf689a76d9047b4518ce0ee4d304932237c9e)] - feat: print listTopicSubscriptions request log (#40) (fengmk2 <<suqian.yf@antgroup.com>>)
+
 1.14.1 / 2023-10-16
 ==================
 
