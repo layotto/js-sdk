@@ -61,10 +61,11 @@ export function isEmptyPBMessage(item: any, emptyLength = 0) {
   return false;
 }
 
-export function convertMapToKVString(map: MapPB<string, string>) {
+// convertMapToKVString converts a MapPB<string, string> into a KV<string>
+export function convertMapToKVString(map: MapPB<string, string>): KV<string> {
   const kv: KV<string> = {};
-  for (const [ k, v ] of map.entries()) {
-    kv[k] = v;
+  for (const [ key, value ] of map.entries()) {
+    kv[key] = value;
   }
   return kv;
 }

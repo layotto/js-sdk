@@ -29,8 +29,8 @@ export type Map<Type> = {
 
 export function convertArrayToKVString(items: [string, string][]) {
   const kv: KV<string> = {};
-  for (const item of items) {
-    kv[item[0]] = item[1];
+  for (const [key, value] of items) {
+    kv[key] = value;
   }
   return kv;
 }
