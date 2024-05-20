@@ -19,7 +19,8 @@ describe.skip('client/Oss.test.ts', () => {
     const res = await client.oss.get({
       storeName: 'oss_demo',
       bucket: 'antsys-tnpmbuild',
-      key: 'test.txt',
+      // support prefix with `/`
+      key: '/test.txt',
     });
     const buf: Uint8Array[] = [];
     for await (const chunk of res.object) {

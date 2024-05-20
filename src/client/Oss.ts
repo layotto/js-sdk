@@ -46,14 +46,20 @@ export class Oss extends API {
     this.options = options;
   }
 
+  // https://github.com/node-modules/oss-client/blob/master/src/OSSObject.ts#L984
+  #objectKey(key: string) {
+    return key.replace(/^\/+/, '');
+  }
+
   private async* putObjectIterator(request: PutObjectRequest): AsyncGenerator<PutObjectInput> {
+    const key = this.#objectKey(request.key);
     let hasChunk = false;
     for await (const chunk of request.body) {
       hasChunk = true;
       const req = new PutObjectInput();
       req.setStoreName(request.storeName);
       req.setBucket(request.bucket);
-      req.setKey(request.key);
+      req.setKey(key);
       req.setContentLength(request.contentLength);
       if (request.acl) {
         req.setAcl(request.acl);
@@ -88,7 +94,7 @@ export class Oss extends API {
       const req = new PutObjectInput();
       req.setStoreName(request.storeName);
       req.setBucket(request.bucket);
-      req.setKey(request.key);
+      req.setKey(key);
       req.setContentLength(request.contentLength);
       if (request.acl) {
         req.setAcl(request.acl);
@@ -152,10 +158,11 @@ export class Oss extends API {
   }
 
   async get(request: GetObjectRequest): Promise<GetObjectResponse> {
+    const key = this.#objectKey(request.key);
     const req = new GetObjectInput();
     req.setStoreName(request.storeName);
     req.setBucket(request.bucket);
-    req.setKey(request.key);
+    req.setKey(key);
     if (request.expectedBucketOwner) {
       req.setExpectedBucketOwner(request.expectedBucketOwner);
     }
@@ -232,10 +239,11 @@ export class Oss extends API {
   }
 
   async copy(request: CopyObjectRequest): Promise<CopyObjectOutput.AsObject> {
+    const key = this.#objectKey(request.key);
     const req = new CopyObjectInput();
     req.setStoreName(request.storeName);
     req.setBucket(request.bucket);
-    req.setKey(request.key);
+    req.setKey(key);
     const copySource = new CopySource();
     req.setCopySource(copySource);
     copySource.setCopySourceBucket(request.copySource.copySourceBucket);
@@ -261,10 +269,11 @@ export class Oss extends API {
   }
 
   async head(request: HeadObjectRequest): Promise<HeadObjectOutput.AsObject> {
+    const key = this.#objectKey(request.key);
     const req = new HeadObjectInput();
     req.setStoreName(request.storeName);
     req.setBucket(request.bucket);
-    req.setKey(request.key);
+    req.setKey(key);
     if (request.checksumMode) {
       req.setChecksumMode(request.checksumMode);
     }
@@ -316,10 +325,11 @@ export class Oss extends API {
   }
 
   async delete(request: DeleteObjectRequest): Promise<DeleteObjectOutput.AsObject> {
+    const key = this.#objectKey(request.key);
     const req = new DeleteObjectInput();
     req.setStoreName(request.storeName);
     req.setBucket(request.bucket);
-    req.setKey(request.key);
+    req.setKey(key);
     if (request.requestPayer) {
       req.setRequestPayer(request.requestPayer);
     }
@@ -376,10 +386,11 @@ export class Oss extends API {
   }
 
   async signUrl(request: SignUrlRequest): Promise<SignURLOutput.AsObject> {
+    const key = this.#objectKey(request.key);
     const req = new SignURLInput();
     req.setStoreName(request.storeName);
     req.setBucket(request.bucket);
-    req.setKey(request.key);
+    req.setKey(key);
     req.setMethod(request.method);
     req.setExpiredInSec(request.expiredInSec);
 
