@@ -1,4 +1,10 @@
 
+1.16.0 / 2024-05-20
+==================
+
+**features**
+  * [[`2468fcc`](http://github.com/layotto/js-sdk/commit/2468fcc239702a343238bef8c7c3ec16886960eb)] - feat: format Object key (#41) (fengmk2 <<suqian.yf@antgroup.com>>)
+
 1.15.0 / 2024-03-06
 ==================
 
