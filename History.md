@@ -1,4 +1,10 @@
 
+1.17.0 / 2024-05-26
+==================
+
+**features**
+  * [[`ef1c372`](http://github.com/layotto/js-sdk/commit/ef1c37224d3dcc0728753c4b011d381881582a44)] - feat: allow to close client (#42) (fengmk2 <<suqian.yf@antgroup.com>>)
+
 1.16.0 / 2024-05-20
 ==================
 
