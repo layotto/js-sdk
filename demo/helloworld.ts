@@ -19,11 +19,16 @@ const client = new Client();
 assert(client);
 
 async function main() {
-  const hello = await client.hello.sayHello({
-    serviceName: 'helloworld',
-    name: 'js-sdk',
-  });
-  console.log('%s', hello);
+  try {
+    const hello = await client.hello.sayHello({
+      serviceName: 'helloworld',
+      name: 'js-sdk',
+    });
+    console.log('%s', hello);
+  } catch (err) {
+    console.error('sayHello error: %s', err);
+  }
+  client.close();
 }
 
 main();

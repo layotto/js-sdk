@@ -193,4 +193,8 @@ export class Client {
     }
     return this._cryption;
   }
+
+  close() {
+    this._runtime.close();
+  }
 }

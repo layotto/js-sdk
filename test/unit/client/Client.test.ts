@@ -17,7 +17,7 @@ import { Client } from '../../../src';
 import { CreateMetadataHook } from '../../../src/client/API';
 import { CustomClient } from './fixtures/CustomClient';
 
-describe('client/Client.test.ts', () => {
+describe('test/unit/client/Client.test.ts', () => {
   let client: Client;
   beforeAll(async () => {
     client = new Client();
@@ -30,6 +30,10 @@ describe('client/Client.test.ts', () => {
   it('should create a Client with default port', () => {
     assert.equal(client.port, '34904');
     assert(client.state);
+  });
+
+  afterAll(() => {
+    client.close();
   });
 
   describe('custom Client', () => {
@@ -53,6 +57,10 @@ describe('client/Client.test.ts', () => {
       assert.equal(hello, 'greeting');
       const hello2 = await customClient.hello.sayHello({ name: 'js-sdk' });
       assert.equal(hello2, 'greeting, js-sdk');
+    });
+
+    afterAll(() => {
+      customClient.close();
     });
   });
 });
