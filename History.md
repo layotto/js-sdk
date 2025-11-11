@@ -1,3 +1,7 @@
+## Changelog
+
+Please refer to [GitHub Releases](https://github.com/layotto/js-sdk/releases) for the latest changelog.
+
 
 1.17.0 / 2024-05-26
 ==================
