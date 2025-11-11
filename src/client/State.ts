@@ -37,7 +37,7 @@ import {
   SaveStateRequest,
   StateItem,
 } from '../types/State';
-import { isEmptyPBMessage, convertMapToKVString } from '../utils';
+import { convertMapToKVString } from '../utils';
 
 export class State extends RuntimeAPI {
   // Saves an array of state objects
@@ -69,12 +69,14 @@ export class State extends RuntimeAPI {
     return new Promise((resolve, reject) => {
       this.runtime.getState(req, this.createMetadata(request), (err, res: GetStateResponsePB) => {
         if (err) return reject(err);
-        if (isEmptyPBMessage(res)) {
-          return resolve(null);
-        }
+        const value = res.getData_asU8();
+        if (
+          value.length === 0
+          && res.getEtag() === ''
+        ) return resolve(null);
         resolve({
           key: request.key,
-          value: res.getData_asU8(),
+          value,
           etag: res.getEtag(),
           metadata: convertMapToKVString(res.getMetadataMap()),
         });
