@@ -6,13 +6,13 @@ import crypto from 'node:crypto';
 import { Client } from '../../../src';
 import { randomUUID } from 'node:crypto';
 
-describe.skip('client/Oss.test.ts', () => {
+describe('client/Oss.test.ts', () => {
   const client = new Client('34904', '127.0.0.1', { ossEnable: true });
 
   it('test put object', async () => {
     const hello = await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test.txt',
       body: Readable.from(Buffer.from('hello world')),
       contentLength: 11,
@@ -20,7 +20,7 @@ describe.skip('client/Oss.test.ts', () => {
     assert(hello);
     const res = await client.oss.get({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       // support prefix with `/`
       key: '/test.txt',
     });
@@ -36,7 +36,7 @@ describe.skip('client/Oss.test.ts', () => {
     const fileStream = createReadStream(path.join(__dirname, 'fixtures/empty-file.txt'));
     const hello = await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test-empty-file.txt',
       body: fileStream,
       contentLength: 0,
@@ -44,7 +44,7 @@ describe.skip('client/Oss.test.ts', () => {
     assert(hello);
     const res = await client.oss.get({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test-empty-file.txt',
     });
     const buf: Uint8Array[] = [];
@@ -67,7 +67,7 @@ describe.skip('client/Oss.test.ts', () => {
 
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_large_object.txt',
       body: Readable.from(buf),
       contentLength: buf.length,
@@ -75,7 +75,7 @@ describe.skip('client/Oss.test.ts', () => {
 
     const res = await client.oss.get({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_large_object.txt',
     });
     const getHash = crypto.createHash('md5');
@@ -89,17 +89,17 @@ describe.skip('client/Oss.test.ts', () => {
   it('test copy object', async () => {
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_copy.txt',
       body: Readable.from(Buffer.from('hello world')),
       contentLength: 11,
     });
     const copyRes = await client.oss.copy({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_copy_target.txt',
       copySource: {
-        copySourceBucket: 'antsys-tnpmbuild',
+        copySourceBucket: 'layotto-test-bucket',
         copySourceKey: 'test_copy.txt',
       },
     });
@@ -107,7 +107,7 @@ describe.skip('client/Oss.test.ts', () => {
 
     const res = await client.oss.get({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_copy_target.txt',
     });
 
@@ -122,21 +122,21 @@ describe.skip('client/Oss.test.ts', () => {
   it('test delete object', async () => {
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_delete.txt',
       body: Readable.from(Buffer.from('hello world')),
       contentLength: 11,
     });
     const deleteRes = await client.oss.delete({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_delete.txt',
     });
     assert(deleteRes);
     await assert.rejects(async () => {
       await client.oss.get({
         storeName: 'oss_demo',
-        bucket: 'antsys-tnpmbuild',
+        bucket: 'layotto-test-bucket',
         key: 'test_delete.txt',
       });
     }, /NoSuchKey/);
@@ -145,7 +145,7 @@ describe.skip('client/Oss.test.ts', () => {
   it('test list object', async () => {
     const res = await client.oss.list({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       prefix: 'test_',
     });
     assert(res);
@@ -155,7 +155,7 @@ describe.skip('client/Oss.test.ts', () => {
     const ossClient = client.createOSSClient();
     const res = await ossClient.list({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       prefix: 'test_',
     });
     assert(res);
@@ -165,14 +165,14 @@ describe.skip('client/Oss.test.ts', () => {
     // Create test objects
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_batch_delete_1.txt',
       body: Readable.from(Buffer.from('test1')),
       contentLength: 5,
     });
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_batch_delete_2.txt',
       body: Readable.from(Buffer.from('test2')),
       contentLength: 5,
@@ -181,7 +181,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Delete multiple objects
     const deleteRes = await client.oss.deleteObjects({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       objects: [
         { key: 'test_batch_delete_1.txt' },
         { key: 'test_batch_delete_2.txt' },
@@ -194,7 +194,7 @@ describe.skip('client/Oss.test.ts', () => {
   it('test isObjectExist', async () => {
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_exist.txt',
       body: Readable.from(Buffer.from('exist')),
       contentLength: 5,
@@ -203,7 +203,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Check existing object
     const existRes = await client.oss.isObjectExist({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_exist.txt',
     });
     assert.equal(existRes.fileExist, true);
@@ -211,7 +211,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Check non-existing object
     const notExistRes = await client.oss.isObjectExist({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_not_exist.txt',
     });
     assert.equal(notExistRes.fileExist, false);
@@ -220,7 +220,7 @@ describe.skip('client/Oss.test.ts', () => {
   it('test object tagging', async () => {
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_tagging.txt',
       body: Readable.from(Buffer.from('test tagging')),
       contentLength: 12,
@@ -229,7 +229,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Put tags
     const putTagRes = await client.oss.putObjectTagging({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_tagging.txt',
       tags: {
         env: 'test',
@@ -241,7 +241,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Get tags
     const getTagRes = await client.oss.getObjectTagging({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_tagging.txt',
     });
     assert(getTagRes.tagsMap);
@@ -250,7 +250,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Delete tags
     const deleteTagRes = await client.oss.deleteObjectTagging({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_tagging.txt',
     });
     assert(deleteTagRes);
@@ -259,7 +259,7 @@ describe.skip('client/Oss.test.ts', () => {
   it('test object ACL', async () => {
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_acl.txt',
       body: Readable.from(Buffer.from('test acl')),
       contentLength: 8,
@@ -268,7 +268,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Put ACL
     const putAclRes = await client.oss.putObjectCannedAcl({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_acl.txt',
       acl: 'private',
     });
@@ -277,7 +277,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Get ACL
     const getAclRes = await client.oss.getObjectCannedAcl({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_acl.txt',
     });
     assert(getAclRes);
@@ -288,7 +288,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Create multipart upload
     const createRes = await client.oss.createMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_multipart.txt',
     });
     assert(createRes.uploadId);
@@ -298,7 +298,7 @@ describe.skip('client/Oss.test.ts', () => {
     const part1Data = Buffer.alloc(1024 * 1024).fill('a'); // 1MB
     const uploadPart1Res = await client.oss.uploadPart({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_multipart.txt',
       uploadId,
       partNumber: 1,
@@ -311,7 +311,7 @@ describe.skip('client/Oss.test.ts', () => {
     const part2Data = Buffer.alloc(1024 * 1024).fill('b'); // 1MB
     const uploadPart2Res = await client.oss.uploadPart({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_multipart.txt',
       uploadId,
       partNumber: 2,
@@ -323,7 +323,7 @@ describe.skip('client/Oss.test.ts', () => {
     // List parts
     const listPartsRes = await client.oss.listParts({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_multipart.txt',
       uploadId,
     });
@@ -333,7 +333,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Complete multipart upload
     const completeRes = await client.oss.completeMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_multipart.txt',
       uploadId,
       parts: [
@@ -349,7 +349,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Create multipart upload
     const createRes = await client.oss.createMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_abort_multipart.txt',
     });
     assert(createRes.uploadId);
@@ -359,7 +359,7 @@ describe.skip('client/Oss.test.ts', () => {
     const partData = Buffer.alloc(1024 * 1024).fill('x');
     await client.oss.uploadPart({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_abort_multipart.txt',
       uploadId,
       partNumber: 1,
@@ -370,7 +370,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Abort multipart upload
     const abortRes = await client.oss.abortMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_abort_multipart.txt',
       uploadId,
     });
@@ -381,14 +381,14 @@ describe.skip('client/Oss.test.ts', () => {
     // Create a multipart upload
     await client.oss.createMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_list_multipart.txt',
     });
 
     // List multipart uploads
     const listRes = await client.oss.listMultipartUploads({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       prefix: 'test_list_',
     });
     assert(listRes);
@@ -399,7 +399,7 @@ describe.skip('client/Oss.test.ts', () => {
     // First append
     const append1Res = await client.oss.appendObject({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
       body: Readable.from(Buffer.from('hello ')),
       // position: 0,
@@ -410,7 +410,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Second append
     const append2Res = await client.oss.appendObject({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
       body: Readable.from(Buffer.from('world')),
       position: nextPosition,
@@ -420,7 +420,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Verify the content
     const res = await client.oss.get({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
     });
     const buf: Uint8Array[] = [];
@@ -437,7 +437,7 @@ describe.skip('client/Oss.test.ts', () => {
     const sourceData = Buffer.alloc(2 * 1024 * 1024).fill('s'); // 5MB
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
       body: Readable.from(sourceData),
       contentLength: sourceData.length,
@@ -446,7 +446,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Create multipart upload for destination
     const createRes = await client.oss.createMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
     });
     const uploadId = createRes.uploadId;
@@ -454,12 +454,12 @@ describe.skip('client/Oss.test.ts', () => {
     // Copy part from source
     const copyPartRes = await client.oss.uploadPartCopy({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
       uploadId,
       partNumber: 1,
       copySource: {
-        copySourceBucket: 'antsys-tnpmbuild',
+        copySourceBucket: 'layotto-test-bucket',
         copySourceKey: key,
       },
     });
@@ -469,7 +469,7 @@ describe.skip('client/Oss.test.ts', () => {
     // Complete multipart upload
     await client.oss.completeMultipartUpload({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key,
       uploadId,
       parts: [
@@ -481,7 +481,7 @@ describe.skip('client/Oss.test.ts', () => {
   it('test head object', async () => {
     await client.oss.put({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_head.txt',
       body: Readable.from(Buffer.from('test head')),
       contentLength: 9,
@@ -489,7 +489,7 @@ describe.skip('client/Oss.test.ts', () => {
 
     const headRes = await client.oss.head({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_head.txt',
     });
     assert(headRes);
@@ -501,7 +501,7 @@ describe.skip('client/Oss.test.ts', () => {
   it('test signUrl', async () => {
     const signRes = await client.oss.signUrl({
       storeName: 'oss_demo',
-      bucket: 'antsys-tnpmbuild',
+      bucket: 'layotto-test-bucket',
       key: 'test_sign.txt',
       method: 'GET',
       expiredInSec: 3600,

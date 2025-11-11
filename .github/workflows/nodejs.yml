@@ -36,6 +36,20 @@ jobs:
         ports:
           - 2379:2379
           - 2380:2380
+      minio:
+        image: minio/minio:latest
+        env:
+          MINIO_ROOT_USER: layotto
+          MINIO_ROOT_PASSWORD: layotto_secret
+        ports:
+          - 9000:9000
+          - 9001:9001
+        options: >-
+          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          server /data --console-address ":9001"
 
     strategy:
       fail-fast: false
@@ -53,6 +67,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Setup MinIO
+      run: |
+        bash scripts/setup-minio.sh
 
     - name: Bootstrap layotto
       # run: |
