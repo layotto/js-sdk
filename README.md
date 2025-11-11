@@ -104,10 +104,10 @@ GRPC_TRACE=compression GRPC_VERBOSITY=debug GRPC_TRACE=all npm run test test/uni
 
 ### NPM Publish
 
-Just run `npm version` command to update the version and push the tag to GitHub.
+Just run `npm version <semver-version>` command to update the version and push the tag to GitHub.
 
 ```bash
-npm version
+npm version <patch|minor|major>
 git push origin main --tags
 ```
 
