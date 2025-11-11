@@ -10,7 +10,6 @@
     "proto"
   ],
   "scripts": {
-    "contributor": "git-contributor",
     "ci": "npm run lint && npm run build && npm run test:unit",
     "test": "jest --detectOpenHandles",
     "test:unit": "NODE_ENV=test npm run test 'test/unit/.*\\.test\\.ts'",
@@ -46,7 +45,6 @@
     "@types/pump": "^1.1.1",
     "eslint": "^8.31.0",
     "eslint-config-egg": "^12.1.0",
-    "git-contributor": "^1.1.0",
     "grpc-tools": "^1.11.3",
     "grpc_tools_node_protoc_ts": "^5.3.2",
     "jest": "^27.2.5",

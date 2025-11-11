@@ -115,14 +115,9 @@ GRPC_TRACE=compression GRPC_VERBOSITY=debug GRPC_TRACE=all npm run test test/uni
 
 [Apache License 2.0](LICENSE)
 
-<!-- GITCONTRIBUTOR_START -->
 
 ## Contributors
 
-|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/26001097?v=4" width="100px;"/><br/><sub><b>seeflood</b></sub>](https://github.com/seeflood)<br/>|[<img src="https://avatars.githubusercontent.com/u/68213475?v=4" width="100px;"/><br/><sub><b>LZHK1ng</b></sub>](https://github.com/LZHK1ng)<br/>|[<img src="https://avatars.githubusercontent.com/u/6897780?v=4" width="100px;"/><br/><sub><b>killagu</b></sub>](https://github.com/killagu)<br/>|
-| :---: | :---: | :---: | :---: |
+[![Contributors](https://contrib.rocks/image?repo=layotto/js-sdk)](https://github.com/layotto/js-sdk/graphs/contributors)
 
-
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Thu Oct 13 2022 15:14:41 GMT+0800`.
-
-<!-- GITCONTRIBUTOR_END -->
+Made with [contributors-img](https://contrib.rocks).
