@@ -28,7 +28,7 @@ jobs:
           --health-retries 5
       # https://github.com/mosn/layotto/blob/main/docker/layotto-etcd/docker-compose.yml
       etcd:
-        image: bitnami/etcd
+        image: bitnamilegacy/etcd
         env:
           ALLOW_NONE_AUTHENTICATION: yes
           ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
