@@ -102,6 +102,15 @@ Enable trace debug log for grpc-js:
 GRPC_TRACE=compression GRPC_VERBOSITY=debug GRPC_TRACE=all npm run test test/unit/client/Invoker.test.ts
 ```
 
+### NPM Publish
+
+Just run `npm version` command to update the version and push the tag to GitHub.
+
+```bash
+npm version
+git push origin main --tags
+```
+
 ## Reference
 
 - [Core concepts, architecture and lifecycle](https://grpc.io/docs/what-is-grpc/core-concepts/)
@@ -114,7 +123,6 @@ GRPC_TRACE=compression GRPC_VERBOSITY=debug GRPC_TRACE=all npm run test test/uni
 ## License
 
 [Apache License 2.0](LICENSE)
-
 
 ## Contributors
 
