@@ -54,6 +54,16 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Setup MinIO
+      run: |
+        docker run -d \
+          --name minio \
+          -p 9000:9000 -p 9001:9001 \
+          -e MINIO_ROOT_USER=layotto \
+          -e MINIO_ROOT_PASSWORD=layotto_secret \
+          minio/minio:latest server /data --console-address ":9001"
+        bash scripts/setup-minio.sh
+
     - name: Bootstrap layotto
       # run: |
       #   cd demo

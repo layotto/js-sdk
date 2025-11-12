@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import { Client } from '../../../src';
 import { randomUUID } from 'node:crypto';
 
-describe.skip('client/Oss.test.ts', () => {
+describe('client/Oss.test.ts', () => {
   const client = new Client('34904', '127.0.0.1', { ossEnable: true });
 
   it('test put object', async () => {

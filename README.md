@@ -65,10 +65,16 @@ npm run build:grpc
 
 ### step 1. Set up the environment
 
-- Running redis and etcd under Docker
+- Running redis, etcd and MinIO under Docker
 
 ```bash
 docker-compose up -d
+```
+
+- Setup MinIO bucket for OSS tests
+
+```bash
+bash scripts/setup-minio.sh
 ```
 
 - Start a echoserver for testing the rpc api

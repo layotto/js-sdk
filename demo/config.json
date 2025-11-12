@@ -94,6 +94,17 @@
                           }
                         }
                       },
+                      "file": {
+                        "oss_demo": {
+                          "type": "minio",
+                          "metadata": {
+                            "endpoint": "localhost:9000",
+                            "accessKeyID": "layotto",
+                            "accessKeySecret": "layotto_secret",
+                            "SSL": false
+                          }
+                        }
+                      },
                       "app": {
                         "app_id": "app1",
                         "grpc_callback_port": 9999
