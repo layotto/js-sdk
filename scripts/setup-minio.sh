@@ -43,6 +43,6 @@ $MC_CMD alias set myminio http://localhost:9000 layotto layotto_secret
 
 # Create test bucket
 echo "Creating test bucket..."
-$MC_CMD mb myminio/layotto-test-bucket --ignore-existing
+$MC_CMD mb myminio/antsys-tnpmbuild --ignore-existing
 
 echo "MinIO setup complete!"
